@@ -1,5 +1,7 @@
 package model;
 
+import services.UserServices;
+
 public class User {
 
 	private int id;
@@ -17,6 +19,8 @@ public class User {
 	private boolean forDeletion;
 	private boolean isCorporate;
 	
+	private UserServices service;
+	
 	public static final String TABLE = "accounts";
 	public static final String COL_ID = "id";
 	public static final String COL_USERNAME = "username";
@@ -31,6 +35,9 @@ public class User {
 	public static final String COL_FORDELETION = "fordeletion";
 	public static final String COL_ISCORPORATE = "iscorporate";
 	
+	public User() {
+		service = new UserServices();
+	}
 	
 	public int getId() {
 		return id;
@@ -118,6 +125,6 @@ public class User {
 	}
 	
 	public boolean doesExist() {
-		
+		return service.checkAccountExist(username);
 	}
 }

@@ -1,5 +1,6 @@
 package controller;
 
+import model.User;
 import view.Login;
 
 public class LoginController {
@@ -9,5 +10,11 @@ public class LoginController {
 	{
 		this.view = view;
 		view.addController(this);
+	}
+	
+	public boolean doesExist() {
+		User user = new User();
+		
+		return user.doesExist();
 	}
 }
