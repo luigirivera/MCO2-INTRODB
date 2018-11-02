@@ -8,6 +8,6 @@ public class LoginController {
 	public LoginController(Login view)
 	{
 		this.view = view;
-		
+		view.addController(this);
 	}
 }

@@ -2,6 +2,8 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
@@ -11,6 +13,8 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import controller.LoginController;
+
 public class Login extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
@@ -18,6 +22,8 @@ public class Login extends JFrame {
 	private JPasswordField password;
 	private JButton login, signup;
 	private JLabel welcome;
+	private Signup signupPanel;
+	private LoginController controller;
 	
 	public Login() {
 		super("Stop 'N Shop");
@@ -41,6 +47,8 @@ public class Login extends JFrame {
 		login = new JButton("Login");
 		signup = new JButton("Signup");
 		
+		signupPanel = new Signup();
+		
 		welcome = new JLabel("Welcome to Stop 'N Shop");
 	}
 	
@@ -51,9 +59,10 @@ public class Login extends JFrame {
 		add(password);
 		add(login);
 		add(signup);
+		add(signupPanel);
 		
 		welcome.setFont(new Font("Arial", Font.BOLD, 25));
-		username.setText("username");
+		username.setText("Username");
 		username.setForeground(Color.GRAY);
 		password.setText("password");
 		password.setForeground(Color.GRAY);
@@ -72,17 +81,26 @@ public class Login extends JFrame {
 		
 		signup.setSize(login.getWidth(), login.getHeight());
 		signup.setLocation(login.getX() + login.getWidth(), login.getY());
+		
+		signupPanel.setSize(400, 300);
+		signupPanel.setLocation(0, 230);
 	}
 	
+	public void addController(LoginController controller) {
+		this.controller = controller;
+	}
 	
 	private void setListeners() {
 		username.addFocusListener(new usernameFocus());
 		password.addFocusListener(new passwordFocus());
+		signup.addActionListener(new signupListener());
+		signupPanel.getSignup().addActionListener(new signupConfirmListener());
+		signupPanel.getCancel().addActionListener(new cancelListener());
 	}
 	
 	class usernameFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(username.getText().equals("username"))
+			if(username.getText().equals("Username"))
 			{
 				username.setText("");
 				username.setForeground(Color.BLACK);
@@ -92,7 +110,7 @@ public class Login extends JFrame {
 		public void focusLost(FocusEvent e) {
 			if(username.getText().isEmpty())
 			{
-				username.setText("username");
+				username.setText("Username");
 				username.setForeground(Color.GRAY);
 			}			
 		}
@@ -114,6 +132,50 @@ public class Login extends JFrame {
 				password.setForeground(Color.GRAY);
 			}			
 		}
+	}
+	
+	class signupListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			toggleLogin(false);
+		}
+		
+	}
+	
+	class cancelListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			toggleLogin(true);
+			signupPanel.clearSignup();
+		}
+		
+	}
+	
+	class signupConfirmListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			toggleLogin(true);
+			//save to database
+			signupPanel.clearSignup();
+		}
+		
+	}
+	
+//EXTRA METHODS//
+	
+	private void toggleLogin(boolean enable) {
+		username.setEnabled(enable);
+		password.setEnabled(enable);
+		login.setEnabled(enable);
+		signup.setEnabled(enable);
+		
+		if(!enable)
+			setSize(400, 580);
+		else
+			setSize(400,250);
 	}
 	
 //GETTERS AND SETTERS//
