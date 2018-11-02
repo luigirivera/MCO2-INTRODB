@@ -14,7 +14,7 @@ public class LoginController {
 	
 	public boolean doesExist() {
 		User user = new User();
-		
+		user.setUsername(view.getUsername().getText());
 		return user.doesExist();
 	}
 }

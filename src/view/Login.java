@@ -158,7 +158,9 @@ public class Login extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			toggleLogin(true);
-			//save to database
+			if(controller.doesExist() /* and username is valid */)
+				//save to database
+			//else error
 			signupPanel.clearSignup();
 		}
 		
