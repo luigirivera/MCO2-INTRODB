@@ -161,18 +161,18 @@ public class Login extends JFrame {
 	
 	class passwordFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(String.valueOf(password.getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
+			if(String.valueOf(((JPasswordField)e.getSource()).getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
 			{
-				password.setText("");
-				password.setForeground(Color.BLACK);
+				((JPasswordField)e.getSource()).setText("");
+				((JPasswordField)e.getSource()).setForeground(Color.BLACK);
 			}
 		}
 		
 		public void focusLost(FocusEvent e) {
-			if(String.valueOf(password.getPassword()).isEmpty())
+			if(String.valueOf(((JPasswordField)e.getSource()).getPassword()).isEmpty())
 			{
-				password.setText(PLACEHOLDER.PASSWORD.toString());
-				password.setForeground(Color.GRAY);
+				((JPasswordField)e.getSource()).setText(PLACEHOLDER.PASSWORD.toString());
+				((JPasswordField)e.getSource()).setForeground(Color.GRAY);
 			}			
 		}
 	}

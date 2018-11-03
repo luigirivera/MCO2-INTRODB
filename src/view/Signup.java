@@ -86,7 +86,7 @@ public class Signup extends JPanel {
 		contact.addFocusListener(new contactFocus());
 		username.addFocusListener(new usernameFocus());
 		password.addFocusListener(new passwordFocus());
-		confirmpass.addFocusListener(new confirmFocus());
+		confirmpass.addFocusListener(new passwordFocus());
 	}
 	
 	class swapListener implements ActionListener{
@@ -154,39 +154,22 @@ public class Signup extends JPanel {
 	
 	class passwordFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(String.valueOf(password.getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
+			if(String.valueOf(((JPasswordField)e.getSource()).getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
 			{
-				password.setText("");
-				password.setForeground(Color.BLACK);
+				((JPasswordField)e.getSource()).setText("");
+				((JPasswordField)e.getSource()).setForeground(Color.BLACK);
 			}
 		}
 		
 		public void focusLost(FocusEvent e) {
-			if(String.valueOf(password.getPassword()).isEmpty())
+			if(String.valueOf(((JPasswordField)e.getSource()).getPassword()).isEmpty())
 			{
-				password.setText(PLACEHOLDER.PASSWORD.toString());
-				password.setForeground(Color.GRAY);
+				((JPasswordField)e.getSource()).setText(PLACEHOLDER.PASSWORD.toString());
+				((JPasswordField)e.getSource()).setForeground(Color.GRAY);
 			}			
 		}
 	}
 	
-	class confirmFocus extends FocusAdapter{
-		public void focusGained(FocusEvent e) {
-			if(String.valueOf(confirmpass.getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
-			{
-				confirmpass.setText("");
-				confirmpass.setForeground(Color.BLACK);
-			}
-		}
-		
-		public void focusLost(FocusEvent e) {
-			if(String.valueOf(confirmpass.getPassword()).isEmpty())
-			{
-				confirmpass.setText(PLACEHOLDER.PASSWORD.toString());
-				confirmpass.setForeground(Color.GRAY);
-			}			
-		}
-	}
 	
 //EXTRA METHODS//
 	public void clearSignup()

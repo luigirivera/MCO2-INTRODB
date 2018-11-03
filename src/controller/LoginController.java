@@ -191,10 +191,9 @@ public class LoginController {
 						if(view.getSignupPanel().getContact().getText().trim().isEmpty() || 
 							view.getSignupPanel().getContact().getText().equals(PLACEHOLDER.NUMBER.toString()))
 							error += "Please enter a phone number\n";
-						else
-							Long.parseLong(view.getSignupPanel().getContact().getText());
+						else if(Long.parseLong(view.getSignupPanel().getContact().getText()) == 0);
 					}catch(Exception e) {
-						error += "Please enter valid phone number. A valid number has 10 digits\n";
+						error += "Please enter valid phone number. A valid number has 10 digits\n0000000000 is an invalid number";
 					}
 		
 		if(String.valueOf(view.getSignupPanel().getPassword().getPassword()).equals(PLACEHOLDER.PASSWORD.toString()) ||

@@ -7,9 +7,9 @@ public enum GENDER {
 	{
 		switch (this)
 		{
-			case M: return "M";
-			case F: return "F";
-			default: return "I";
+			case M: return "MALE";
+			case F: return "FEMALE";
+			default: return "Invalid";
 		}
 	}
 }

@@ -72,6 +72,7 @@ public class CustomerMainMenu extends JFrame {
 	
 	private void addListeners()
 	{
+		settings.addActionListener(new settingsListener());
 		logout.addActionListener(new logoutListener());
 	}
 	
@@ -87,6 +88,16 @@ public class CustomerMainMenu extends JFrame {
 			controller.logout();
 			dispose();
 			
+			
+		}
+		
+	}
+	
+	class settingsListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			controller.toggleSettings();
 			
 		}
 		

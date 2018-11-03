@@ -4,6 +4,7 @@ import driver.StopNShop;
 import model.User;
 import view.CustomerMainMenu;
 import view.Login;
+import view.Settings;
 
 public class CustomerMainMenuController {
 	private CustomerMainMenu view;
@@ -20,5 +21,10 @@ public class CustomerMainMenuController {
 	public void logout()
 	{
 		new LoginController(new Login(), program);
+	}
+	
+	public void toggleSettings()
+	{
+		new SettingsController(new Settings(), program, account);
 	}
 }
