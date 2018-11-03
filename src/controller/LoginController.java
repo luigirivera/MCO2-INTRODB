@@ -21,6 +21,7 @@ public class LoginController {
 	{
 		account.setLogin();
 		program.setAccount(account.getDetails());
+		account = account.getDetails();
 		program.login();
 	}
 	

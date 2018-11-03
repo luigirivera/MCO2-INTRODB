@@ -24,6 +24,9 @@ public class SettingsController {
 	public void configureFields()
 	{
 		Color fg = Color.BLACK;
+		program.setAccount(account.getDetails());
+		account = account.getDetails();
+		
 		view.getUsername().setText(account.getUsername());
 		view.getUsername().setForeground(fg);
 		if(account.getEmail() != null)

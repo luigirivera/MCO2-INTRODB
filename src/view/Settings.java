@@ -209,6 +209,50 @@ public class Settings extends JFrame {
 		number.addFocusListener(new numberFocus());
 	}
 	
+	class deleteAccount implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			//confirm if they want
+			//if yes set status of boolean to true
+			//update account to db
+		}
+		
+	}
+	
+	class changeinformation implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			//if fields are valid
+				//if username, email, number are unique
+					//change
+				//else error
+			//else error
+		}
+		
+	}
+	
+	class changepass implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//TODO
+			//if fields are valid
+				//if old is correct
+					//if new are same
+						//change
+						//clear fields
+					//else error
+				//else error
+			//else error
+			
+		}
+		
+	}
+	
 	class dateListener implements ActionListener{
 
 		@Override
