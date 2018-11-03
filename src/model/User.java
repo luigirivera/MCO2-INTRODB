@@ -2,7 +2,7 @@ package model;
 
 import java.sql.Date;
 
-import services.UserServices;
+import services.LoginService;
 
 public class User {
 
@@ -16,14 +16,12 @@ public class User {
 	private double wallet;
 	private double income;
 	private int coins;
-	private int followers;
-	private int following;
 	private int tries;
 	private boolean isLocked;
 	private boolean forDeletion;
 	private boolean isCorporate;
 	
-	private UserServices service;
+	private LoginService loginservice;
 	
 	public static final String TABLE = "accounts";
 	public static final String COL_ID = "id";
@@ -36,8 +34,6 @@ public class User {
 	public static final String COL_WALLET = "walletbalance";
 	public static final String COL_INCOME = "income";
 	public static final String COL_COINS = "shopeecoins";
-	public static final String COL_FOLLOWERS = "followers";
-	public static final String COL_FOLLOWING = "following";
 	public static final String COL_TRIES = "logintries";
 	public static final String COL_ISLOCKED = "islocked";
 	public static final String COL_FORDELETION = "fordeletion";
@@ -46,7 +42,7 @@ public class User {
 	public static final String COL_LASTLOGIN = "lastlogindate";
 	
 	public User() {
-		service = new UserServices();
+		loginservice = new LoginService();
 	}
 	
 	public int getId() {
@@ -121,29 +117,17 @@ public class User {
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-	public int getFollowers() {
-		return followers;
-	}
-	public void setFollowers(int followers) {
-		this.followers = followers;
-	}
-	public int getFollowing() {
-		return following;
-	}
-	public void setFollowing(int following) {
-		this.following = following;
-	}
 	
 	public boolean doesUsernameExist() {
-		return service.doesUsernameExist(username);
+		return loginservice.doesUsernameExist(username);
 	}
 	
 	public boolean doesEmailExist() {
-		return service.doesEmailExist(email);
+		return loginservice.doesEmailExist(email);
 	}
 	
 	public boolean doesNumberExist() {
-		return service.doesNumberExist(number);
+		return loginservice.doesNumberExist(number);
 	}
 	
 	
@@ -165,28 +149,28 @@ public class User {
 
 	public void registerAccount() {
 		if(email != null)
-			service.registerAccount(username, password, email);
+			loginservice.registerAccount(username, password, email);
 		else
-			service.registerAccount(username, password, number);
+			loginservice.registerAccount(username, password, number);
 	}
 	
 	public User getAccountLogin()
 	{
-		return service.getAccountLogin(username);
+		return loginservice.getAccountLogin(username);
 	}
 	
 	public void updateAccount()
 	{
-		service.updateAccount(username, tries, isLocked);
+		loginservice.updateAccount(username, tries, isLocked);
 	}
 	
 	public void setLogin()
 	{
-		service.setLogin(username);
+		loginservice.setLogin(username);
 	}
 	
 	public User getDetails()
 	{
-		return service.getDetails(username);
+		return loginservice.getDetails(username);
 	}
 }

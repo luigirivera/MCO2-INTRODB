@@ -5,9 +5,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import database.DatabaseConnection;
+import model.Following;
 import model.User;
 
-public class UserServices {
+public class LoginService {
 	
 	public boolean doesUsernameExist(String username) {
 		boolean found = false;
@@ -90,6 +91,50 @@ public class UserServices {
 		return found;
 	}
 	
+	public void followAccount(int user, int follower)
+	{
+		String query = "INSERT INTO " + Following.TABLE + " (" + Following.COL_USER + ", "
+				+ Following.COL_FOLLOWER + ") VALUES (?, ?)";
+
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, user);
+			ps.setInt(2, follower);
+			
+			ps.executeUpdate();
+			
+			System.out.println("[USER] FOLLOW DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] FOLLOW FAILED");
+			e.printStackTrace();
+		}
+	}
+	
+	public int getID(String username)
+	{
+		int id = 0;
+		
+		String query = "SELECT " + User.COL_ID + " FROM " + User.TABLE + " WHERE " + User.COL_USERNAME + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setString(1, username);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+				id = rs.getInt(User.COL_ID);
+			System.out.println("[USER] ID GET DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] ID GET FAILED");
+			e.printStackTrace();
+		}
+		
+		return id;
+	}
+	
 	public void registerAccount(String username, String password, String email) {
 		String query = "INSERT INTO " + User.TABLE + " (" + User.COL_USERNAME + ", " 
 														  + User.COL_PASSWORD + ", "
@@ -111,6 +156,9 @@ public class UserServices {
 			System.out.println("[USER] REGISTER FAILED");
 			e.printStackTrace();
 		}
+		
+		followAccount(0,getID(username));
+
 	}
 	
 	public void registerAccount(String username, String password, long number) { 
@@ -134,6 +182,8 @@ public class UserServices {
 			System.out.println("[USER] REGISTER FAILED");
 			e.printStackTrace();
 		}
+		
+		followAccount(0,getID(username));
 	}
 	
 	public User getAccountLogin(String username) {
@@ -227,8 +277,6 @@ public class UserServices {
 								 + User.COL_WALLET + ", "
 								 + User.COL_INCOME + ", "
 								 + User.COL_COINS + ", "
-								 + User.COL_FOLLOWERS + ", "
-								 + User.COL_FOLLOWING + ", "
 								 + User.COL_ISCORPORATE
 								 + " FROM " + User.TABLE + " WHERE " + User.COL_USERNAME + " = ?";
 		
@@ -266,8 +314,6 @@ public class UserServices {
 		user.setWallet(rs.getDouble(User.COL_WALLET));
 		user.setIncome(rs.getDouble(User.COL_INCOME));
 		user.setCoins(rs.getInt(User.COL_COINS));
-		user.setFollowers(rs.getInt(User.COL_FOLLOWERS));
-		user.setFollowing(rs.getInt(User.COL_FOLLOWING));
 		user.setCorporate(rs.getBoolean(User.COL_ISCORPORATE));
 		
 		return user;

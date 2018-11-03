@@ -16,7 +16,7 @@ public class LoginController {
 		this.program = program;
 		view.addController(this);
 	}
-	
+
 	public void loginAccount()
 	{
 		account.setLogin();

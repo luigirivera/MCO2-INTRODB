@@ -111,7 +111,7 @@ public class Login extends JFrame {
 						{
 							controller.loginAccount();
 							controller.clearTries();
-							setVisible(false);
+							dispose();
 						}
 							
 						else
