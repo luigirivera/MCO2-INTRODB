@@ -10,6 +10,7 @@ import java.awt.event.FocusEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
@@ -41,8 +42,8 @@ public class Login extends JFrame {
 	
 	private void instantiate()
 	{
-		username = new JTextField();
-		password = new JPasswordField();
+		username = new JTextField(PLACEHOLDER.USERNAME.toString());
+		password = new JPasswordField(PLACEHOLDER.PASSWORD.toString());
 		
 		login = new JButton("Login");
 		signup = new JButton("Signup");
@@ -62,9 +63,7 @@ public class Login extends JFrame {
 		add(signupPanel);
 		
 		welcome.setFont(new Font("Arial", Font.BOLD, 25));
-		username.setText("Username");
 		username.setForeground(Color.GRAY);
-		password.setText("password");
 		password.setForeground(Color.GRAY);
 		
 		welcome.setSize(320, 50);
@@ -96,11 +95,54 @@ public class Login extends JFrame {
 		signup.addActionListener(new signupListener());
 		signupPanel.getSignup().addActionListener(new signupConfirmListener());
 		signupPanel.getCancel().addActionListener(new cancelListener());
+		login.addActionListener(new loginListener());
+	}
+	
+	class loginListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(controller.isLoginValid())
+				if(controller.doesAccountExist())
+				{
+					controller.getAccountLogin();
+					if(!controller.isLocked())
+						if(controller.verifyPassword())
+						{
+							System.out.println("LOGIN");
+							controller.clearTries();
+						}
+							
+						else
+						{
+							controller.addTries();
+							if(controller.getTries() == 3)
+							{
+								JOptionPane.showMessageDialog(null, "Account Locked\nPlease contact an administrator to unlock your account", "Error", JOptionPane.ERROR_MESSAGE);
+								controller.lockAccount();
+							}
+								
+							else
+								JOptionPane.showMessageDialog(null, "Password incorrect\nYou now have " + controller.getTries() + " out of 3\nbefore your account gets locked.", "Error", JOptionPane.ERROR_MESSAGE);
+						}
+					else
+						JOptionPane.showMessageDialog(null, "Account Locked\nPlease contact an administrator to unlock your account", "Error", JOptionPane.ERROR_MESSAGE);
+					
+					controller.updateAccount();
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Account doesn't exist", "Error", JOptionPane.ERROR_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(null, controller.checkUsername().concat(controller.checkPassword()), "Error", JOptionPane.ERROR_MESSAGE);
+			
+			
+		}
+		
 	}
 	
 	class usernameFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(username.getText().equals("Username"))
+			if(username.getText().equals(PLACEHOLDER.USERNAME.toString()))
 			{
 				username.setText("");
 				username.setForeground(Color.BLACK);
@@ -110,7 +152,7 @@ public class Login extends JFrame {
 		public void focusLost(FocusEvent e) {
 			if(username.getText().isEmpty())
 			{
-				username.setText("Username");
+				username.setText(PLACEHOLDER.USERNAME.toString());
 				username.setForeground(Color.GRAY);
 			}			
 		}
@@ -118,7 +160,7 @@ public class Login extends JFrame {
 	
 	class passwordFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(String.valueOf(password.getPassword()).equals("password"))
+			if(String.valueOf(password.getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
 			{
 				password.setText("");
 				password.setForeground(Color.BLACK);
@@ -128,7 +170,7 @@ public class Login extends JFrame {
 		public void focusLost(FocusEvent e) {
 			if(String.valueOf(password.getPassword()).isEmpty())
 			{
-				password.setText("password");
+				password.setText(PLACEHOLDER.PASSWORD.toString());
 				password.setForeground(Color.GRAY);
 			}			
 		}
@@ -138,7 +180,7 @@ public class Login extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			toggleLogin(false);
+			controller.toggleLogin(false);
 		}
 		
 	}
@@ -147,7 +189,7 @@ public class Login extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			toggleLogin(true);
+			controller.toggleLogin(true);
 			signupPanel.clearSignup();
 		}
 		
@@ -157,29 +199,22 @@ public class Login extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			toggleLogin(true);
-			if(controller.doesExist() /* and username is valid */)
-				//save to database
-			//else error
-			signupPanel.clearSignup();
+			if (controller.isSignupValid())
+				if(controller.isAccountFree())
+				{
+					controller.registerAccount();
+					signupPanel.clearSignup();
+					controller.toggleLogin(true);
+				}
+				else
+
+					JOptionPane.showMessageDialog(null, controller.doesUsernameExist().concat(controller.doesContactExist()), "Error", JOptionPane.ERROR_MESSAGE);
+			else
+				JOptionPane.showMessageDialog(null, controller.getErrors(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
-	
-//EXTRA METHODS//
-	
-	private void toggleLogin(boolean enable) {
-		username.setEnabled(enable);
-		password.setEnabled(enable);
-		login.setEnabled(enable);
-		signup.setEnabled(enable);
-		
-		if(!enable)
-			setSize(400, 580);
-		else
-			setSize(400,250);
-	}
-	
+
 //GETTERS AND SETTERS//
 	public JTextField getUsername() {
 		return username;
@@ -200,4 +235,9 @@ public class Login extends JFrame {
 	public JLabel getWelcome() {
 		return welcome;
 	}
+
+	public Signup getSignupPanel() {
+		return signupPanel;
+	}
+	
 }

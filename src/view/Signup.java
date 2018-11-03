@@ -17,7 +17,7 @@ public class Signup extends JPanel {
 	private JTextField username, contact;
 	private JPasswordField password, confirmpass;
 	private JButton signup, cancel, swap;
-	private String status;
+	private PLACEHOLDER status;
 	
 	private final String email = "Signup using Email";
 	private final String number = "Signup using Number";
@@ -31,17 +31,17 @@ public class Signup extends JPanel {
 	}
 	
 	private void instantiate() {
-		username = new JTextField();
-		contact = new JTextField();
+		username = new JTextField(PLACEHOLDER.USERNAME.toString());
+		contact = new JTextField(PLACEHOLDER.NUMBER.toString());
 		
-		password = new JPasswordField();
-		confirmpass = new JPasswordField();
+		password = new JPasswordField(PLACEHOLDER.PASSWORD.toString());
+		confirmpass = new JPasswordField(PLACEHOLDER.PASSWORD.toString());
 		
 		signup = new JButton("Signup");
 		cancel = new JButton("Cancel");
 		swap = new JButton(email);
 		
-		status = "NUMBER";
+		status = PLACEHOLDER.NUMBER;
 	}
 	
 	private void initialize() {
@@ -53,13 +53,9 @@ public class Signup extends JPanel {
 		add(cancel);
 		add(swap);
 		
-		username.setText("Username");
 		username.setForeground(Color.GRAY);
-		contact.setText("Phone Number");
 		contact.setForeground(Color.GRAY);
-		password.setText("password");
 		password.setForeground(Color.GRAY);
-		confirmpass.setText("password");
 		confirmpass.setForeground(Color.GRAY);
 		
 		username.setSize(320,30);
@@ -100,15 +96,15 @@ public class Signup extends JPanel {
 			if(swap.getText().equals(email))
 			{
 				swap.setText(number);
-				status = "EMAIL";
-				contact.setText("Email Address");
+				status = PLACEHOLDER.EMAIL;
+				contact.setText(PLACEHOLDER.EMAIL.toString());
 			}
 				
 			else
 			{
 				swap.setText(email);
-				status = "NUMBER";
-				contact.setText("Phone Number");
+				status = PLACEHOLDER.NUMBER;
+				contact.setText(PLACEHOLDER.NUMBER.toString());
 			}
 			
 			contact.setForeground(Color.GRAY);
@@ -119,7 +115,7 @@ public class Signup extends JPanel {
 	
 	class contactFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(contact.getText().equals("Email Address") || contact.getText().equals("Phone Number"))
+			if(contact.getText().equals(PLACEHOLDER.EMAIL.toString()) || contact.getText().equals(PLACEHOLDER.NUMBER.toString()))
 			{
 				contact.setText("");
 				contact.setForeground(Color.BLACK);
@@ -129,10 +125,10 @@ public class Signup extends JPanel {
 		public void focusLost(FocusEvent e) {
 			if(contact.getText().isEmpty())
 			{
-				if(status.equals("EMAIL"))
-					contact.setText("Email Address");
+				if(status.equals(PLACEHOLDER.EMAIL))
+					contact.setText(PLACEHOLDER.EMAIL.toString());
 				else
-					contact.setText("Phone Number");
+					contact.setText(PLACEHOLDER.NUMBER.toString());
 				contact.setForeground(Color.GRAY);
 			}			
 		}
@@ -140,7 +136,7 @@ public class Signup extends JPanel {
 	
 	class usernameFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(username.getText().equals("Username"))
+			if(username.getText().equals(PLACEHOLDER.USERNAME.toString()))
 			{
 				username.setText("");
 				username.setForeground(Color.BLACK);
@@ -150,7 +146,7 @@ public class Signup extends JPanel {
 		public void focusLost(FocusEvent e) {
 			if(username.getText().isEmpty())
 			{
-				username.setText("Username");
+				username.setText(PLACEHOLDER.USERNAME.toString());
 				username.setForeground(Color.GRAY);
 			}			
 		}
@@ -158,7 +154,7 @@ public class Signup extends JPanel {
 	
 	class passwordFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(String.valueOf(password.getPassword()).equals("password"))
+			if(String.valueOf(password.getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
 			{
 				password.setText("");
 				password.setForeground(Color.BLACK);
@@ -168,7 +164,7 @@ public class Signup extends JPanel {
 		public void focusLost(FocusEvent e) {
 			if(String.valueOf(password.getPassword()).isEmpty())
 			{
-				password.setText("password");
+				password.setText(PLACEHOLDER.PASSWORD.toString());
 				password.setForeground(Color.GRAY);
 			}			
 		}
@@ -176,7 +172,7 @@ public class Signup extends JPanel {
 	
 	class confirmFocus extends FocusAdapter{
 		public void focusGained(FocusEvent e) {
-			if(String.valueOf(confirmpass.getPassword()).equals("password"))
+			if(String.valueOf(confirmpass.getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
 			{
 				confirmpass.setText("");
 				confirmpass.setForeground(Color.BLACK);
@@ -186,7 +182,7 @@ public class Signup extends JPanel {
 		public void focusLost(FocusEvent e) {
 			if(String.valueOf(confirmpass.getPassword()).isEmpty())
 			{
-				confirmpass.setText("password");
+				confirmpass.setText(PLACEHOLDER.PASSWORD.toString());
 				confirmpass.setForeground(Color.GRAY);
 			}			
 		}
@@ -195,15 +191,15 @@ public class Signup extends JPanel {
 //EXTRA METHODS//
 	public void clearSignup()
 	{
-		username.setText("Username");
+		username.setText(PLACEHOLDER.USERNAME.toString());
 		username.setForeground(Color.GRAY);
-		contact.setText("Phone Number");
+		contact.setText(PLACEHOLDER.NUMBER.toString());
 		contact.setForeground(Color.GRAY);
-		password.setText("password");
+		password.setText(PLACEHOLDER.PASSWORD.toString());
 		password.setForeground(Color.GRAY);
-		confirmpass.setText("password");
+		confirmpass.setText(PLACEHOLDER.PASSWORD.toString());
 		confirmpass.setForeground(Color.GRAY);
-		status = "NUMBER";
+		status = PLACEHOLDER.NUMBER;
 	}
 	
 //GETTERS AND SETTERS//
@@ -235,7 +231,8 @@ public class Signup extends JPanel {
 		return swap;
 	}
 
-	public String getStatus() {
+	public PLACEHOLDER getStatus() {
 		return status;
 	}
+
 }

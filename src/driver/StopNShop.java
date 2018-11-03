@@ -4,8 +4,9 @@ import controller.LoginController;
 import view.Login;
 
 public class StopNShop {
-
+	private LoginController loginControl;
+	
 	public StopNShop() {
-		new LoginController(new Login());
+		loginControl = new LoginController(new Login(), this);
 	}
 }

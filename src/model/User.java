@@ -15,6 +15,7 @@ public class User {
 	private int coins;
 	private int followers;
 	private int following;
+	private int tries;
 	private boolean isLocked;
 	private boolean forDeletion;
 	private boolean isCorporate;
@@ -25,15 +26,19 @@ public class User {
 	public static final String COL_ID = "id";
 	public static final String COL_USERNAME = "username";
 	public static final String COL_PASSWORD = "password";
+	public static final String COL_BIRTHDAY = "birthday";
 	public static final String COL_GENDER = "gender";
 	public static final String COL_EMAIL = "email";
 	public static final String COL_NUMBER = "number";
 	public static final String COL_WALLET = "walletbalance";
 	public static final String COL_INCOME = "income";
 	public static final String COL_COINS = "shopeecoins";
+	public static final String COL_TRIES = "logintries";
 	public static final String COL_ISLOCKED = "islocked";
 	public static final String COL_FORDELETION = "fordeletion";
 	public static final String COL_ISCORPORATE = "iscorporate";
+	public static final String COL_REGISTER = "registerdate";
+	public static final String COL_LASTLOGIN = "lastlogindate";
 	
 	public User() {
 		service = new UserServices();
@@ -124,7 +129,41 @@ public class User {
 		this.following = following;
 	}
 	
-	public boolean doesExist() {
-		return service.checkAccountExist(username);
+	public boolean doesUsernameExist() {
+		return service.doesUsernameExist(username);
+	}
+	
+	public boolean doesEmailExist() {
+		return service.doesEmailExist(email);
+	}
+	
+	public boolean doesNumberExist() {
+		return service.doesNumberExist(number);
+	}
+	
+	
+	public int getTries() {
+		return tries;
+	}
+
+	public void setTries(int tries) {
+		this.tries = tries;
+	}
+
+	public void registerAccount() {
+		if(email != null)
+			service.registerAccount(username, password, email);
+		else
+			service.registerAccount(username, password, number);
+	}
+	
+	public User getAccountLogin()
+	{
+		return service.getAccountLogin(username);
+	}
+	
+	public void updateAccount()
+	{
+		service.updateAccount(username, tries, isLocked);
 	}
 }
