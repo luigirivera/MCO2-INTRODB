@@ -109,8 +109,9 @@ public class Login extends JFrame {
 					if(!controller.isLocked())
 						if(controller.verifyPassword())
 						{
-							System.out.println("LOGIN");
+							controller.loginAccount();
 							controller.clearTries();
+							setVisible(false);
 						}
 							
 						else

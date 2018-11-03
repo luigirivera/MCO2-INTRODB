@@ -1,5 +1,7 @@
 package model;
 
+import java.sql.Date;
+
 import services.UserServices;
 
 public class User {
@@ -8,7 +10,8 @@ public class User {
 	private String username;
 	private String password;
 	private String email;
-	private GENDER gender;
+	private Date birthday;
+	private String gender;
 	private long number;
 	private double wallet;
 	private double income;
@@ -33,6 +36,8 @@ public class User {
 	public static final String COL_WALLET = "walletbalance";
 	public static final String COL_INCOME = "income";
 	public static final String COL_COINS = "shopeecoins";
+	public static final String COL_FOLLOWERS = "followers";
+	public static final String COL_FOLLOWING = "following";
 	public static final String COL_TRIES = "logintries";
 	public static final String COL_ISLOCKED = "islocked";
 	public static final String COL_FORDELETION = "fordeletion";
@@ -110,10 +115,10 @@ public class User {
 	public void setCorporate(boolean isCorporate) {
 		this.isCorporate = isCorporate;
 	}
-	public GENDER getGender() {
+	public String getGender() {
 		return gender;
 	}
-	public void setGender(GENDER gender) {
+	public void setGender(String gender) {
 		this.gender = gender;
 	}
 	public int getFollowers() {
@@ -142,6 +147,14 @@ public class User {
 	}
 	
 	
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+
 	public int getTries() {
 		return tries;
 	}
@@ -165,5 +178,15 @@ public class User {
 	public void updateAccount()
 	{
 		service.updateAccount(username, tries, isLocked);
+	}
+	
+	public void setLogin()
+	{
+		service.setLogin(username);
+	}
+	
+	public User getDetails()
+	{
+		return service.getDetails(username);
 	}
 }

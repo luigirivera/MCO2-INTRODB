@@ -148,7 +148,7 @@ public class UserServices {
 				ResultSet rs = ps.executeQuery();
 				
 				if(rs.next())
-					account = toAccount(rs);
+					account = toAccountLogin(rs);
 				
 				ps.close();
 				rs.close();
@@ -161,7 +161,7 @@ public class UserServices {
 			return account;
 		}
 	
-	private User toAccount(ResultSet rs) throws SQLException{
+	private User toAccountLogin(ResultSet rs) throws SQLException{
 		User user = new User();
 		
 		user.setUsername(rs.getString(User.COL_USERNAME));
@@ -193,5 +193,83 @@ public class UserServices {
 			System.out.println("[USER] ACCOUNT UPDATE FAILED");
 			e.printStackTrace();
 		}
+	}
+	
+	public void setLogin(String username)
+	{
+		String query = "UPDATE " + User.TABLE + " SET " + User.COL_LASTLOGIN + " = NOW()"
+														+ " WHERE " + User.COL_USERNAME + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+
+			ps.setString(1, username);
+			
+			ps.executeUpdate();
+			ps.close();
+			
+			System.out.println("[USER] ACCOUNT UPDATE DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] ACCOUNT UPDATE FAILED");
+			e.printStackTrace();
+		}
+	}
+	
+	public User getDetails(String username)
+	{
+		User account = null;
+		String query = "SELECT " + User.COL_USERNAME + ", "
+								 + User.COL_PASSWORD + ", "
+								 + User.COL_BIRTHDAY + ", "
+								 + User.COL_GENDER + ", "
+								 + User.COL_NUMBER + ", "
+								 + User.COL_EMAIL + ", "
+								 + User.COL_WALLET + ", "
+								 + User.COL_INCOME + ", "
+								 + User.COL_COINS + ", "
+								 + User.COL_FOLLOWERS + ", "
+								 + User.COL_FOLLOWING + ", "
+								 + User.COL_ISCORPORATE
+								 + " FROM " + User.TABLE + " WHERE " + User.COL_USERNAME + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setString(1, username);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+				account = toAccount(rs);
+			
+			ps.close();
+			rs.close();
+			System.out.println("[USER] ACCOUNT GET DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] ACCOUNT GET FAILED");
+			e.printStackTrace();
+		}
+		
+		return account;
+								 
+	}
+	
+	private User toAccount(ResultSet rs) throws SQLException{
+		User user = new User();
+		
+		user.setUsername(rs.getString(User.COL_USERNAME));
+		user.setPassword(rs.getString(User.COL_PASSWORD));
+		user.setBirthday(rs.getDate(User.COL_BIRTHDAY));
+		user.setGender(rs.getString(User.COL_GENDER));
+		user.setNumber(rs.getLong(User.COL_NUMBER));
+		user.setEmail(rs.getString(User.COL_EMAIL));
+		user.setWallet(rs.getDouble(User.COL_WALLET));
+		user.setIncome(rs.getDouble(User.COL_INCOME));
+		user.setCoins(rs.getInt(User.COL_COINS));
+		user.setFollowers(rs.getInt(User.COL_FOLLOWERS));
+		user.setFollowing(rs.getInt(User.COL_FOLLOWING));
+		user.setCorporate(rs.getBoolean(User.COL_ISCORPORATE));
+		
+		return user;
 	}
 }

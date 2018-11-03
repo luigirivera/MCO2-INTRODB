@@ -17,6 +17,13 @@ public class LoginController {
 		view.addController(this);
 	}
 	
+	public void loginAccount()
+	{
+		account.setLogin();
+		program.setAccount(account.getDetails());
+		program.login();
+	}
+	
 	public void clearTries()
 	{
 		account.setTries(0);
@@ -119,7 +126,6 @@ public class LoginController {
 	
 	public String doesContactExist() {
 		User user = new User();
-		String error = "";
 		
 		if(view.getSignupPanel().getStatus().equals(PLACEHOLDER.EMAIL))
 		{
