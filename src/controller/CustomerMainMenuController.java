@@ -8,11 +8,13 @@ import view.Settings;
 
 public class CustomerMainMenuController {
 	private CustomerMainMenu view;
+	private Settings settingsview;
 	private StopNShop program;
 	private User account;
 	
 	public CustomerMainMenuController(CustomerMainMenu view, StopNShop program, User account) {
 		this.view = view;
+		settingsview = null;
 		this.program = program;
 		this.account = account;
 		view.addController(this);
@@ -25,6 +27,15 @@ public class CustomerMainMenuController {
 	
 	public void toggleSettings()
 	{
-		new SettingsController(new Settings(), program, account);
+		if(settingsview == null)
+		{
+			settingsview = new Settings();
+			new SettingsController(settingsview, program, account);
+		}
+		else
+		{
+			settingsview.toFront();
+			settingsview.repaint();
+		}
 	}
 }

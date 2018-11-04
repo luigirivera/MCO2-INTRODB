@@ -13,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPasswordField;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -53,7 +54,7 @@ public class Settings extends JFrame {
 		bank = new JButton("Bank Accounts");
 		card = new JButton("Credit Cards");
 		order = new JButton("Orders");
-		delete = new JButton("Delete Account");
+		delete = new JButton("Delete?");
 		
 		oldpass = new JPasswordField(PLACEHOLDER.PASSWORD.toString());
 		newpass = new JPasswordField(PLACEHOLDER.PASSWORD.toString());
@@ -121,7 +122,7 @@ public class Settings extends JFrame {
 		
 		for(int i = 1; i<=31; i++) date.addItem(i);
 		
-		for(int i = Calendar.getInstance().get(Calendar.YEAR) - 150; i <= Calendar.getInstance().get(Calendar.YEAR); i++)
+		for(int i = Calendar.getInstance().get(Calendar.YEAR) - 80; i <= Calendar.getInstance().get(Calendar.YEAR); i++)
 			year.addItem(i);
 		
 		address.setSize(150, 50);
@@ -207,16 +208,47 @@ public class Settings extends JFrame {
 		username.addFocusListener(new usernameFocus());
 		email.addFocusListener(new emailFocus());
 		number.addFocusListener(new numberFocus());
+		save.addActionListener(new changeinformation());
+		passwordsave.addActionListener(new changepass());
+		delete.addActionListener(new deleteAccount());
+		address.addActionListener(new addressesListener());
+	}
+	
+	class addressesListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			controller.showAddresses();
+			
+		}
+		
 	}
 	
 	class deleteAccount implements ActionListener{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			//confirm if they want
-			//if yes set status of boolean to true
-			//update account to db
+			
+			if(!controller.accountForDeletion())
+			{
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete your account?", "Delete?", JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION)
+				{
+					controller.updateDelete(true);
+					JOptionPane.showMessageDialog(null, "An administrator will delete your account", "Delete", JOptionPane.INFORMATION_MESSAGE);
+				}
+			}
+			
+			else
+			{
+				int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to cancel deletion of your account?", "Cancel Delete?", JOptionPane.YES_NO_OPTION);
+				if (result == JOptionPane.YES_OPTION)
+				{
+					controller.updateDelete(false);
+					JOptionPane.showMessageDialog(null, "Account is not for deletion anymore", "Delete", JOptionPane.INFORMATION_MESSAGE);
+				}				
+			}
 		}
 		
 	}
@@ -225,12 +257,10 @@ public class Settings extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			//if fields are valid
-				//if username, email, number are unique
-					//change
-				//else error
-			//else error
+			if(controller.checkFields())
+				controller.updateInformation();
+			else
+				JOptionPane.showMessageDialog(null, controller.getErrors(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}
@@ -239,16 +269,14 @@ public class Settings extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//TODO
-			//if fields are valid
-				//if old is correct
-					//if new are same
-						//change
-						//clear fields
-					//else error
-				//else error
-			//else error
-			
+			if(controller.validatePassword())
+			{
+				controller.changePassword();
+				controller.clearPassFields();
+			}
+				
+			else
+				JOptionPane.showMessageDialog(null, controller.getPasswordErrors(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 	}

@@ -175,8 +175,8 @@ public class LoginController {
 				view.getSignupPanel().getUsername().getText().trim().isEmpty())
 			
 			error += "Please enter a username\n";
-		else if (view.getSignupPanel().getUsername().getText().length() < 6)
-			error += "Username length needs to be greater than 6 characters\n";
+		else if (view.getSignupPanel().getUsername().getText().length() < 5)
+			error += "Username length needs to be at least 5 characters\n";
 		
 		if(view.getSignupPanel().getStatus().equals(PLACEHOLDER.EMAIL))
 			if((view.getSignupPanel().getContact().getText().equals(PLACEHOLDER.EMAIL.toString()) ||
@@ -193,6 +193,8 @@ public class LoginController {
 							view.getSignupPanel().getContact().getText().equals(PLACEHOLDER.NUMBER.toString()))
 							error += "Please enter a phone number\n";
 						else if(Long.parseLong(view.getSignupPanel().getContact().getText()) == 0);
+						else if(String.valueOf(view.getSignupPanel().getContact().getText()).length() < 10)
+							throw new NumberFormatException();
 					}catch(Exception e) {
 						error += "Please enter valid phone number. A valid number has 10 digits\n0000000000 is an invalid number";
 					}

@@ -3,6 +3,7 @@ package model;
 import java.sql.Date;
 
 import services.LoginService;
+import services.SettingsService;
 
 public class User {
 
@@ -22,6 +23,7 @@ public class User {
 	private boolean isCorporate;
 	
 	private LoginService loginservice;
+	private SettingsService settingsservice;
 	
 	public static final String TABLE = "accounts";
 	public static final String COL_ID = "id";
@@ -43,6 +45,7 @@ public class User {
 	
 	public User() {
 		loginservice = new LoginService();
+		settingsservice = new SettingsService();
 	}
 	
 	public int getId() {
@@ -162,6 +165,24 @@ public class User {
 	public void updateAccount()
 	{
 		loginservice.updateAccount(username, tries, isLocked);
+	}
+	
+	public void updateInformation()
+	{
+		if(number == 0)
+			settingsservice.updateInformation(id, username,email, birthday, gender);
+		else
+			settingsservice.updateInformation(id, username,email,number,birthday, gender);
+	}
+	
+	public void changePassword()
+	{
+		settingsservice.changePassword(username, password);
+	}
+	
+	public void updateDelete()
+	{
+		settingsservice.updateDelete(username,forDeletion);
 	}
 	
 	public void setLogin()

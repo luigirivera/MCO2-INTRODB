@@ -277,7 +277,9 @@ public class LoginService {
 								 + User.COL_WALLET + ", "
 								 + User.COL_INCOME + ", "
 								 + User.COL_COINS + ", "
-								 + User.COL_ISCORPORATE
+								 + User.COL_ISCORPORATE + ", "
+								 + User.COL_FORDELETION + ", "
+								 + User.COL_ID
 								 + " FROM " + User.TABLE + " WHERE " + User.COL_USERNAME + " = ?";
 		
 		try {
@@ -305,6 +307,7 @@ public class LoginService {
 	private User toAccount(ResultSet rs) throws SQLException{
 		User user = new User();
 		
+		user.setId(rs.getInt(User.COL_ID));
 		user.setUsername(rs.getString(User.COL_USERNAME));
 		user.setPassword(rs.getString(User.COL_PASSWORD));
 		user.setBirthday(rs.getDate(User.COL_BIRTHDAY));
@@ -315,6 +318,7 @@ public class LoginService {
 		user.setIncome(rs.getDouble(User.COL_INCOME));
 		user.setCoins(rs.getInt(User.COL_COINS));
 		user.setCorporate(rs.getBoolean(User.COL_ISCORPORATE));
+		user.setForDeletion(rs.getBoolean(User.COL_FORDELETION));
 		
 		return user;
 	}
