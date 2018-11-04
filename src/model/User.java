@@ -7,7 +7,7 @@ import services.SettingsService;
 
 public class User {
 
-	private int id;
+	private int userID;
 	private String username;
 	private String password;
 	private String email;
@@ -26,7 +26,7 @@ public class User {
 	private SettingsService settingsservice;
 	
 	public static final String TABLE = "accounts";
-	public static final String COL_ID = "id";
+	public static final String COL_ID = "userid";
 	public static final String COL_USERNAME = "username";
 	public static final String COL_PASSWORD = "password";
 	public static final String COL_BIRTHDAY = "birthday";
@@ -49,10 +49,10 @@ public class User {
 	}
 	
 	public int getId() {
-		return id;
+		return userID;
 	}
 	public void setId(int id) {
-		this.id = id;
+		this.userID = id;
 	}
 	public String getUsername() {
 		return username;
@@ -170,9 +170,9 @@ public class User {
 	public void updateInformation()
 	{
 		if(number == 0)
-			settingsservice.updateInformation(id, username,email, birthday, gender);
+			settingsservice.updateInformation(userID, username,email, birthday, gender);
 		else
-			settingsservice.updateInformation(id, username,email,number,birthday, gender);
+			settingsservice.updateInformation(userID, username,email,number,birthday, gender);
 	}
 	
 	public void changePassword()
