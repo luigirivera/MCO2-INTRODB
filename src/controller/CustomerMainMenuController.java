@@ -23,6 +23,9 @@ public class CustomerMainMenuController {
 	public void logout()
 	{
 		new LoginController(new Login(), program);
+		view.dispose();
+		settingsview.clear();
+		settingsview.dispose();
 	}
 	
 	public void toggleSettings()

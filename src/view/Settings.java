@@ -198,6 +198,11 @@ public class Settings extends JFrame {
 		}
 	}
 	
+	public void clear()
+	{
+		controller.clear();
+	}
+	
 	private void addListeners()
 	{
 		month.addActionListener(new dateListener());
@@ -211,15 +216,25 @@ public class Settings extends JFrame {
 		save.addActionListener(new changeinformation());
 		passwordsave.addActionListener(new changepass());
 		delete.addActionListener(new deleteAccount());
-		address.addActionListener(new addressesListener());
+		address.addActionListener(new pagesListener());
+		bank.addActionListener(new pagesListener());
+		card.addActionListener(new pagesListener());
+		order.addActionListener(new pagesListener());
 	}
 	
-	class addressesListener implements ActionListener
+	class pagesListener implements ActionListener
 	{
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			controller.showAddresses();
+			if(e.getSource().equals(address))
+				controller.showAddresses();
+			else if(e.getSource().equals(bank))
+				controller.showBanks();
+			else if(e.getSource().equals(card))
+				controller.showCards();
+			else if(e.getSource().equals(order))
+				controller.showOrders();
 			
 		}
 		

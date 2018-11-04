@@ -86,9 +86,6 @@ public class CustomerMainMenu extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			controller.logout();
-			dispose();
-			
-			
 		}
 		
 	}

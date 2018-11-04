@@ -1,7 +1,9 @@
 package view;
 
 public enum PLACEHOLDER {
-	USERNAME, PASSWORD, EMAIL, NUMBER;
+	USERNAME, PASSWORD, EMAIL, NUMBER,
+	
+	CCNUM, CVC;
 	
 	public String toString() {
 		switch(this)
@@ -10,6 +12,8 @@ public enum PLACEHOLDER {
 		case PASSWORD: return "Password";
 		case EMAIL: return "Email Address";
 		case NUMBER: return "Phone Number";
+		case CCNUM: return "Card Number";
+		case CVC: return "CVC";
 		default: return "Invalid";
 		}
 	}

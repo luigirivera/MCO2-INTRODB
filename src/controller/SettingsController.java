@@ -10,22 +10,43 @@ import driver.StopNShop;
 import model.GENDER;
 import model.User;
 import view.Addresses;
+import view.BankAccounts;
+import view.CreditCards;
+import view.Orders;
 import view.PLACEHOLDER;
 import view.Settings;
 
 public class SettingsController {
 	private Settings view;
 	private Addresses addressview;
+	private BankAccounts bankview;
+	private CreditCards cardsview;
+	private Orders ordersview;
 	private StopNShop program;
 	private User account;
 	
 	public SettingsController(Settings view, StopNShop program, User account) {
 		this.view = view;
 		addressview = null;
+		bankview = null;
+		cardsview = null;
+		ordersview = null;
 		this.program = program;
 		this.account = account;
 		view.addController(this);
 		configureFields();
+	}
+	
+	public void clear()
+	{
+		if(addressview!=null)
+			addressview.dispose();
+		if(bankview != null)
+			bankview.dispose();
+		if(cardsview != null)
+			cardsview.dispose();
+		if(ordersview != null)
+			ordersview.dispose();
 	}
 	
 	public void showAddresses()
@@ -38,6 +59,48 @@ public class SettingsController {
 		{
 			addressview.toFront();
 			addressview.repaint();
+		}
+		
+	}
+	
+	public void showBanks()
+	{
+		if(bankview == null)
+		{
+			bankview = new BankAccounts();
+		}
+		else
+		{
+			bankview.toFront();
+			bankview.repaint();
+		}
+		
+	}
+	
+	public void showCards()
+	{
+		if(cardsview == null)
+		{
+			cardsview = new CreditCards();
+		}
+		else
+		{
+			cardsview.toFront();
+			cardsview.repaint();
+		}
+		
+	}
+	
+	public void showOrders()
+	{
+		if(ordersview == null)
+		{
+			ordersview = new Orders();
+		}
+		else
+		{
+			ordersview.toFront();
+			ordersview.repaint();
 		}
 		
 	}
