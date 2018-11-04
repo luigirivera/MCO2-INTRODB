@@ -3,11 +3,14 @@ package view;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class CreditCards extends JFrame {
@@ -20,15 +23,17 @@ public class CreditCards extends JFrame {
 	private DefaultTableModel modelCardsTable;
 	private JScrollPane scrollCardsTable;
 	private JPopupMenu rightClick;
+	private JMenuItem delete;
 	
 	public CreditCards()
 	{
 		super("Credit Cards");
 		
 		setLayout(null);
-		setSize(600,450);
+		setSize(750,450);
 		instantiate();
 		initialize();
+		generateTable();
 //		addListeners();
 		setVisible(true);
 		setResizable(false);
@@ -61,6 +66,8 @@ public class CreditCards extends JFrame {
 		scrollCardsTable = new JScrollPane(cardsTable);
 		
 		rightClick = new JPopupMenu();
+		
+		delete = new JMenuItem("Delete");
 	}
 	
 	private void initialize()
@@ -75,12 +82,15 @@ public class CreditCards extends JFrame {
 		add(add);
 		add(addPanel);
 
+		addPanel.setVisible(false);
 		add(scrollCardsTable);
 		
-		add.setSize(100, 40);
-		add.setLocation(this.getWidth() - add.getWidth(), 10);
+		rightClick.add(delete);
 		
-		addPanel.setSize(this.getWidth(), add.getHeight());
+		add.setSize(100, 40);
+		add.setLocation(this.getWidth() - add.getWidth() - 10, 10);
+		
+		addPanel.setSize(this.getWidth() - add.getWidth() - 10, add.getHeight());
 		addPanel.setLocation(10, 10);
 		
 		number.setSize(150, addPanel.getHeight());
@@ -100,5 +110,32 @@ public class CreditCards extends JFrame {
 		
 		cancel.setSize(save.getSize());
 		cancel.setLocation(save.getX() + save.getWidth(), save.getY());
+		
+		scrollCardsTable.setSize(this.getWidth(), this.getHeight() - addPanel.getHeight());
+		scrollCardsTable.setLocation(0, addPanel.getY() + addPanel.getHeight());
+	}
+	
+	private void generateTable()
+	{
+		modelCardsTable.addColumn(PLACEHOLDER.CCNUM.toString());
+		modelCardsTable.addColumn(PLACEHOLDER.CVC.toString());
+		modelCardsTable.addColumn("Expiry");
+		
+		cardsTable.getTableHeader().setResizingAllowed(false);
+		cardsTable.getTableHeader().setReorderingAllowed(false);
+		cardsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		cardsTable.setOpaque(false);
+		((DefaultTableCellRenderer)cardsTable.getDefaultRenderer(Object.class)).setOpaque(false);
+		
+		scrollCardsTable.setOpaque(false);
+		scrollCardsTable.getViewport().setOpaque(false);
+		
+		update();
+	}
+	
+	public void update()
+	{
+		//fill the table with the values
 	}
 }
