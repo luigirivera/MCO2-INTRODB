@@ -5,7 +5,9 @@ public enum PLACEHOLDER {
 	
 	CCNUM, CVC,
 	
-	LINE1, LINE2, CITY, PROV, ZIP;
+	LINE1, LINE2, CITY, PROV, ZIP,
+	
+	BANK, ACCNUM;
 	
 	public String toString() {
 		switch(this)
@@ -21,6 +23,8 @@ public enum PLACEHOLDER {
 		case CITY: return "City";
 		case PROV: return "Province";
 		case ZIP: return "Zip";
+		case BANK: return "Bank";
+		case ACCNUM: return "Account Number";
 		default: return "Invalid";
 		}
 	}
