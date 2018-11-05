@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.YearMonth;
 import java.util.Calendar;
 
@@ -44,6 +46,21 @@ public class Settings extends JFrame {
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while(true)
+				{
+					revalidate();
+					repaint();
+				}
+					
+				
+			}
+			
+		});
 	}
 	
 	private void instantiate()
@@ -220,6 +237,14 @@ public class Settings extends JFrame {
 		bank.addActionListener(new pagesListener());
 		card.addActionListener(new pagesListener());
 		order.addActionListener(new pagesListener());
+		addWindowListener(new disposeListener());
+	}
+	
+	class disposeListener extends WindowAdapter{
+		@Override
+		public void windowClosed(WindowEvent e) {
+			controller.close();
+		}
 	}
 	
 	class pagesListener implements ActionListener

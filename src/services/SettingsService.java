@@ -3,6 +3,7 @@ package services;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Types;
+import java.util.Calendar;
 
 import database.DatabaseConnection;
 import model.User;
@@ -54,7 +55,7 @@ public class SettingsService {
 			ps.setString(1, username);
 			ps.setString(2, email);
 			ps.setNull(3, Types.BIGINT);
-			ps.setDate(4, birth);
+			ps.setDate(4, birth, Calendar.getInstance());
 			ps.setString(5, gender);
 			
 			ps.executeUpdate();

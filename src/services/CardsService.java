@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import database.DatabaseConnection;
 import model.Card;
@@ -60,12 +61,11 @@ public class CardsService {
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
-			
+
 			ps.setInt(1, userID);
 			ps.setLong(2, number);
 			ps.setBoolean(3, cvc);
-			ps.setDate(4, expiry);
-			
+			ps.setDate(4, expiry, Calendar.getInstance());
 			ps.executeUpdate();
 			
 			ps.close();

@@ -24,8 +24,9 @@ public class SettingsController {
 	private Orders ordersview;
 	private StopNShop program;
 	private User account;
+	private CustomerMainMenuController cmmc;
 	
-	public SettingsController(Settings view, StopNShop program, User account) {
+	public SettingsController(Settings view, StopNShop program, User account, CustomerMainMenuController cmmc) {
 		this.view = view;
 		addressview = null;
 		bankview = null;
@@ -33,8 +34,15 @@ public class SettingsController {
 		ordersview = null;
 		this.program = program;
 		this.account = account;
+		this.cmmc = cmmc;
 		view.addController(this);
 		configureFields();
+	}
+	
+	public void close()
+	{
+		view.dispose();
+		cmmc.setSettingsview(null);
 	}
 	
 	public void clear()
@@ -82,7 +90,7 @@ public class SettingsController {
 		if(cardsview == null)
 		{
 			cardsview = new CreditCards();
-			new CreditCardsController(cardsview, program, account, this);
+			new CreditCardsController(cardsview, account, this);
 		}
 		else
 		{
@@ -250,10 +258,10 @@ public class SettingsController {
 		
 		else
 		{
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			try {
-				Date date = new Date(sdf.parse(view.getYear().getItemAt(view.getYear().getSelectedIndex()) +"/" +
-															view.getMonth().getSelectedIndex() + "/"+
+				Date date = new Date(sdf.parse(view.getYear().getItemAt(view.getYear().getSelectedIndex()) +"-" +
+															view.getMonth().getSelectedIndex() + "-"+
 															(((Integer)view.getDate().getSelectedItem()) + 1)).getTime());
 				user.setBirthday(date);
 			} catch (ParseException e) {

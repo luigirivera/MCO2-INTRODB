@@ -33,7 +33,7 @@ public class CustomerMainMenuController {
 		if(settingsview == null)
 		{
 			settingsview = new Settings();
-			new SettingsController(settingsview, program, account);
+			new SettingsController(settingsview, program, account, this);
 		}
 		else
 		{
@@ -41,4 +41,14 @@ public class CustomerMainMenuController {
 			settingsview.repaint();
 		}
 	}
+
+	public Settings getSettingsview() {
+		return settingsview;
+	}
+
+	public void setSettingsview(Settings settingsview) {
+		this.settingsview = settingsview;
+	}
+	
+	
 }

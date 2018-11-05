@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
-import driver.StopNShop;
 import model.Card;
 import model.CardsTableModel;
 import model.User;
@@ -17,14 +16,12 @@ public class CreditCardsController {
 	
 	private CreditCards view;
 	private CardsTableModel cardsModel;
-	private StopNShop program;
 	private SettingsController settings;
 	private User account;
 	
-	public CreditCardsController(CreditCards view, StopNShop program, User account, SettingsController settings)
+	public CreditCardsController(CreditCards view, User account, SettingsController settings)
 	{
 		this.view = view;
-		this.program = program;
 		this.account = account;
 		this.settings = settings;
 		cardsModel = null;
@@ -94,15 +91,14 @@ public class CreditCardsController {
 				view.getCVC().getText().trim().isEmpty()))
 			card.setCvc(true);
 		else
-			card.setCvc(false);
+			card.setCvc(false);		
 		
-//		Calendar cal = Calendar.getInstance();
-//		cal.set(view.getYear().getItemAt(view.getYear().getSelectedIndex()), view.getMonth().getSelectedIndex(), 1,0,0,0);
-//		
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 		try {
-			Date date = new Date(sdf.parse(view.getYear().getItemAt(view.getYear().getSelectedIndex()) +"/" +
-														((view.getMonth().getSelectedIndex())+1) + "/01").getTime());
+
+			Date date = new Date(sdf.parse(view.getYear().getItemAt(view.getYear().getSelectedIndex()) +"-" + ((Integer)view.getMonth().getSelectedItem())).getTime());
+			
+			
 			card.setExpiry(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
