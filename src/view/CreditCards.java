@@ -196,7 +196,7 @@ public class CreditCards extends JFrame {
 					controller.clear();
 				}
 				else
-					JOptionPane.showMessageDialog(null, controller.getCardInputErrors(), "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, controller.getCardInputErrors().concat(controller.getCardExistError()), "Error", JOptionPane.ERROR_MESSAGE);
 			else
 				controller.clear();
 			

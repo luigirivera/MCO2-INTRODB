@@ -62,6 +62,7 @@ public class SettingsController {
 		if(addressview == null)
 		{
 			addressview = new Addresses();
+			new AddressController(addressview, account, this);
 		}
 		else
 		{

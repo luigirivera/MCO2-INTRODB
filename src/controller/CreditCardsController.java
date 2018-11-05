@@ -72,13 +72,22 @@ public class CreditCardsController {
 		view.getAdd().setEnabled(true);
 	}
 	
-	public boolean doesCardExist()
+	public String getCardExistError()
 	{
+		String error = "";
 		Card card = new Card();
 		card.setUserID(account.getId());
 		card.setCardNumber(Long.parseLong(view.getNumber().getText()));
 		
-		return card.doesCardExist();
+		if(card.doesCardExist())
+			error += "Credit Card already exist for this account.\n";
+			
+		return error;
+	}
+	
+	public boolean doesCardExist()
+	{
+		return !getCardExistError().isEmpty();
 	}
 	
 	public void saveCard()
@@ -133,9 +142,11 @@ public class CreditCardsController {
 			if(!(view.getCVC().getText().equals(PLACEHOLDER.CVC.toString()) ||
 				view.getCVC().getText().trim().isEmpty()))
 					Long.parseLong(view.getCVC().getText());
+			else if(view.getCVC().getText().length() != 3)
+					throw new NumberFormatException();
 		}catch(Exception e)
 		{
-			error += "Please enter a valid CVC number, if you want to save your CVC\n";
+			error += "Please enter a valid CVC number, if you want to save your CVC. A valid CVC number contains 3 digits.\n";
 		}
 		
 		return error;

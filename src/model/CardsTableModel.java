@@ -51,7 +51,7 @@ public class CardsTableModel extends DefaultTableModel {
 		return cards;
 	}
 
-	public void setCards(List<Card> stocks) {
-		this.cards = stocks;
+	public void setCards(List<Card> cards) {
+		this.cards = cards;
 	}
 }

@@ -24,8 +24,12 @@ public class CustomerMainMenuController {
 	{
 		new LoginController(new Login(), program);
 		view.dispose();
-		settingsview.clear();
-		settingsview.dispose();
+		if(settingsview != null)
+		{
+			settingsview.clear();
+			settingsview.dispose();
+		}
+		
 	}
 	
 	public void toggleSettings()
