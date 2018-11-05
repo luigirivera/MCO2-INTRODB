@@ -82,6 +82,7 @@ public class SettingsController {
 		if(cardsview == null)
 		{
 			cardsview = new CreditCards();
+			new CreditCardsController(cardsview, program, account, this);
 		}
 		else
 		{
@@ -290,8 +291,10 @@ public class SettingsController {
 					error += "Please enter a valid email. A valid email contains the '.com' substring\n";
 			
 			if(user.getNumber() != 0 && user.getNumber() != account.getNumber())
-				if(String.valueOf(user.getNumber()).length() < 10)
-					error += "Please enter valid phone number. A valid number has 10 digits\n0000000000 is an invalid number";
+				if(user.doesNumberExist())
+					error += "Phone number is taken\n";
+				else if(String.valueOf(user.getNumber()).length() < 10)
+					error += "Please enter valid phone number. A valid number has 10 digits\n0000000000 is an invalid number\n";
 		}
 		return error;
 	}
@@ -324,12 +327,9 @@ public class SettingsController {
 		
 		
 		if(account.getBirthday() != null)
-		{
-			System.out.println(account.getBirthday());
-			
+		{	
 			Calendar cal = Calendar.getInstance();
 			cal.setTime(account.getBirthday());
-			System.out.println(cal.get(Calendar.MONTH) + 1);
 			view.getYear().setSelectedItem(cal.get(Calendar.YEAR));
 			view.getMonth().setSelectedItem(cal.get(Calendar.MONTH) + 1);
 			view.getDate().setSelectedItem(cal.get(Calendar.DATE));
@@ -338,4 +338,38 @@ public class SettingsController {
 		if(account.isForDeletion())
 			view.getDelete().setText("Cancel Delete");
 	}
+
+	public Addresses getAddressview() {
+		return addressview;
+	}
+
+	public BankAccounts getBankview() {
+		return bankview;
+	}
+
+	public CreditCards getCardsview() {
+		return cardsview;
+	}
+
+	public Orders getOrdersview() {
+		return ordersview;
+	}
+
+	public void setAddressview(Addresses addressview) {
+		this.addressview = addressview;
+	}
+
+	public void setBankview(BankAccounts bankview) {
+		this.bankview = bankview;
+	}
+
+	public void setCardsview(CreditCards cardsview) {
+		this.cardsview = cardsview;
+	}
+
+	public void setOrdersview(Orders ordersview) {
+		this.ordersview = ordersview;
+	}
+	
+	
 }

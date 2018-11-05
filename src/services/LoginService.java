@@ -157,7 +157,7 @@ public class LoginService {
 			e.printStackTrace();
 		}
 		
-		followAccount(0,getID(username));
+		followAccount(1,getID(username));
 
 	}
 	
@@ -183,7 +183,7 @@ public class LoginService {
 			e.printStackTrace();
 		}
 		
-		followAccount(0,getID(username));
+		followAccount(1,getID(username));
 	}
 	
 	public User getAccountLogin(String username) {

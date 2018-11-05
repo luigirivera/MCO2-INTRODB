@@ -1,9 +1,19 @@
 package view;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.util.Calendar;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -12,6 +22,8 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import controller.CreditCardsController;
 
 public class CreditCards extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -24,6 +36,7 @@ public class CreditCards extends JFrame {
 	private JScrollPane scrollCardsTable;
 	private JPopupMenu rightClick;
 	private JMenuItem delete;
+	private CreditCardsController controller;
 	
 	public CreditCards()
 	{
@@ -34,7 +47,8 @@ public class CreditCards extends JFrame {
 		instantiate();
 		initialize();
 		generateTable();
-//		addListeners();
+		addListeners();
+		configure();
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -87,6 +101,9 @@ public class CreditCards extends JFrame {
 		
 		rightClick.add(delete);
 		
+		number.setForeground(Color.GRAY);
+		CVC.setForeground(Color.GRAY);
+		
 		add.setSize(100, 40);
 		add.setLocation(this.getWidth() - add.getWidth() - 10, 10);
 		
@@ -118,7 +135,7 @@ public class CreditCards extends JFrame {
 	private void generateTable()
 	{
 		modelCardsTable.addColumn(PLACEHOLDER.CCNUM.toString());
-		modelCardsTable.addColumn(PLACEHOLDER.CVC.toString());
+		modelCardsTable.addColumn("Is CVC Saved?");
 		modelCardsTable.addColumn("Expiry");
 		
 		cardsTable.getTableHeader().setResizingAllowed(false);
@@ -131,11 +148,163 @@ public class CreditCards extends JFrame {
 		scrollCardsTable.setOpaque(false);
 		scrollCardsTable.getViewport().setOpaque(false);
 		
-		update();
 	}
 	
-	public void update()
+	private void configure()
 	{
-		//fill the table with the values
+		for(int i = 1; i <= 12; i++) month.addItem(i);
+		
+		for(int i = Calendar.getInstance().get(Calendar.YEAR); i <= Calendar.getInstance().get(Calendar.YEAR)+10 ; i++)
+			year.addItem(i);
+		
+		
+		month.setSelectedIndex(Calendar.getInstance().get(Calendar.MONTH));
+		year.setSelectedIndex(0);
 	}
+	
+	
+	public void addController(CreditCardsController controller)
+	{
+		this.controller = controller;
+	}
+	
+	private void addListeners()
+	{
+		number.addFocusListener(new numberFocus());
+		CVC.addFocusListener(new cvcFocus());
+		add.addActionListener(new addListener());
+		save.addActionListener(new doneListener());
+		cancel.addActionListener(new doneListener());
+		addWindowListener(new disposeListener());
+	}
+	
+	class disposeListener extends WindowAdapter{
+		@Override
+		public void windowClosed(WindowEvent e) {
+			controller.close();
+		}
+	}
+	
+	class doneListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource().equals(save))
+				if(controller.validateCard() && !controller.doesCardExist())
+				{
+					controller.saveCard();
+					controller.clear();
+				}
+				else
+					JOptionPane.showMessageDialog(null, controller.getCardInputErrors(), "Error", JOptionPane.ERROR_MESSAGE);
+			else
+				controller.clear();
+			
+		}
+		
+	}
+	
+	class addListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			add.setEnabled(false);
+			addPanel.setVisible(true);
+		}
+		
+	}
+	
+	class numberFocus extends FocusAdapter{
+		public void focusGained(FocusEvent e) {
+			if(number.getText().equals(PLACEHOLDER.CCNUM.toString()))
+			{
+				number.setText("");
+				number.setForeground(Color.BLACK);
+			}
+		}
+		
+		public void focusLost(FocusEvent e) {
+			if(number.getText().isEmpty())
+			{
+				number.setText(PLACEHOLDER.CCNUM.toString());
+				number.setForeground(Color.GRAY);
+			}			
+		}
+	}
+	
+	class cvcFocus extends FocusAdapter{
+		public void focusGained(FocusEvent e) {
+			if(CVC.getText().equals(PLACEHOLDER.CVC.toString()))
+			{
+				CVC.setText("");
+				CVC.setForeground(Color.BLACK);
+			}
+		}
+		
+		public void focusLost(FocusEvent e) {
+			if(CVC.getText().isEmpty())
+			{
+				CVC.setText(PLACEHOLDER.CVC.toString());
+				CVC.setForeground(Color.GRAY);
+			}			
+		}
+	}
+
+	public JTextField getNumber() {
+		return number;
+	}
+
+	public JTextField getCVC() {
+		return CVC;
+	}
+
+	public JButton getAdd() {
+		return add;
+	}
+
+	public JButton getSave() {
+		return save;
+	}
+
+	public JButton getCancel() {
+		return cancel;
+	}
+
+	public JPanel getAddPanel() {
+		return addPanel;
+	}
+
+	public JComboBox<Integer> getMonth() {
+		return month;
+	}
+
+	public JComboBox<Integer> getYear() {
+		return year;
+	}
+
+	public JTable getCardsTable() {
+		return cardsTable;
+	}
+
+	public DefaultTableModel getModelCardsTable() {
+		return modelCardsTable;
+	}
+
+	public JScrollPane getScrollCardsTable() {
+		return scrollCardsTable;
+	}
+
+	public JPopupMenu getRightClick() {
+		return rightClick;
+	}
+
+	public JMenuItem getDelete() {
+		return delete;
+	}
+
+	public CreditCardsController getController() {
+		return controller;
+	}
+	
+	
 }
