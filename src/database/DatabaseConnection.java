@@ -20,7 +20,7 @@ public class DatabaseConnection {
 		if (connection == null) {
 			try {
 				Class.forName(DRIVER_NAME);
-				connection = DriverManager.getConnection(URL + DATABASE + "?autoReconnect=true&useSSL=false",
+				connection = DriverManager.getConnection(URL + DATABASE + "?autoReconnect=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=UTC",
 						USERNAME, PASSWORD);
 				System.out.println("[MYSQL] Connection successful");
 			} catch (SQLException e) {
