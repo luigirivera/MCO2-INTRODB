@@ -59,9 +59,9 @@ public class CreditCards extends JFrame {
 		number = new JTextField(PLACEHOLDER.CCNUM.toString());
 		CVC = new JTextField(PLACEHOLDER.CVC.toString());
 		
-		add = new JButton("+ Add Card");
-		save = new JButton("Save");
-		cancel = new JButton("Cancel");
+		save = new JButton(PLACEHOLDER.SAVE.toString());
+		add = new JButton(PLACEHOLDER.ADD.toString());
+		cancel = new JButton(PLACEHOLDER.CANCEL.toString());
 		
 		addPanel = new JPanel(null);
 		

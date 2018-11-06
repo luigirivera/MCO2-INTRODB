@@ -51,9 +51,9 @@ public class Addresses extends JFrame {
 	}
 	
 	private void instantiate() {
-		add = new JButton("+ Add");
-		save = new JButton("Save");
-		cancel = new JButton("Cancel");
+		save = new JButton(PLACEHOLDER.SAVE.toString());
+		add = new JButton(PLACEHOLDER.ADD.toString());
+		cancel = new JButton(PLACEHOLDER.CANCEL.toString());
 		
 		addPanel = new JPanel(null);
 		

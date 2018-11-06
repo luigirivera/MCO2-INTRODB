@@ -12,7 +12,7 @@ import view.PLACEHOLDER;
 public class AddressController {
 	
 	private Addresses view;
-	private AddressTableModel addressModel;
+	private AddressTableModel addressTableModel;
 	private SettingsController settings;
 	private User account;
 
@@ -21,7 +21,7 @@ public class AddressController {
 		this.view = view;
 		this.account = account;
 		this.settings = settings;
-		addressModel = null;
+		addressTableModel = null;
 		view.addController(this);
 		update();
 	}
@@ -89,18 +89,18 @@ public class AddressController {
 		address.setUserID(account.getId());
 		ArrayList<Address> addresses = address.getAddressesOfUser();
 		
-		if(addressModel == null)
-			addressModel = new AddressTableModel(addresses);
+		if(addressTableModel == null)
+			addressTableModel = new AddressTableModel(addresses);
 		else
-			addressModel.setAddresses(addresses);
+			addressTableModel.setAddresses(addresses);
 		
 		
 		for(int i = view.getModelAddressTable().getRowCount() - 1; i >= 0; i--)
 			view.getModelAddressTable().removeRow(i);
 		
-		for(int i = 0; i < addressModel.getRowCount(); i++)
+		for(int i = 0; i < addressTableModel.getRowCount(); i++)
 		{
-			Address a = addressModel.getAddressAt(i);
+			Address a = addressTableModel.getAddressAt(i);
 			Object[] row = new Object[] {a.getLine1(), a.getLine2(), a.getCity(), a.getProvince(), a.getZip()};
 			
 			view.getModelAddressTable().addRow(row);
@@ -127,6 +127,10 @@ public class AddressController {
 		view.getCity().setText(PLACEHOLDER.CITY.toString());
 		view.getProvince().setText(PLACEHOLDER.PROV.toString());
 		view.getZip().setText(PLACEHOLDER.ZIP.toString());
+		
+		view.getAddPanel().setVisible(false);
+		
+		view.getAdd().setEnabled(true);
 		
 	}
 }

@@ -77,6 +77,7 @@ public class SettingsController {
 		if(bankview == null)
 		{
 			bankview = new BankAccounts();
+			new BanksController(bankview, account, this);
 		}
 		else
 		{
