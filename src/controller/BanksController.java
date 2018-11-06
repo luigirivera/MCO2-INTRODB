@@ -26,6 +26,62 @@ public class BanksController {
 		update();
 	}
 	
+	public void saveBankAccount() {
+		BankAccount bAccount = new BankAccount();
+		
+		bAccount.setUserID(account.getId());
+		bAccount.setBank(view.getBank().getText());
+		bAccount.setAccountNumber(Long.parseLong(view.getAccountNumber().getText()));
+		
+		bAccount.saveAccount();
+		update();
+	}
+	
+	public boolean validateBankAccount()
+	{
+		return getBankAccountInputErrors().isEmpty();
+	}
+	
+	public boolean doesBankAccountExist() {
+		return !getBankAccountExistError().isEmpty();
+	}
+	
+	public String getBankAccountExistError()
+	{
+		String error = "";
+		BankAccount bAccount = new BankAccount();
+		
+		bAccount.setUserID(account.getId());
+		bAccount.setBank(view.getBank().getText());
+		try {
+			bAccount.setAccountNumber(Long.parseLong(view.getAccountNumber().getText()));
+			if(bAccount.doesAccountExist())
+				error += "Bank Account already exist for this account.\n";
+		}catch(Exception e)	{}
+		
+		return error;
+			
+	}
+	
+	public String getBankAccountInputErrors() {
+		String error = "";
+		
+		if(view.getBank().getText().trim().isEmpty() || view.getBank().getText().equals(PLACEHOLDER.BANK.toString()))
+			error += "Please enter a bank name.\n";
+		
+		try {
+			if(view.getAccountNumber().getText().length() != 10 || view.getAccountNumber().getText().equals(PLACEHOLDER.ACCNUM.toString()) || view.getAccountNumber().getText().trim().isEmpty())
+				throw new NumberFormatException();
+			else
+				Long.parseLong(view.getAccountNumber().getText());
+		}catch(Exception e)
+		{
+			error += "Please enter a valid account number. A valid account number has 10 digits.\n";
+		}
+		
+		return error;
+	}
+	
 	public void clear()
 	{
 		Color fg = Color.GRAY;

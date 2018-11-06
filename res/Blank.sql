@@ -1,15 +1,15 @@
-CREATE DATABASE  IF NOT EXISTS `stopnshop`;
+CREATE DATABASE  IF NOT EXISTS `stopnshop` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `stopnshop`;
--- MySQL dump 10.13  Distrib 8.0.12, for macos10.13 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: stopnshop
+-- Host: 127.0.0.1    Database: stopnshop
 -- ------------------------------------------------------
--- Server version	8.0.11
+-- Server version	5.7.21-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8 ;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -23,7 +23,7 @@ USE `stopnshop`;
 
 DROP TABLE IF EXISTS `accounts`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `accounts` (
   `userid` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(45) NOT NULL,
@@ -42,7 +42,7 @@ CREATE TABLE `accounts` (
   `registerdate` date DEFAULT NULL,
   `lastlogindate` date DEFAULT NULL,
   PRIMARY KEY (`userid`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -51,9 +51,65 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (1,'shopee','shopeemain',NULL,'MALE',NULL,'shopee@shopee.com',0,0,0,0,0,0,0,'2018-11-03','2018-11-04');
-INSERT INTO `accounts` VALUES (2,'admin','aaaaaa',NULL,'MALE',9994752346,NULL,0,0,0,0,0,0,0,'2018-11-03','2018-11-04');
+INSERT INTO `accounts` VALUES (1,'shopee','shopeemain',NULL,'MALE',NULL,'shopee@shopee.com',0,0,0,0,0,0,0,'2018-11-03','2018-11-04'),(2,'admin','aaaaaa',NULL,'MALE',9994752346,NULL,0,0,0,0,0,0,0,'2018-11-03','2018-11-04');
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `address`
+--
+
+DROP TABLE IF EXISTS `address`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `address` (
+  `addressid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `line1` varchar(45) NOT NULL,
+  `line2` varchar(45) NOT NULL,
+  `city` varchar(45) NOT NULL,
+  `province` varchar(45) NOT NULL,
+  `zipcode` int(11) NOT NULL,
+  PRIMARY KEY (`addressid`),
+  KEY `id_idx` (`userid`),
+  CONSTRAINT `id` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `address`
+--
+
+LOCK TABLES `address` WRITE;
+/*!40000 ALTER TABLE `address` DISABLE KEYS */;
+/*!40000 ALTER TABLE `address` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `bankaccounts`
+--
+
+DROP TABLE IF EXISTS `bankaccounts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `bankaccounts` (
+  `baid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `bank` varchar(45) NOT NULL,
+  `accountnumber` bigint(11) NOT NULL,
+  PRIMARY KEY (`baid`),
+  KEY `userid_idx` (`userid`),
+  CONSTRAINT `bankiduser` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `bankaccounts`
+--
+
+LOCK TABLES `bankaccounts` WRITE;
+/*!40000 ALTER TABLE `bankaccounts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bankaccounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -62,7 +118,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cards`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cards` (
   `cardsid` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
@@ -72,7 +128,7 @@ CREATE TABLE `cards` (
   PRIMARY KEY (`cardsid`),
   KEY `userid_idx` (`userid`),
   CONSTRAINT `userid` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -90,7 +146,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `following`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `following` (
   `followid` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
@@ -100,7 +156,7 @@ CREATE TABLE `following` (
   KEY `followerkey` (`follower`),
   CONSTRAINT `followerkey` FOREIGN KEY (`follower`) REFERENCES `accounts` (`userid`),
   CONSTRAINT `followingkey` FOREIGN KEY (`user`) REFERENCES `accounts` (`userid`)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -121,4 +177,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-04 23:55:13
+-- Dump completed on 2018-11-06 11:33:49

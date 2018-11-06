@@ -66,7 +66,7 @@ public class BankAccount {
 	
 	public ArrayList<BankAccount> getAccountsOfUser()
 	{
-		return banksservice.getAddressesOfUser(userID);
+		return banksservice.getAccountsOfUser(userID);
 	}
 	
 	public void saveAccount()
@@ -76,6 +76,6 @@ public class BankAccount {
 	
 	public boolean doesAccountExist()
 	{
-		banksservice.doesAccountExist(userID, bank, accountNumber);
+		return banksservice.doesAccountExist(userID, bank, accountNumber);
 	}
 }

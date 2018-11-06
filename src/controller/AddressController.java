@@ -52,13 +52,19 @@ public class AddressController {
 		
 		address.setUserID(account.getId());
 		address.setLine1(view.getLine1().getText());
-		address.setLine2(view.getLine2().getText());
+		if(view.getLine2().getText().trim().isEmpty() || view.getLine2().getText().equals(PLACEHOLDER.LINE2.toString()))
+			address.setLine2(null);
+		else
+			address.setLine2(view.getLine2().getText());
 		address.setCity(view.getCity().getText());
 		address.setProvince(view.getProvince().getText());
-		address.setZip(Integer.parseInt(view.getZip().getText()));
-		
-		if(address.doesAddressExist())
-			error += "Address already exist for this account.\n";
+		try {
+			address.setZip(Integer.parseInt(view.getZip().getText()));
+			
+			if(address.doesAddressExist())
+				error += "Address already exist for this account.\n";
+		}catch(Exception e) {}
+
 		return error;
 	}
 	
@@ -70,8 +76,17 @@ public class AddressController {
 	public String getAddressInputErrors()
 	{
 		String error = "";
+		
+		if(view.getLine1().getText().trim().isEmpty() || view.getLine1().getText().equals(PLACEHOLDER.LINE1.toString()))
+			error += "Please enter an address at line 1.\n";
+		
+		if(view.getCity().getText().trim().isEmpty() || view.getCity().getText().equals(PLACEHOLDER.CITY.toString()))
+			error += "Please enter a city.\n";
+		
+		if(view.getProvince().getText().trim().isEmpty() || view.getProvince().getText().equals(PLACEHOLDER.PROV.toString()))
+			error += "Please enter a province.\n";
 		try {
-			if(view.getZip().getText().length() != 4)
+			if(view.getZip().getText().length() != 4 || view.getZip().getText().trim().isEmpty() || view.getZip().getText().equals(PLACEHOLDER.ZIP.toString()))
 				throw new NumberFormatException();
 			else
 				Integer.parseInt(view.getZip().getText());
