@@ -51,7 +51,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (1,'shopee','shopeemain',NULL,'MALE',NULL,'shopee@shopee.com',0,0,0,0,0,0,0,'2018-11-03','2018-11-04'),(2,'admin','aaaaaa',NULL,'MALE',9994752346,NULL,0,0,0,0,0,0,0,'2018-11-03','2018-11-04');
+INSERT INTO `accounts` VALUES (1,'shopee','shopeemain',NULL,'MALE',NULL,'shopee@shopee.com',0,0,0,0,0,0,0,'2018-11-03','2018-11-04'),(2,'admin','aaaaaa',NULL,'MALE',9994752346,NULL,0,0,0,0,0,0,0,'2018-11-03','2018-11-15');
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -72,8 +72,8 @@ CREATE TABLE `address` (
   `zipcode` int(11) NOT NULL,
   PRIMARY KEY (`addressid`),
   KEY `id_idx` (`userid`),
-  CONSTRAINT `id` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `addressuser` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,8 +99,8 @@ CREATE TABLE `bankaccounts` (
   `accountnumber` bigint(11) NOT NULL,
   PRIMARY KEY (`baid`),
   KEY `userid_idx` (`userid`),
-  CONSTRAINT `bankiduser` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `bankuser` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,8 +127,8 @@ CREATE TABLE `cards` (
   `iscvcsaved` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`cardsid`),
   KEY `userid_idx` (`userid`),
-  CONSTRAINT `userid` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  CONSTRAINT `carduser` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -138,6 +138,34 @@ CREATE TABLE `cards` (
 LOCK TABLES `cards` WRITE;
 /*!40000 ALTER TABLE `cards` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cards` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `favorites`
+--
+
+DROP TABLE IF EXISTS `favorites`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `favorites` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` int(11) NOT NULL,
+  `product` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_idx` (`user`),
+  KEY `product_idx` (`product`),
+  CONSTRAINT `productfavorites` FOREIGN KEY (`product`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `userfavorites` FOREIGN KEY (`user`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `favorites`
+--
+
+LOCK TABLES `favorites` WRITE;
+/*!40000 ALTER TABLE `favorites` DISABLE KEYS */;
+/*!40000 ALTER TABLE `favorites` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -167,6 +195,71 @@ LOCK TABLES `following` WRITE;
 /*!40000 ALTER TABLE `following` DISABLE KEYS */;
 /*!40000 ALTER TABLE `following` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `products`
+--
+
+DROP TABLE IF EXISTS `products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `seller` int(11) NOT NULL,
+  `name` varchar(45) NOT NULL,
+  `category` varchar(45) NOT NULL,
+  `brand` varchar(45) NOT NULL,
+  `description` varchar(45) DEFAULT NULL,
+  `stock` int(11) NOT NULL,
+  `sold` int(11) NOT NULL,
+  `price` decimal(11,0) NOT NULL,
+  `discount` decimal(11,0) DEFAULT NULL,
+  `shipping` decimal(11,0) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_idx` (`seller`),
+  CONSTRAINT `selleruser` FOREIGN KEY (`seller`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `products`
+--
+
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rating`
+--
+
+DROP TABLE IF EXISTS `rating`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `rating` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user` int(11) NOT NULL,
+  `product` int(11) NOT NULL,
+  `rating` int(1) NOT NULL,
+  `comment` varchar(45) DEFAULT NULL,
+  `ratingdate` date NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_idx` (`user`),
+  KEY `ratingproduct_idx` (`product`),
+  CONSTRAINT `ratingproduct` FOREIGN KEY (`product`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `ratinguser` FOREIGN KEY (`user`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rating`
+--
+
+LOCK TABLES `rating` WRITE;
+/*!40000 ALTER TABLE `rating` DISABLE KEYS */;
+/*!40000 ALTER TABLE `rating` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -177,4 +270,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-06 11:33:49
+-- Dump completed on 2018-11-15 12:19:56

@@ -78,4 +78,9 @@ public class BankAccount {
 	{
 		return banksservice.doesAccountExist(userID, bank, accountNumber);
 	}
+	
+	public void delete()
+	{
+		banksservice.delete(userID, bank, accountNumber);
+	}
 }

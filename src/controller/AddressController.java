@@ -26,6 +26,15 @@ public class AddressController {
 		update();
 	}
 	
+	public void delete()
+	{
+		Address address = addressTableModel.getAddressAt(view.getAddressTable().getSelectedRow());
+		
+		address.setUserID(account.getId());
+		address.delete();
+		update();
+	}
+	
 	public boolean doesAddressExist() {
 		return !getAddressExistError().isEmpty();
 	}

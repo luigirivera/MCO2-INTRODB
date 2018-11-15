@@ -26,6 +26,15 @@ public class BanksController {
 		update();
 	}
 	
+	public void delete()
+	{
+		BankAccount bAccount = bankTableModel.getAccountAt(view.getBanksTable().getSelectedRow());
+		
+		bAccount.setUserID(account.getId());
+		bAccount.delete();
+		update();
+	}
+	
 	public void saveBankAccount() {
 		BankAccount bAccount = new BankAccount();
 		

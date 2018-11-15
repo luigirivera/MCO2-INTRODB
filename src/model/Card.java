@@ -71,4 +71,9 @@ public class Card {
 	{
 		return cardservice.getCardsOfUser(userID);
 	}
+	
+	public void delete()
+	{
+		cardservice.delete(userID, cardNumber, isCVCSaved, expiry);
+	}
 }

@@ -109,6 +109,9 @@ public class LoginController {
 			user.setNumber(Long.parseLong(view.getSignupPanel().getContact().getText()));
 		
 		user.registerAccount();
+		
+		user.setId(user.getuserID());
+		user.followAccount(1);
 	}
 	
 	public boolean isAccountFree()

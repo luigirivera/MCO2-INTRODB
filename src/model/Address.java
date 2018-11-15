@@ -91,5 +91,8 @@ public class Address {
 		return addressservice.getAddressesOfUser(userID);
 	}
 	
-	
+	public void delete()
+	{
+		addressservice.delete(userID, line1, line2, city, province, zip);
+	}
 }

@@ -9,6 +9,28 @@ import database.DatabaseConnection;
 import model.BankAccount;
 
 public class BanksService {
+	public void delete(int userID, String bank, long num)
+	{
+		String query = "DELETE FROM " + BankAccount.TABLE + " WHERE " + BankAccount.COL_USERID + " = ? AND "
+																	  + BankAccount.COL_BANK + " = ? AND "
+																	  + BankAccount.COL_ACCNUM + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, userID);
+			ps.setString(2, bank);
+			ps.setLong(3, num);
+			
+			ps.executeUpdate();
+			ps.close();
+			System.out.println("[BANK] DELETE SUCCESS");
+		} catch (SQLException e) {
+			System.out.println("[BANK] DELETE FAILED");
+			e.printStackTrace();
+		}
+	}
+	
 	public ArrayList<BankAccount> getAccountsOfUser(int userID)
 	{
 		ArrayList<BankAccount> accounts = new ArrayList<BankAccount>();

@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -18,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -75,7 +78,7 @@ public class BankAccounts extends JFrame {
 		scrollBanksTable = new JScrollPane(banksTable);
 		
 		rightClick = new JPopupMenu();
-		delete = new JMenuItem();
+		delete = new JMenuItem("Delete");
 	}
 	
 	private void initialize()
@@ -149,6 +152,32 @@ public class BankAccounts extends JFrame {
 		add.addActionListener(new addListener());
 		save.addActionListener(new doneListener());
 		cancel.addActionListener(new doneListener());
+		banksTable.addMouseListener(new rightClickListener());
+		delete.addActionListener(new deleteListener());
+	}
+	
+	class deleteListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			controller.delete();
+			
+		}
+		
+	}
+
+	class rightClickListener extends MouseAdapter{
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			if(SwingUtilities.isRightMouseButton(e) && !banksTable.getSelectionModel().isSelectionEmpty())
+			{
+				int x = e.getX();
+				int y = e.getY();
+			
+				rightClick.show(banksTable, x, y);
+			}
+			
+		}
 	}
 	
 	class doneListener implements ActionListener{

@@ -12,6 +12,30 @@ import model.Card;
 
 public class CardsService {
 	
+	public void delete(int userID, long number, boolean cvc, Date expiry)
+	{
+		String query = "DELETE FROM " + Card.TABLE + " WHERE " + Card.COL_USERID + " = ? AND "
+															   + Card.COL_CARDNUMBER + " = ? AND "
+															   + Card.COL_CVC + " = ? AND "
+															   + Card.COL_EXPIRY + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, userID);
+			ps.setLong(2, number);
+			ps.setBoolean(3, cvc);
+			ps.setDate(4, expiry, Calendar.getInstance());
+			
+			ps.executeUpdate();
+			ps.close();
+			System.out.println("[CARD] DELETE SUCCESS");
+		} catch (SQLException e) {
+			System.out.println("[CARD] DELETE FAILED");
+			e.printStackTrace();
+		}
+	}
+	
 	public ArrayList<Card> getCardsOfUser(int userID)
 	{
 		ArrayList<Card> cards = new ArrayList<Card>();

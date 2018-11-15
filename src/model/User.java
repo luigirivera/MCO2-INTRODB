@@ -194,4 +194,14 @@ public class User {
 	{
 		return loginservice.getDetails(username);
 	}
+	
+	public void followAccount(int account)
+	{
+		loginservice.followAccount(account, userID);
+	}
+	
+	public int getuserID()
+	{
+		return loginservice.getID(username);
+	}
 }

@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Calendar;
@@ -20,6 +22,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -176,6 +179,32 @@ public class CreditCards extends JFrame {
 		save.addActionListener(new doneListener());
 		cancel.addActionListener(new doneListener());
 		addWindowListener(new disposeListener());
+		cardsTable.addMouseListener(new rightClickListener());
+		delete.addActionListener(new deleteListener());
+	}
+	
+	class deleteListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			controller.delete();
+			
+		}
+		
+	}
+
+	class rightClickListener extends MouseAdapter{
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			if(SwingUtilities.isRightMouseButton(e) && !cardsTable.getSelectionModel().isSelectionEmpty())
+			{
+				int x = e.getX();
+				int y = e.getY();
+			
+				rightClick.show(cardsTable, x, y);
+			}
+			
+		}
 	}
 	
 	class disposeListener extends WindowAdapter{

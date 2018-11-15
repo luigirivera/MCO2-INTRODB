@@ -9,6 +9,34 @@ import database.DatabaseConnection;
 import model.Address;
 
 public class AddressService {
+	public void delete(int userID, String line1, String line2, String city, String prov, int zip)
+	{
+		String query = "DELETE FROM " + Address.TABLE + " WHERE " + Address.COL_USERID + " = ? AND "
+																  + Address.COL_LINE1 + " = ? AND "
+																  + Address.COL_LINE2 + " = ? AND "
+																  + Address.COL_CITY + " = ? AND "
+																  + Address.COL_PROV + " = ? AND "
+																  + Address.COL_ZIP + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, userID);
+			ps.setString(2, line1);
+			ps.setString(3, line2);
+			ps.setString(4, city);
+			ps.setString(5, prov);
+			ps.setInt(6, zip);
+			
+			ps.executeUpdate();
+			ps.close();
+			System.out.println("[ADDRESS] DELETE SUCCESS");
+		} catch (SQLException e) {
+			System.out.println("[ADDRESS] DELETE FAILED");
+			e.printStackTrace();
+		}
+	}
+	
 	public ArrayList<Address> getAddressesOfUser(int userID)
 	{
 		ArrayList<Address> address = new ArrayList<Address>();

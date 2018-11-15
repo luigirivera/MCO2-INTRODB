@@ -29,6 +29,15 @@ public class CreditCardsController {
 		update();
 	}
 	
+	public void delete()
+	{
+		Card card = cardsModel.getCardAt(view.getCardsTable().getSelectedRow());
+		
+		card.setUserID(account.getId());
+		card.delete();
+		update();
+	}
+	
 	public void close()
 	{
 		view.dispose();

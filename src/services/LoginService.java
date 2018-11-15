@@ -156,8 +156,6 @@ public class LoginService {
 			System.out.println("[USER] REGISTER FAILED");
 			e.printStackTrace();
 		}
-		
-		followAccount(1,getID(username));
 
 	}
 	
@@ -183,7 +181,6 @@ public class LoginService {
 			e.printStackTrace();
 		}
 		
-		followAccount(1,getID(username));
 	}
 	
 	public User getAccountLogin(String username) {
