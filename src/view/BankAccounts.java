@@ -78,7 +78,7 @@ public class BankAccounts extends JFrame {
 		scrollBanksTable = new JScrollPane(banksTable);
 		
 		rightClick = new JPopupMenu();
-		delete = new JMenuItem("Delete");
+		delete = new JMenuItem(PLACEHOLDER.DELETE.toString());
 	}
 	
 	private void initialize()

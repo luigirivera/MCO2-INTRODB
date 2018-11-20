@@ -93,6 +93,6 @@ public class Address {
 	
 	public void delete()
 	{
-		addressservice.delete(userID, line1, line2, city, province, zip);
+		addressservice.delete(userID, addressID);
 	}
 }

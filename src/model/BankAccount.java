@@ -81,6 +81,6 @@ public class BankAccount {
 	
 	public void delete()
 	{
-		banksservice.delete(userID, bank, accountNumber);
+		banksservice.delete(userID, bAID);
 	}
 }

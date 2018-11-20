@@ -12,20 +12,16 @@ import model.Card;
 
 public class CardsService {
 	
-	public void delete(int userID, long number, boolean cvc, Date expiry)
+	public void delete(int userID, int cardsID)
 	{
 		String query = "DELETE FROM " + Card.TABLE + " WHERE " + Card.COL_USERID + " = ? AND "
-															   + Card.COL_CARDNUMBER + " = ? AND "
-															   + Card.COL_CVC + " = ? AND "
-															   + Card.COL_EXPIRY + " = ?";
+															   + Card.COL_CARDSID + " = ?";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			
 			ps.setInt(1, userID);
-			ps.setLong(2, number);
-			ps.setBoolean(3, cvc);
-			ps.setDate(4, expiry, Calendar.getInstance());
+			ps.setInt(2, cardsID);
 			
 			ps.executeUpdate();
 			ps.close();
@@ -40,7 +36,8 @@ public class CardsService {
 	{
 		ArrayList<Card> cards = new ArrayList<Card>();
 		
-		String query = "SELECT " + Card.COL_CARDNUMBER + ", "
+		String query = "SELECT " + Card.COL_CARDSID + ", "
+								 + Card.COL_CARDNUMBER + ", "
 								 + Card.COL_CVC + ", "
 								 + Card.COL_EXPIRY + " FROM " + Card.TABLE + " WHERE " + Card.COL_USERID + " = ?";
 		
@@ -68,6 +65,7 @@ public class CardsService {
 	private Card toCard(ResultSet rs) throws SQLException{
 		Card card = new Card();
 		
+		card.setCardID(rs.getInt(Card.COL_CARDSID));
 		card.setCardNumber(rs.getLong(Card.COL_CARDNUMBER));
 		card.setCvc(rs.getBoolean(Card.COL_CVC));
 		card.setExpiry(rs.getDate(Card.COL_EXPIRY));

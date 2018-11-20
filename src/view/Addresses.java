@@ -80,7 +80,7 @@ public class Addresses extends JFrame {
 		
 		rightClick = new JPopupMenu();
 		
-		delete = new JMenuItem("Delete");
+		delete = new JMenuItem(PLACEHOLDER.DELETE.toString());
 		
 	}
 	

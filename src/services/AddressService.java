@@ -9,24 +9,16 @@ import database.DatabaseConnection;
 import model.Address;
 
 public class AddressService {
-	public void delete(int userID, String line1, String line2, String city, String prov, int zip)
+	public void delete(int userID, int addressID)
 	{
 		String query = "DELETE FROM " + Address.TABLE + " WHERE " + Address.COL_USERID + " = ? AND "
-																  + Address.COL_LINE1 + " = ? AND "
-																  + Address.COL_LINE2 + " = ? AND "
-																  + Address.COL_CITY + " = ? AND "
-																  + Address.COL_PROV + " = ? AND "
-																  + Address.COL_ZIP + " = ?";
+																  + Address.COL_ADDRESSID + " = ?";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			
 			ps.setInt(1, userID);
-			ps.setString(2, line1);
-			ps.setString(3, line2);
-			ps.setString(4, city);
-			ps.setString(5, prov);
-			ps.setInt(6, zip);
+			ps.setInt(2, addressID);
 			
 			ps.executeUpdate();
 			ps.close();
@@ -41,7 +33,8 @@ public class AddressService {
 	{
 		ArrayList<Address> address = new ArrayList<Address>();
 		
-		String query = "SELECT " + Address.COL_LINE1 + ", "
+		String query = "SELECT " + Address.COL_ADDRESSID + ", "
+								 + Address.COL_LINE1 + ", "
 								 + Address.COL_LINE2 + ", "
 								 + Address.COL_CITY + ", "
 								 + Address.COL_PROV + ", "
@@ -71,6 +64,7 @@ public class AddressService {
 	private Address toAddress(ResultSet rs) throws SQLException{
 		Address address = new Address();
 		
+		address.setAddressID(rs.getInt(Address.COL_ADDRESSID));
 		address.setLine1(rs.getString(Address.COL_LINE1));
 		address.setLine2(rs.getString(Address.COL_LINE2));
 		address.setCity(rs.getString(Address.COL_CITY));

@@ -9,18 +9,16 @@ import database.DatabaseConnection;
 import model.BankAccount;
 
 public class BanksService {
-	public void delete(int userID, String bank, long num)
+	public void delete(int userID, int baid)
 	{
 		String query = "DELETE FROM " + BankAccount.TABLE + " WHERE " + BankAccount.COL_USERID + " = ? AND "
-																	  + BankAccount.COL_BANK + " = ? AND "
-																	  + BankAccount.COL_ACCNUM + " = ?";
+																	  + BankAccount.COL_BAID + " = ?";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			
 			ps.setInt(1, userID);
-			ps.setString(2, bank);
-			ps.setLong(3, num);
+			ps.setInt(2, baid);
 			
 			ps.executeUpdate();
 			ps.close();
@@ -35,7 +33,7 @@ public class BanksService {
 	{
 		ArrayList<BankAccount> accounts = new ArrayList<BankAccount>();
 		
-		String query = "SELECT " + BankAccount.COL_BANK + ", "
+		String query = "SELECT " + BankAccount.COL_BAID + ", " + BankAccount.COL_BANK + ", "
 								 + BankAccount.COL_ACCNUM + " FROM " + BankAccount.TABLE + " WHERE " + BankAccount.COL_USERID + " = ?";
 		
 		try {
@@ -62,6 +60,7 @@ public class BanksService {
 	private BankAccount toAccount(ResultSet rs) throws SQLException{
 		BankAccount account = new BankAccount();
 		
+		account.setbAID(rs.getInt(BankAccount.COL_BAID));
 		account.setBank(rs.getString(BankAccount.COL_BANK));
 		account.setAccountNumber(rs.getLong(BankAccount.COL_ACCNUM));
 		

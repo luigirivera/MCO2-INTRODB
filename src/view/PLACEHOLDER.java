@@ -9,7 +9,9 @@ public enum PLACEHOLDER {
 	
 	BANK, ACCNUM,
 	
-	ADD, SAVE, CANCEL;
+	NAME, CATEGORY, BRAND, DESCRIPTION, STOCK, SOLD, PRICE, DISCOUNT, SHIPPING,
+	
+	ADD, SAVE, CANCEL, DELETE;
 	
 	public String toString() {
 		switch(this)
@@ -27,9 +29,19 @@ public enum PLACEHOLDER {
 		case ZIP: return "Zip";
 		case BANK: return "Bank";
 		case ACCNUM: return "Account Number";
+		case NAME: return "Name";
+		case CATEGORY: return "Category";
+		case BRAND: return "Brand";
+		case DESCRIPTION: return "Description";
+		case STOCK: return "Stock";
+		case SOLD: return "Sold";
+		case PRICE: return "Price";
+		case DISCOUNT: return "Discount";
+		case SHIPPING: return "Shipping";
 		case ADD: return "+ Add";
 		case SAVE: return "Save";
 		case CANCEL: return "Cancel";
+		case DELETE: return "Delete";
 		default: return "Invalid";
 		}
 	}
