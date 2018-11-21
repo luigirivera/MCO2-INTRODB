@@ -25,7 +25,7 @@ public class SellerProducts extends JFrame {
 	
 	private JButton add;
 	private JPopupMenu rightClick;
-	private JMenuItem delete;
+	private JMenuItem delete, edit;
 	private JTable productsTable;
 	private DefaultTableModel modelProductsTable;
 	private JScrollPane scrollProductsTable;
@@ -52,6 +52,7 @@ public class SellerProducts extends JFrame {
 		
 		rightClick = new JPopupMenu();
 		delete = new JMenuItem(PLACEHOLDER.DELETE.toString());
+		edit = new JMenuItem("Edit");
 		
 		modelProductsTable = new DefaultTableModel(){
 			private static final long serialVersionUID = 1L;
@@ -71,6 +72,7 @@ public class SellerProducts extends JFrame {
 		add(add);
 		add(scrollProductsTable);
 		
+		rightClick.add(edit);
 		rightClick.add(delete);
 		
 		add.setSize(100, 40);
@@ -107,9 +109,38 @@ public class SellerProducts extends JFrame {
 	
 	private void addListeners()
 	{
+		add.addActionListener(new addListener());
 		productsTable.addMouseListener(new rightClickListener());
-		delete.addActionListener(new deleteListener());
+		edit.addActionListener(new menuListener());
+		delete.addActionListener(new menuListener());
 		addWindowListener(new disposeListener());
+	}
+	
+	class menuListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if(arg0.getSource().equals(delete))
+				controller.delete();
+			else
+			{				
+				controller.getData();
+				controller.toggleProductInfo();
+				controller.setData();
+			}
+			
+		}
+		
+	}
+	
+	class addListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			controller.toggleProductInfo();
+			
+		}
+		
 	}
 	
 	class rightClickListener extends MouseAdapter{
@@ -126,22 +157,68 @@ public class SellerProducts extends JFrame {
 		}
 	}
 	
-	class deleteListener implements ActionListener{
-
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			controller.delete();
-			
-		}
-		
-	}
-	
 	class disposeListener extends WindowAdapter{
 		@Override
 		public void windowClosed(WindowEvent e) {
 			controller.close();
 		}
 	}
-	
 
+	public JButton getAdd() {
+		return add;
+	}
+
+	public void setAdd(JButton add) {
+		this.add = add;
+	}
+
+	public JPopupMenu getRightClick() {
+		return rightClick;
+	}
+
+	public void setRightClick(JPopupMenu rightClick) {
+		this.rightClick = rightClick;
+	}
+
+	public JMenuItem getDelete() {
+		return delete;
+	}
+
+	public void setDelete(JMenuItem delete) {
+		this.delete = delete;
+	}
+
+	public JMenuItem getEdit() {
+		return edit;
+	}
+
+	public void setEdit(JMenuItem edit) {
+		this.edit = edit;
+	}
+
+	public JTable getProductsTable() {
+		return productsTable;
+	}
+
+	public void setProductsTable(JTable productsTable) {
+		this.productsTable = productsTable;
+	}
+
+	public DefaultTableModel getModelProductsTable() {
+		return modelProductsTable;
+	}
+
+	public void setModelProductsTable(DefaultTableModel modelProductsTable) {
+		this.modelProductsTable = modelProductsTable;
+	}
+
+	public JScrollPane getScrollProductsTable() {
+		return scrollProductsTable;
+	}
+
+	public void setScrollProductsTable(JScrollPane scrollProductsTable) {
+		this.scrollProductsTable = scrollProductsTable;
+	}
+	
+	
 }

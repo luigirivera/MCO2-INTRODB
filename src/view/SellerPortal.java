@@ -64,6 +64,17 @@ public class SellerPortal extends JFrame {
 		this.addWindowListener(new disposeListener());
 	}
 	
+	class salesListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			dfgd;
+		}
+		
+	}
+	
 	class disposeListener extends WindowAdapter{
 		@Override
 		public void windowClosed(WindowEvent e) {
@@ -82,14 +93,5 @@ public class SellerPortal extends JFrame {
 		
 	}
 	
-	class salesListener implements ActionListener
-	{
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
 }

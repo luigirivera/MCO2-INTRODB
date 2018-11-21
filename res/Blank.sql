@@ -211,7 +211,7 @@ CREATE TABLE `products` (
   `brand` varchar(45) NOT NULL,
   `description` varchar(45) DEFAULT NULL,
   `stock` bigint(11) NOT NULL,
-  `sold` bigint(11) NOT NULL,
+  `sold` bigint(11) NOT NULL DEFAULT 0,
   `price` decimal(11,0) NOT NULL,
   `discount` decimal(11,0) DEFAULT NULL,
   `shipping` decimal(11,0) NOT NULL,

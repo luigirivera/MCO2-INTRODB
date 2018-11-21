@@ -1,10 +1,15 @@
 package model;
 
+import java.util.ArrayList;
+
+import services.ProductsService;
+
 public class Product {
 
 	private int productID;
 	private int sellerID;
 	private String name;
+	private String seller;
 	private String category;
 	private String brand;
 	private String description;
@@ -13,6 +18,8 @@ public class Product {
 	private double price;
 	private double discount;
 	private double shipping;
+	
+	private ProductsService productservice;
 	
 	public static final String TABLE = "products";
 	public static final String COL_ID = "id";
@@ -26,6 +33,11 @@ public class Product {
 	public static final String COL_PRICE = "price";
 	public static final String COL_DISC = "discount";
 	public static final String COL_SHIP = "shipping";
+	
+	public Product()
+	{
+		productservice = new ProductsService();
+	}
 	
 	public int getProductID() {
 		return productID;
@@ -92,6 +104,40 @@ public class Product {
 	}
 	public void setShipping(double shipping) {
 		this.shipping = shipping;
+	}
+	public String getSeller() {
+		return seller;
+	}
+
+	public void setSeller(String seller) {
+		this.seller = seller;
+	}
+
+	public boolean productExists() {
+		return productservice.doesAccountExist(name, category, brand, description, stock, price, discount, shipping, sellerID);
+	}
+
+	public void addProduct() {
+		productservice.addProduct(name, category, brand, description, stock, price, discount, shipping, sellerID);
+		
+	}
+	
+	public void updateProduct() {
+		productservice.updateProduct(name, category, brand, description, stock, price, discount, shipping, productID);
+	}
+	
+	public ArrayList<Product> getProductsOfUser()
+	{
+		return productservice.getProductsOfSeller(sellerID);
+	}
+
+	public void delete() {
+		productservice.deleteProduct(productID);
+		
+	}
+
+	public ArrayList<Product> getAllProducts() {
+		return productservice.getAllProducts();
 	}
 	
 	
