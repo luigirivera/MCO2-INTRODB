@@ -11,11 +11,13 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.CorporateProductsController;
+import view.ConsumerProductsView.applyListener;
 
 public class CorporateProductsView extends ProductsView {
 	private static final long serialVersionUID = 1L;
@@ -79,6 +81,20 @@ public class CorporateProductsView extends ProductsView {
 		brand.addFocusListener(new brandFocus());
 		lowPrice.addFocusListener(new lowPriceFocus());
 		highPrice.addFocusListener(new highPriceFocus());
+		apply.addActionListener(new applyListener());
+	}
+	
+	class applyListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(controller.validateFields())
+				controller.update();
+			else
+				JOptionPane.showMessageDialog(null, controller.getFieldErrors(), "Error", JOptionPane.ERROR_MESSAGE);
+			
+		}
+		
 	}
 	
 	class highPriceFocus extends FocusAdapter{

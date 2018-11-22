@@ -11,6 +11,40 @@ import model.Product;
 import model.User;
 
 public class ProductsService {
+	public ArrayList<Product> getProductsOfSeller(String whereClause) {
+		ArrayList<Product> products = new ArrayList<Product>();
+		
+		String query = "SELECT " + Product.COL_ID + ", "
+								 + Product.COL_NAME + ", "
+								 + Product.COL_CATEGORY + ", "
+								 + Product.COL_BRAND + ", "
+								 + User.COL_USERNAME + ", "
+								 + Product.COL_DESC + ", "
+								 + Product.COL_STOCK + ", "
+								 + Product.COL_SOLD + ", "
+								 + Product.COL_PRICE + ", "
+								 + Product.COL_DISC + ", "
+								 + Product.COL_SHIP + " FROM " + Product.TABLE + " LEFT JOIN " + User.TABLE + " ON " + User.COL_ID + " = " + Product.COL_SELLERID + whereClause;
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+		
+			System.out.println(query);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next())
+				products.add(toProduct(rs));
+			
+			ps.close();
+			rs.close();
+			System.out.println("[PRODUCT] GET PRODUCTS DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] GET PRODUCTS FAILED");
+			e.printStackTrace();
+		}
+		
+		return products;
+	}
 	
 	public ArrayList<Product> getAllProducts()
 	{
@@ -258,4 +292,6 @@ public class ProductsService {
 		}
 		
 	}
+
+
 }

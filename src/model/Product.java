@@ -140,5 +140,9 @@ public class Product {
 		return productservice.getAllProducts();
 	}
 	
+	public ArrayList<Product> getProducts(String whereClause) {
+		return productservice.getProductsOfSeller(whereClause);
+	}
+	
 	
 }
