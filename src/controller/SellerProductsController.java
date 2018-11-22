@@ -49,6 +49,7 @@ public class SellerProductsController {
 		}
 		else
 		{
+			productInfo.toFront();
 			productInfo.revalidate();
 			productInfo.repaint();
 		}

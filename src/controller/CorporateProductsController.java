@@ -2,28 +2,36 @@ package controller;
 
 import java.util.ArrayList;
 
-import driver.StopNShop;
 import model.CorporateProductsTableModel;
 import model.Product;
-import model.User;
 import view.CorporateProductsView;
 
 public class CorporateProductsController {
 	private CorporateProductsView view;
-	private User account;
-	private StopNShop program;
 	private CorporateMainMenuController mainMenu;
 	private CorporateProductsTableModel productsTableModel;
-	public CorporateProductsController(CorporateProductsView view, User account, StopNShop program,
+	public CorporateProductsController(CorporateProductsView view,
 			CorporateMainMenuController mainMenu) {
 		
 		this.view = view;
-		this.account = account;
-		this.program = program;
 		this.mainMenu = mainMenu;
 		productsTableModel = null;
 		view.addController(this);
 		
+		update();
+	}
+	
+	public void close()
+	{
+		view.dispose();
+		mainMenu.setProducts(null);
+	}
+	
+	public void delete()
+	{
+		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
+		
+		product.delete();
 		update();
 	}
 	

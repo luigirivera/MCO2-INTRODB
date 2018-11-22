@@ -117,7 +117,7 @@ public class ProductsService {
 		return product;
 	}
 	
-	public boolean doesAccountExist(String name, String category, String brand, String description, long stock,
+	public boolean doesProductExist(String name, String category, String brand, String description, long stock,
 			double price, double discount, double shipping, int sellerID) {
 		boolean found = false;
 		

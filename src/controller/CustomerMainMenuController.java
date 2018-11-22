@@ -2,6 +2,7 @@ package controller;
 
 import driver.StopNShop;
 import model.User;
+import view.ConsumerProductsView;
 import view.CustomerMainMenu;
 import view.Login;
 import view.SellerPortal;
@@ -11,6 +12,7 @@ public class CustomerMainMenuController {
 	private CustomerMainMenu view;
 	private Settings settingsview;
 	private SellerPortal sellerPortal;
+	private ConsumerProductsView products;
 	private StopNShop program;
 	private User account;
 	
@@ -18,9 +20,25 @@ public class CustomerMainMenuController {
 		this.view = view;
 		settingsview = null;
 		sellerPortal = null;
+		products = null;
 		this.program = program;
 		this.account = account;
 		view.addController(this);
+	}
+	
+	public void toggleProducts()
+	{
+		if(products == null)
+		{
+			products = new ConsumerProductsView();
+			new ConsumerProductsController(products, program, account, this);
+		}
+		else
+		{
+			products.toFront();
+			products.revalidate();
+			products.repaint();
+		}
 	}
 	
 	public void toggleSellerPortal()
@@ -32,8 +50,9 @@ public class CustomerMainMenuController {
 		}
 		else
 		{
-			settingsview.toFront();
-			settingsview.repaint();
+			sellerPortal.toFront();
+			sellerPortal.revalidate();
+			sellerPortal.repaint();
 		}
 	}
 	
@@ -47,6 +66,12 @@ public class CustomerMainMenuController {
 			settingsview.dispose();
 		}
 		
+		if(sellerPortal != null)
+			sellerPortal.dispose();
+		
+		if(products != null)
+			products.dispose();
+		
 	}
 	
 	public void toggleSettings()
@@ -59,6 +84,7 @@ public class CustomerMainMenuController {
 		else
 		{
 			settingsview.toFront();
+			settingsview.revalidate();
 			settingsview.repaint();
 		}
 	}
@@ -78,6 +104,12 @@ public class CustomerMainMenuController {
 	public void setSellerPortal(SellerPortal sellerPortal) {
 		this.sellerPortal = sellerPortal;
 	}
-	
-	
+
+	public ConsumerProductsView getProducts() {
+		return products;
+	}
+
+	public void setProducts(ConsumerProductsView products) {
+		this.products = products;
+	}
 }

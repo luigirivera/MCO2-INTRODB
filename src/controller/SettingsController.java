@@ -67,6 +67,7 @@ public class SettingsController {
 		else
 		{
 			addressview.toFront();
+			addressview.revalidate();
 			addressview.repaint();
 		}
 		
@@ -82,6 +83,7 @@ public class SettingsController {
 		else
 		{
 			bankview.toFront();
+			bankview.revalidate();
 			bankview.repaint();
 		}
 		
@@ -97,6 +99,7 @@ public class SettingsController {
 		else
 		{
 			cardsview.toFront();
+			cardsview.revalidate();
 			cardsview.repaint();
 		}
 		
@@ -111,6 +114,7 @@ public class SettingsController {
 		else
 		{
 			ordersview.toFront();
+			ordersview.revalidate();
 			ordersview.repaint();
 		}
 		

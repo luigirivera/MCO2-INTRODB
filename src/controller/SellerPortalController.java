@@ -36,6 +36,7 @@ public class SellerPortalController {
 		}
 		else
 		{
+			products.toFront();
 			products.revalidate();
 			products.repaint();
 		}

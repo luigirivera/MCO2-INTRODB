@@ -129,7 +129,7 @@ public class Login extends JFrame {
 					else
 						JOptionPane.showMessageDialog(null, "Account Locked\nPlease contact an administrator to unlock your account", "Error", JOptionPane.ERROR_MESSAGE);
 					
-					controller.updateAccount();
+					controller.updateAccountLock();
 				}
 				else
 					JOptionPane.showMessageDialog(null, "Account doesn't exist", "Error", JOptionPane.ERROR_MESSAGE);

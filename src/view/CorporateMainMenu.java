@@ -61,8 +61,19 @@ public class CorporateMainMenu extends JFrame {
 	
 	private void addListeners()
 	{
+		account.addActionListener(new accountsListener());
 		product.addActionListener(new productsListener());
 		logout.addActionListener(new logoutListener());
+	}
+	
+	class accountsListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			controller.toggleAccounts();
+			
+		}
+		
 	}
 	
 	class productsListener implements ActionListener{

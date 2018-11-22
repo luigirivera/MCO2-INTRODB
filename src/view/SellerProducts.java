@@ -76,7 +76,7 @@ public class SellerProducts extends JFrame {
 		rightClick.add(delete);
 		
 		add.setSize(100, 40);
-		add.setLocation(this.getWidth() - add.getWidth() - 10, 10);
+		add.setLocation(this.getWidth() - add.getWidth() - 10, 0);
 		
 		scrollProductsTable.setSize(this.getWidth(), this.getHeight() - add.getHeight());
 		scrollProductsTable.setLocation(0, add.getY() + add.getHeight());

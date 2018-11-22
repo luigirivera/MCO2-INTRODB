@@ -114,7 +114,7 @@ public class Product {
 	}
 
 	public boolean productExists() {
-		return productservice.doesAccountExist(name, category, brand, description, stock, price, discount, shipping, sellerID);
+		return productservice.doesProductExist(name, category, brand, description, stock, price, discount, shipping, sellerID);
 	}
 
 	public void addProduct() {

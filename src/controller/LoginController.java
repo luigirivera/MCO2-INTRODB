@@ -30,9 +30,9 @@ public class LoginController {
 		account.setTries(0);
 	}
 	
-	public void updateAccount()
+	public void updateAccountLock()
 	{
-		account.updateAccount();
+		account.updateAccountLock();
 	}
 	
 	public boolean verifyPassword()

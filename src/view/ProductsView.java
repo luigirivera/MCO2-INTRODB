@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -34,9 +36,8 @@ public class ProductsView extends JFrame {
 	{
 		category = new JTextField(PLACEHOLDER.CATEGORY.toString());
 		brand = new JTextField(PLACEHOLDER.BRAND.toString());
-		
-		lowPrice = new JTextField();
-		highPrice = new JTextField();
+		lowPrice = new JTextField(PLACEHOLDER.PRICELOW.toString());
+		highPrice = new JTextField(PLACEHOLDER.PRICEHIGH.toString());
 		
 		order = new JComboBox<String>();
 		
@@ -68,8 +69,36 @@ public class ProductsView extends JFrame {
 		
 		add(scrollProductsTable);
 		
+		Color fg = Color.GRAY;
+		
+		category.setForeground(fg);
+		brand.setForeground(fg);
+		lowPrice.setForeground(fg);
+		highPrice.setForeground(fg);
+		
+		order.addItem("");
+		order.addItem(PLACEHOLDER.PRICELTH.toString());
+		order.addItem(PLACEHOLDER.PRICEHTL.toString());
+		order.addItem(PLACEHOLDER.NAMEATZ.toString());
+		order.addItem(PLACEHOLDER.NAMEZTA.toString());
+		
 		apply.setSize(100, 40);
-		apply.setLocation(this.getWidth() - apply.getWidth() - 10, 10);
+		apply.setLocation(this.getWidth() - apply.getWidth() - 10, 0);
+		
+		category.setSize(150, apply.getHeight());
+		category.setLocation(0, 0);
+		
+		brand.setSize(category.getSize());
+		brand.setLocation(category.getX() + category.getWidth(), category.getY());
+		
+		lowPrice.setSize(50, brand.getHeight());
+		lowPrice.setLocation(brand.getX() + brand.getWidth() + 30, brand.getY());
+		
+		highPrice.setSize(lowPrice.getSize());
+		highPrice.setLocation(lowPrice.getX() + lowPrice.getWidth(), lowPrice.getY());
+		
+		order.setSize(brand.getSize());
+		order.setLocation(apply.getX() - order.getWidth() - 60, highPrice.getY());
 		
 		scrollProductsTable.setSize(this.getWidth(), this.getHeight() - apply.getHeight());
 		scrollProductsTable.setLocation(0, apply.getY() + apply.getHeight());

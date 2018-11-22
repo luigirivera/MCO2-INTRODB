@@ -1,7 +1,9 @@
 package model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
+import services.AccountsService;
 import services.LoginService;
 import services.SettingsService;
 
@@ -21,9 +23,12 @@ public class User {
 	private boolean isLocked;
 	private boolean forDeletion;
 	private boolean isCorporate;
+	private Date register;
+	private Date lastLogin;
 	
 	private LoginService loginservice;
 	private SettingsService settingsservice;
+	private AccountsService accountservice;
 	
 	public static final String TABLE = "accounts";
 	public static final String COL_ID = "userid";
@@ -46,6 +51,7 @@ public class User {
 	public User() {
 		loginservice = new LoginService();
 		settingsservice = new SettingsService();
+		accountservice = new AccountsService();
 	}
 	
 	public int getId() {
@@ -150,6 +156,22 @@ public class User {
 		this.tries = tries;
 	}
 
+	public Date getRegister() {
+		return register;
+	}
+
+	public void setRegister(Date register) {
+		this.register = register;
+	}
+
+	public Date getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Date lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
 	public void registerAccount() {
 		if(email != null)
 			loginservice.registerAccount(username, password, email);
@@ -162,7 +184,7 @@ public class User {
 		return loginservice.getAccountLogin(username);
 	}
 	
-	public void updateAccount()
+	public void updateAccountLock()
 	{
 		loginservice.updateAccount(username, tries, isLocked);
 	}
@@ -203,5 +225,14 @@ public class User {
 	public int getuserID()
 	{
 		return loginservice.getID(username);
+	}
+
+	public ArrayList<User> getAccounts(String whereClause) {
+		return accountservice.getAccounts(whereClause);
+	}
+
+	public void delete() {
+		accountservice.deleteAccount(userID);
+		
 	}
 }

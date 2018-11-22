@@ -98,24 +98,24 @@ public class ProductInfoController {
 		if(view.getBrand().getText().trim().isEmpty() || view.getBrand().getText().equals(PLACEHOLDER.BRAND.toString()))
 			error += "Please enter a brand name\n";
 		if(view.getStock().getText().trim().isEmpty() || view.getStock().getText().equals(PLACEHOLDER.STOCK.toString()))
-			error += "Please enter a stock amount";
+			error += "Please enter a stock amount\n";
 		if(view.getPrice().getText().trim().isEmpty() || view.getPrice().getText().equals(PLACEHOLDER.PRICE.toString()))
-			error += "Please enter a price amount";
+			error += "Please enter a price amount\n";
 		if(view.getShipping().getText().trim().isEmpty() || view.getShipping().getText().equals(PLACEHOLDER.SHIPPING.toString()))
-			error += "Please enter a shipping cost";
+			error += "Please enter a shipping cost\n";
 		
 		try {
 			if(Long.parseLong(view.getStock().getText()) <= 0) throw new NumberFormatException();
 		}catch(Exception e)
 		{
-			error += "Please enter a valid stock amount. A valid amount is a positive number that is not zero";
+			error += "Please enter a valid stock amount. A valid amount is a positive number that is not zero\n";
 		}
 		
 		try {
 			if(Double.parseDouble(view.getPrice().getText()) <= 0) throw new NumberFormatException();
 		}catch(Exception e)
 		{
-			error += "Please enter a vaid price amount. A valid amount is a positive number that is not zero";
+			error += "Please enter a vaid price amount. A valid amount is a positive number that is not zero\n";
 		}
 		
 		try {
@@ -124,14 +124,14 @@ public class ProductInfoController {
 				throw new NumberFormatException();
 		}catch(Exception e)
 		{
-			error += "Please enter a valid discount rate. A valid rate is a positive number that is not zero";
+			error += "Please enter a valid discount rate. A valid rate is a positive number that is not zero\n";
 		}
 		
 		try {
 			if(Double.parseDouble(view.getShipping().getText()) <= 0) throw new NumberFormatException();
 		}catch(Exception e)
 		{
-			error += "Please enter a valid shipping cost. A valid cost is a positive number that is not zero";
+			error += "Please enter a valid shipping cost. A valid cost is a positive number that is not zero\n";
 		}
 		
 		return error;
