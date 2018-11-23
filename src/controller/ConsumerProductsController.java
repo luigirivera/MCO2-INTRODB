@@ -49,6 +49,8 @@ public class ConsumerProductsController {
 		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
 		
 		product.unfavorite(account.getId());
+		
+		update();
 	}
 	
 	public void favorite()
@@ -56,6 +58,8 @@ public class ConsumerProductsController {
 		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
 		
 		product.favorite(account.getId());
+		
+		update();
 	}
 	
 	public void close()

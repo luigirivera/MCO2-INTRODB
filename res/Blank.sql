@@ -51,7 +51,7 @@ CREATE TABLE `accounts` (
 
 LOCK TABLES `accounts` WRITE;
 /*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
-INSERT INTO `accounts` VALUES (1,'shopee','shopeemain',NULL,'MALE',NULL,'shopee@shopee.com',0,0,0,0,0,0,0,'2018-11-03','2018-11-04'),(2,'consu','aaaaaa',NULL,'MALE',9994752346,NULL,0,0,0,0,0,0,0,'2018-11-03','2018-11-22'),(3,'admin','aaaaaa',NULL,NULL,NULL,'admin@shopee.com',0,0,0,0,0,0,1,'2018-11-21','2018-11-22');
+INSERT INTO `accounts` VALUES (1,'shopee','shopeemain',NULL,'MALE',NULL,'shopee@shopee.com',0,0,0,0,0,0,0,'2018-11-03','2018-11-04'),(2,'luigi','aaaaaa',NULL,'MALE',9994752346,NULL,0,0,0,0,0,0,0,'2018-11-03','2018-11-23'),(3,'admin','aaaaaa',NULL,NULL,NULL,'admin@shopee.com',0,0,0,0,0,0,1,'2018-11-21','2018-11-22'),(4,'ariana','aaaaaa',NULL,'FEMALE',7874587874,NULL,0,0,0,0,0,0,0,'2018-11-23','2018-11-23'),(5,'jason','aaaaaa',NULL,NULL,NULL,'jason@jason.com',0,0,0,0,0,0,0,'2018-10-23','2018-11-23');
 /*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
 UNLOCK TABLES;
 

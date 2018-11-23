@@ -16,7 +16,7 @@ public class ProductsService {
 	public boolean checkfavorite(int id, int productID) {
 		boolean found = false;
 		
-		String query = "SELECT COUNT(" + Favorite.COL_USER + ") FROM " + Favorite.TABLE + " WHERE " + Favorite.COL_USER + " = ? AND " + Favorite.COL_PRODUCT + " = ?";
+		String query = "SELECT COUNT(*) FROM " + Favorite.TABLE + " WHERE " + Favorite.COL_USER + " = ? AND " + Favorite.COL_PRODUCT + " = ?";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
@@ -25,8 +25,9 @@ public class ProductsService {
 			ps.setInt(2, productID);
 			ResultSet rs = ps.executeQuery();
 			
-			if(rs.next())
+			if(rs.next() && rs.getInt("COUNT(*)") > 0)
 				found = true;
+				
 			
 			rs.close();
 			ps.close();
