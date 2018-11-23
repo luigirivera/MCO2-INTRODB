@@ -9,6 +9,7 @@ import database.DatabaseConnection;
 import model.Address;
 import model.BankAccount;
 import model.Card;
+import model.Favorite;
 import model.Following;
 import model.Product;
 import model.User;
@@ -98,6 +99,12 @@ public class AccountsService {
 			ps.setInt(1, userID);	
 			ps.executeUpdate();
 			System.out.println("[ACCOUNTS] PRODUCT DELETE SUCCESS");
+			
+			query = "DELETE FROM " + Favorite.TABLE + " WHERE " + Favorite.COL_USER + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, userID);	
+			ps.executeUpdate();
+			System.out.println("[ACCOUNTS] FAVORITE DELETE SUCCESS");
 			
 			query = "DELETE FROM " + User.TABLE + " WHERE " + User.COL_ID + " = ?";			
 			ps = DatabaseConnection.getConnection().prepareStatement(query);			

@@ -54,37 +54,37 @@ public class CorporateProductsController {
 			{
 				if(whereExists) whereClause += " AND ";
 				else whereExists = true;
-				whereClause += Product.COL_CATEGORY + " = '" + view.getCategory().getText() + "'";
+				whereClause += "P." + Product.COL_CATEGORY + " = '" + view.getCategory().getText() + "'";
 			}
 				
 			if(!view.getBrand().getText().isEmpty() && !view.getBrand().getText().equals(PLACEHOLDER.BRAND.toString()))
 			{
 				if(whereExists) whereClause += " AND ";
 				else whereExists = true;
-				whereClause += Product.COL_BRAND + " = '" + view.getBrand().getText() + "'";
+				whereClause += "P." + Product.COL_BRAND + " = '" + view.getBrand().getText() + "'";
 			}
 			
 			if(!view.getLowPrice().getText().isEmpty() && !view.getLowPrice().getText().equals(PLACEHOLDER.PRICELOW.toString()))
 			{
 				if(whereExists) whereClause += " AND ";
 				else whereExists = true;
-				whereClause += Product.COL_PRICE + " >= " + Double.parseDouble(view.getLowPrice().getText());
+				whereClause += "P." + Product.COL_PRICE + " >= " + Double.parseDouble(view.getLowPrice().getText());
 			}
 			
 			if(!view.getHighPrice().getText().isEmpty() && !view.getHighPrice().getText().equals(PLACEHOLDER.PRICEHIGH.toString()))
 			{
 				if(whereExists) whereClause += " AND ";
 				else whereExists = true;
-				whereClause += Product.COL_PRICE + " <= " + Double.parseDouble(view.getHighPrice().getText());
+				whereClause += "P." + Product.COL_PRICE + " <= " + Double.parseDouble(view.getHighPrice().getText());
 			}
 			
 			if(!(order.trim().isEmpty()))
 			{
 				if(!whereExists) whereClause = "";
-				if(order.equals(PLACEHOLDER.PRICEHTL.toString())) whereClause += " ORDER BY " + Product.COL_PRICE + " DESC ";
-				else if(order.equals(PLACEHOLDER.PRICELTH.toString())) whereClause += " ORDER BY " + Product.COL_PRICE + " ASC ";
-				else if(order.equals(PLACEHOLDER.NAMEATZ.toString())) whereClause += " ORDER BY " + Product.COL_NAME + " ASC ";
-				else if(order.equals(PLACEHOLDER.NAMEZTA.toString())) whereClause += " ORDER BY " + Product.COL_NAME + " DESC ";
+				if(order.equals(PLACEHOLDER.PRICEHTL.toString())) whereClause += " ORDER BY P." + Product.COL_PRICE + " DESC ";
+				else if(order.equals(PLACEHOLDER.PRICELTH.toString())) whereClause += " ORDER BY P." + Product.COL_PRICE + " ASC ";
+				else if(order.equals(PLACEHOLDER.NAMEATZ.toString())) whereClause += " ORDER BY P." + Product.COL_NAME + " ASC ";
+				else if(order.equals(PLACEHOLDER.NAMEZTA.toString())) whereClause += " ORDER BY P." + Product.COL_NAME + " DESC ";
 			}
 				
 		}
@@ -102,14 +102,15 @@ public class CorporateProductsController {
 		for(int i = view.getModelProductsTable().getRowCount() - 1; i >= 0; i--)
 			view.getModelProductsTable().removeRow(i);
 		
-		for(int i = 0; i < productsTableModel.getRowCount(); i++)
-		{
-			Product p = productsTableModel.getProductAt(i);
-			Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getSeller(),  p.getDescription(),
-										p.getStock(), p.getSold(), p.getPrice(), p.getDiscount(), p.getShipping()};
-			
-			view.getModelProductsTable().addRow(row);
-		}
+		if(productsTableModel.getRowCount() > 0 && productsTableModel.getProductAt(0).getName() != null)
+			for(int i = 0; i < productsTableModel.getRowCount(); i++)
+			{
+				Product p = productsTableModel.getProductAt(i);
+				Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getSeller(),  p.getDescription(), p.getFavorites(),
+											p.getStock(), p.getSold(), p.getPrice(), p.getDiscount(), p.getShipping()};
+				
+				view.getModelProductsTable().addRow(row);
+			}
 	}
 
 	public boolean validateFields() {

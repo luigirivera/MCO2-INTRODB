@@ -13,6 +13,7 @@ public class Product {
 	private String category;
 	private String brand;
 	private String description;
+	private long favorites;
 	private long stock;
 	private long sold;
 	private double price;
@@ -113,6 +114,14 @@ public class Product {
 		this.seller = seller;
 	}
 
+	public long getFavorites() {
+		return favorites;
+	}
+
+	public void setFavorites(long favorites) {
+		this.favorites = favorites;
+	}
+
 	public boolean productExists() {
 		return productservice.doesProductExist(name, category, brand, description, stock, price, discount, shipping, sellerID);
 	}
@@ -141,7 +150,21 @@ public class Product {
 	}
 	
 	public ArrayList<Product> getProducts(String whereClause) {
-		return productservice.getProductsOfSeller(whereClause);
+		return productservice.getProducts(whereClause);
+	}
+
+	public void favorite(int id) {
+		productservice.favorite(id, productID);
+		
+	}
+
+	public void unfavorite(int id) {
+		productservice.unfavorite(id, productID);
+		
+	}
+
+	public boolean checkFavorite(int id) {
+		return productservice.checkfavorite(id, productID);
 	}
 	
 	

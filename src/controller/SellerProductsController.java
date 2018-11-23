@@ -83,14 +83,15 @@ public class SellerProductsController {
 		for(int i = view.getModelProductsTable().getRowCount() - 1; i >= 0; i--)
 			view.getModelProductsTable().removeRow(i);
 		
-		for(int i = 0; i < productsTableModel.getRowCount(); i++)
-		{
-			Product p = productsTableModel.getProductAt(i);
-			Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getDescription(),
-										p.getStock(), p.getSold(), p.getPrice(), p.getDiscount(), p.getShipping()};
-			
-			view.getModelProductsTable().addRow(row);
-		}
+		if(productsTableModel.getRowCount() > 0 && productsTableModel.getProductAt(0).getName() != null)
+			for(int i = 0; i < productsTableModel.getRowCount(); i++)
+			{
+				Product p = productsTableModel.getProductAt(i);
+				Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getDescription(), p.getFavorites(),
+											p.getStock(), p.getSold(), p.getPrice(), p.getDiscount(), p.getShipping()};
+				
+				view.getModelProductsTable().addRow(row);
+			}
 	}
 
 	public ProductInfo getProductInfo() {

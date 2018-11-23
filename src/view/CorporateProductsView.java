@@ -17,7 +17,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.CorporateProductsController;
-import view.ConsumerProductsView.applyListener;
 
 public class CorporateProductsView extends ProductsView {
 	private static final long serialVersionUID = 1L;
@@ -53,6 +52,7 @@ public class CorporateProductsView extends ProductsView {
 		modelProductsTable.addColumn(PLACEHOLDER.BRAND.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.SELLER.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DESCRIPTION.toString());
+		modelProductsTable.addColumn(PLACEHOLDER.FAVORITES.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.STOCK.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.SOLD.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.PRICE.toString());

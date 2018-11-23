@@ -7,29 +7,100 @@ import java.sql.Types;
 import java.util.ArrayList;
 
 import database.DatabaseConnection;
+import model.Favorite;
 import model.Product;
 import model.User;
 
 public class ProductsService {
-	public ArrayList<Product> getProductsOfSeller(String whereClause) {
+	
+	public boolean checkfavorite(int id, int productID) {
+		boolean found = false;
+		
+		String query = "SELECT COUNT(" + Favorite.COL_USER + ") FROM " + Favorite.TABLE + " WHERE " + Favorite.COL_USER + " = ? AND " + Favorite.COL_PRODUCT + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			ps.setInt(2, productID);
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+				found = true;
+			
+			rs.close();
+			ps.close();
+			System.out.println("[PRODUCT] FAVE CHECK DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] FAVE CHECK FAILED");
+			e.printStackTrace();
+		}
+		
+		return found;
+	}	
+	
+	public void unfavorite(int user, int product)
+	{
+		String query = "DELETE FROM " + Favorite.TABLE + " WHERE " + Favorite.COL_USER + " = ? AND " + Favorite.COL_PRODUCT + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, user);
+			ps.setInt(2, product);
+			ps.executeUpdate();
+			
+			ps.close();
+			System.out.println("[PRODUCT] UNFAVORITE DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] UNFAVORITE FAILED");
+			e.printStackTrace();
+		}
+	}
+	
+	public void favorite(int user, int product)
+	{
+		String query = "INSERT INTO " + Favorite.TABLE + " (" + Favorite.COL_USER + ", "
+															  + Favorite.COL_PRODUCT + ") VALUES(?,?)";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, user);
+			ps.setInt(2, product);
+			ps.executeUpdate();
+			
+			ps.close();
+			System.out.println("[PRODUCT] FAVORITE DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] FAVORITE FAILED");
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Product> getProducts(String whereClause) {
 		ArrayList<Product> products = new ArrayList<Product>();
 		
-		String query = "SELECT " + Product.COL_ID + ", "
-								 + Product.COL_NAME + ", "
-								 + Product.COL_CATEGORY + ", "
-								 + Product.COL_BRAND + ", "
-								 + User.COL_USERNAME + ", "
-								 + Product.COL_DESC + ", "
-								 + Product.COL_STOCK + ", "
-								 + Product.COL_SOLD + ", "
-								 + Product.COL_PRICE + ", "
-								 + Product.COL_DISC + ", "
-								 + Product.COL_SHIP + " FROM " + Product.TABLE + " LEFT JOIN " + User.TABLE + " ON " + User.COL_ID + " = " + Product.COL_SELLERID + whereClause;
+		String query = "SELECT P." + Product.COL_ID + ", P."
+								 + Product.COL_SELLERID + ", P."
+								 + Product.COL_NAME + ", P."
+								 + Product.COL_CATEGORY + ", P."
+								 + Product.COL_BRAND + ", U."
+								 + User.COL_USERNAME + ", P."
+								 + Product.COL_DESC + ", P."
+								 + Product.COL_STOCK + ", P."
+								 + Product.COL_SOLD + ", P."
+								 + Product.COL_PRICE + ", P."
+								 + Product.COL_DISC + ", P."
+								 + Product.COL_SHIP + ", "
+								 + "F.Favorites FROM " + Product.TABLE + " AS P LEFT JOIN " + User.TABLE + " AS U ON U." + User.COL_ID + " = P." + Product.COL_SELLERID 
+								 											   + " LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", " + "COUNT(F." + Favorite.COL_PRODUCT + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
+								 											   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT
+								 											   + whereClause;
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 		
-			System.out.println(query);
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next())
@@ -50,17 +121,22 @@ public class ProductsService {
 	{
 		ArrayList<Product> products = new ArrayList<Product>();
 		
-		String query = "SELECT " + Product.COL_ID + ", "
-								 + Product.COL_NAME + ", "
-								 + Product.COL_CATEGORY + ", "
-								 + Product.COL_BRAND + ", "
-								 + User.COL_USERNAME + ", "
-								 + Product.COL_DESC + ", "
-								 + Product.COL_STOCK + ", "
-								 + Product.COL_SOLD + ", "
-								 + Product.COL_PRICE + ", "
-								 + Product.COL_DISC + ", "
-								 + Product.COL_SHIP + " FROM " + Product.TABLE + " LEFT JOIN " + User.TABLE + " ON " + User.COL_ID + " = " + Product.COL_SELLERID;
+		String query = "SELECT P." + Product.COL_ID + ", P."
+				 + Product.COL_SELLERID + ", P."
+				 + Product.COL_NAME + ", P."
+				 + Product.COL_CATEGORY + ", P."
+				 + Product.COL_BRAND + ", U."
+				 + User.COL_USERNAME + ", P."
+				 + Product.COL_DESC + ", P."
+				 + Product.COL_STOCK + ", P."
+				 + Product.COL_SOLD + ", P."
+				 + Product.COL_PRICE + ", P."
+				 + Product.COL_DISC + ", P."
+				 + Product.COL_SHIP + ", "
+				 + "F.Favorites FROM " + Product.TABLE + " AS P LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
+				 																	   + "COUNT(F." + Favorite.COL_PRODUCT
+				 																	   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
+				 					   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT;
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
@@ -86,6 +162,7 @@ public class ProductsService {
 		Product product = new Product();
 		
 		product.setProductID(rs.getInt(Product.COL_ID));
+		product.setSellerID(rs.getInt(Product.COL_SELLERID));
 		product.setName(rs.getString(Product.COL_NAME));
 		product.setCategory(rs.getString(Product.COL_CATEGORY));
 		product.setBrand(rs.getString(Product.COL_BRAND));
@@ -96,6 +173,7 @@ public class ProductsService {
 		product.setPrice(rs.getDouble(Product.COL_PRICE));
 		product.setDiscount(rs.getDouble(Product.COL_DISC));
 		product.setShipping(rs.getDouble(Product.COL_SHIP));
+		product.setFavorites(rs.getLong("Favorites"));
 		
 		return product;
 	}
@@ -104,21 +182,25 @@ public class ProductsService {
 	{
 		ArrayList<Product> products = new ArrayList<Product>();
 		
-		String query = "SELECT " + Product.COL_ID + ", "
-								 + Product.COL_NAME + ", "
-								 + Product.COL_CATEGORY + ", "
-								 + Product.COL_BRAND + ", "
-								 + Product.COL_DESC + ", "
-								 + Product.COL_STOCK + ", "
-								 + Product.COL_PRICE + ", "
-								 + Product.COL_DISC + ", "
-								 + Product.COL_SHIP + " FROM " + Product.TABLE + " WHERE " + Product.COL_SELLERID + " = ?";
+		String query = "SELECT P." + Product.COL_ID + ", P."
+								 + Product.COL_NAME + ", P."
+								 + Product.COL_CATEGORY + ", P."
+								 + Product.COL_BRAND + ", P."
+								 + Product.COL_DESC + ", P."
+								 + Product.COL_STOCK + ", P."
+								 + Product.COL_SOLD + ", P."
+								 + Product.COL_PRICE + ", P."
+								 + Product.COL_DISC + ", P."
+								 + Product.COL_SHIP + ", "
+								 + "F.Favorites FROM " + Product.TABLE + " AS P LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
+								 																	   + "COUNT(F." + Favorite.COL_PRODUCT
+								 																	   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
+								 					   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT + " WHERE P." + Product.COL_SELLERID + " = ? ";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			
 			ps.setInt(1, userID);
-			
 			ResultSet rs = ps.executeQuery();
 			
 			while(rs.next())
@@ -143,10 +225,12 @@ public class ProductsService {
 		product.setCategory(rs.getString(Product.COL_CATEGORY));
 		product.setBrand(rs.getString(Product.COL_BRAND));
 		product.setDescription(rs.getString(Product.COL_DESC));
+		product.setSold(rs.getLong(Product.COL_SOLD));
 		product.setStock(rs.getLong(Product.COL_STOCK));
 		product.setPrice(rs.getDouble(Product.COL_PRICE));
 		product.setDiscount(rs.getDouble(Product.COL_DISC));
 		product.setShipping(rs.getDouble(Product.COL_SHIP));
+		product.setFavorites(rs.getLong("Favorites"));
 		
 		return product;
 	}
@@ -276,14 +360,22 @@ public class ProductsService {
 	}
 
 	public void deleteProduct(int productID) {
-		String query = "DELETE FROM " + Product.TABLE + " WHERE " + Product.COL_ID + " = ?";
+		String query;
 		
 		try {
-			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			PreparedStatement ps;
 			
-			ps.setInt(1, productID);
-			
+			query = "DELETE FROM " + Favorite.TABLE + " WHERE " + Favorite.COL_PRODUCT + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, productID);	
 			ps.executeUpdate();
+			System.out.println("[PRODUCT] FAVORITE DELETE SUCCESS");
+			
+			query = "DELETE FROM " + Product.TABLE + " WHERE " + Product.COL_ID + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, productID);
+			ps.executeUpdate();
+			
 			ps.close();
 			System.out.println("[PRODUCT] DELETE SUCCESS");
 		} catch (SQLException e) {

@@ -88,6 +88,7 @@ public class SellerProducts extends JFrame {
 		modelProductsTable.addColumn(PLACEHOLDER.CATEGORY.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.BRAND.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DESCRIPTION.toString());
+		modelProductsTable.addColumn(PLACEHOLDER.FAVORITES.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.STOCK.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.SOLD.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.PRICE.toString());

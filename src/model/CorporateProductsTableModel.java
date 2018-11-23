@@ -24,7 +24,7 @@ public class CorporateProductsTableModel extends DefaultTableModel {
 	
 	@Override
 	public int getColumnCount() {
-		return 10;
+		return 11;
 	}
 	
 	@Override
@@ -39,11 +39,12 @@ public class CorporateProductsTableModel extends DefaultTableModel {
 		case 2: return product.getBrand();
 		case 3: return product.getSeller();
 		case 4: return product.getDescription();
-		case 5: return product.getStock();
-		case 6: return product.getSold();
-		case 7: return product.getDiscount();
-		case 8: return product.getPrice();
-		case 9: return product.getShipping();
+		case 5: return product.getFavorites();
+		case 6: return product.getStock();
+		case 7: return product.getSold();
+		case 8: return product.getDiscount();
+		case 9: return product.getPrice();
+		case 10: return product.getShipping();
 		default: return "??";
 		}
 		

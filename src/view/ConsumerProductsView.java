@@ -58,6 +58,7 @@ public class ConsumerProductsView extends ProductsView {
 		modelProductsTable.addColumn(PLACEHOLDER.BRAND.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.SELLER.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DESCRIPTION.toString());
+		modelProductsTable.addColumn(PLACEHOLDER.FAVORITES.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.STOCK.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.PRICE.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DISCOUNT.toString());
@@ -85,6 +86,20 @@ public class ConsumerProductsView extends ProductsView {
 		lowPrice.addFocusListener(new lowPriceFocus());
 		highPrice.addFocusListener(new highPriceFocus());
 		apply.addActionListener(new applyListener());
+		fave.addActionListener(new FaveListener());
+	}
+	
+	class FaveListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(fave.getText().equals(PLACEHOLDER.FAVE.toString()))
+				controller.favorite();
+			else
+				controller.unfavorite();
+			
+		}
+		
 	}
 	
 	class applyListener implements ActionListener{
@@ -180,6 +195,7 @@ public class ConsumerProductsView extends ProductsView {
 				int x = e.getX();
 				int y = e.getY();
 			
+				controller.checkItems();
 				rightClick.show(productsTable, x, y);
 			}
 			
