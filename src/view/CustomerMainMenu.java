@@ -76,11 +76,22 @@ public class CustomerMainMenu extends JFrame {
 		logout.addActionListener(new logoutListener());
 		seller.addActionListener(new sellerListener());
 		products.addActionListener(new productsListener());
+		cart.addActionListener(new cartListener());
 	}
 	
 	public void addController(CustomerMainMenuController controller)
 	{
 		this.controller = controller;
+	}
+	
+	class cartListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			controller.toggleCart();
+			
+		}
+		
 	}
 	
 	class productsListener implements ActionListener{

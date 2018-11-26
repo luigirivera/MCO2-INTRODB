@@ -241,7 +241,7 @@ CREATE TABLE `products` (
   `stock` bigint(11) NOT NULL,
   `sold` bigint(11) NOT NULL DEFAULT 0,
   `price` decimal(11,0) NOT NULL,
-  `discount` decimal(11,0) DEFAULT NULL,
+  `discount` decimal(11,0) NOT NULL DEFAULT 0,
   `shipping` decimal(11,0) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_idx` (`seller`),

@@ -2,6 +2,7 @@ package controller;
 
 import driver.StopNShop;
 import model.User;
+import view.CartView;
 import view.ConsumerProductsView;
 import view.CustomerMainMenu;
 import view.Login;
@@ -12,6 +13,7 @@ public class CustomerMainMenuController {
 	private CustomerMainMenu view;
 	private Settings settingsview;
 	private SellerPortal sellerPortal;
+	private CartView cart;
 	private ConsumerProductsView products;
 	private StopNShop program;
 	private User account;
@@ -21,9 +23,25 @@ public class CustomerMainMenuController {
 		settingsview = null;
 		sellerPortal = null;
 		products = null;
+		cart = null;
 		this.program = program;
 		this.account = account;
 		view.addController(this);
+	}
+	
+	public void toggleCart()
+	{
+		if(cart == null)
+		{
+			cart = new CartView();
+			new CartController(cart, program, account, this);
+		}
+		else
+		{
+			cart.toFront();
+			cart.revalidate();
+			cart.repaint();
+		}
 	}
 	
 	public void toggleProducts()
@@ -72,6 +90,9 @@ public class CustomerMainMenuController {
 		if(products != null)
 			products.dispose();
 		
+		if(cart != null)
+			cart.dispose();
+		
 	}
 	
 	public void toggleSettings()
@@ -112,4 +133,14 @@ public class CustomerMainMenuController {
 	public void setProducts(ConsumerProductsView products) {
 		this.products = products;
 	}
+
+	public CartView getCart() {
+		return cart;
+	}
+
+	public void setCart(CartView cart) {
+		this.cart = cart;
+	}
+	
+	
 }

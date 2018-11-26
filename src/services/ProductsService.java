@@ -398,6 +398,13 @@ public class ProductsService {
 			ps.setInt(1, productID);
 			ps.executeUpdate();
 			
+			query = "DELETE FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_PRODUCT + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, productID);
+			ps.executeUpdate();
+			
+			gg;
+			
 			ps.close();
 			System.out.println("[PRODUCT] DELETE SUCCESS");
 		} catch (SQLException e) {
