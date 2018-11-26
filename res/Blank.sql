@@ -141,6 +141,34 @@ LOCK TABLES `cards` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `cartcontent`
+--
+
+DROP TABLE IF EXISTS `cartcontent`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `cartcontent` (
+  `idcartcontent` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `productid` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  PRIMARY KEY (`idcartcontent`),
+  KEY `cartuser_idx` (`userid`),
+  KEY `cartproduct_idx` (`productid`),
+  CONSTRAINT `cartproduct` FOREIGN KEY (`productid`) REFERENCES `products` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `cartuser` FOREIGN KEY (`userid`) REFERENCES `accounts` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cartcontent`
+--
+
+LOCK TABLES `cartcontent` WRITE;
+/*!40000 ALTER TABLE `cartcontent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cartcontent` ENABLE KEYS */;
+UNLOCK TABLES;
+--
 -- Table structure for table `favorites`
 --
 

@@ -15,7 +15,55 @@ import model.Product;
 import model.User;
 
 public class AccountsService {
+	
+	public void unfollow(int user, int follower)
+	{
+		String query = "DELETE FROM " + Following.TABLE + " WHERE " + Following.COL_USER + " = ? AND "
+																	+ Following.COL_FOLLOWER + " = ?";
 
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, user);
+			ps.setInt(2, follower);
+			
+			ps.executeUpdate();
+			ps.close();
+			System.out.println("[USER] UNFOLLOW DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] UNFOLLOW FAILED");
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean checkFollow(int user, int follower)
+	{
+		boolean found = false;
+		String query = "SELECT COUNT(*) FROM " + Following.TABLE + " WHERE " + Following.COL_USER + " = ? AND "
+																		  							   + Following.COL_FOLLOWER + " = ?";
+
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, user);
+			ps.setInt(2, follower);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next() && rs.getInt("COUNT(*)") > 0)
+				found = true;
+			
+			rs.close();
+			ps.close();
+			System.out.println("[USER] FOLLOW FOUND DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] FOLLOW FOUND FAILED");
+			e.printStackTrace();
+		}
+		
+		return found;
+	}
+	
 	public ArrayList<User> getAccounts(String whereClause) {
 		ArrayList<User> accounts = new ArrayList<User>();
 		

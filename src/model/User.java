@@ -235,4 +235,14 @@ public class User {
 		accountservice.deleteAccount(userID);
 		
 	}
+	
+	public boolean checkFollow(int account)
+	{
+		return accountservice.checkFollow(account, userID);
+	}
+	
+	public void unfollowAccount(int account)
+	{
+		accountservice.unfollow(account, userID);
+	}
 }

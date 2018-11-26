@@ -30,6 +30,41 @@ public class ConsumerProductsController {
 		update();
 	}
 	
+	public String checkfollowError(int account, int seller)
+	{
+		String error = "";
+		
+		if(account == seller)
+		{
+			error += "You cannot follow yourself";
+			System.out.println("[ACCOUNT] " + error);
+		}
+			
+			
+		return error;
+	}
+	
+	public void follow()
+	{
+		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
+		User user = new User();
+		user.setId(account.getId());
+		if(checkfollowError(user.getId(), product.getSellerID()).isEmpty())
+			user.followAccount(product.getSellerID());
+		
+		update();
+	}
+	
+	public void unfollow()
+	{
+		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
+		User user = new User();
+		user.setId(account.getId());
+		user.unfollowAccount(product.getSellerID());
+		
+		update();
+	}
+	
 	public void checkItems()
 	{
 		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
@@ -42,6 +77,11 @@ public class ConsumerProductsController {
 			view.getFave().setText(PLACEHOLDER.UNFAVE.toString());
 		else
 			view.getFave().setText(PLACEHOLDER.FAVE.toString());
+		
+		if(buyer.checkFollow(seller.getId()))
+			view.getFollow().setText(PLACEHOLDER.UNFOLLOW.toString());
+		else
+			view.getFollow().setText(PLACEHOLDER.FOLLOW.toString());
 	}
 	
 	public void unfavorite()

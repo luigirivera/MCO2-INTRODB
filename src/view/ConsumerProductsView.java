@@ -87,6 +87,20 @@ public class ConsumerProductsView extends ProductsView {
 		highPrice.addFocusListener(new highPriceFocus());
 		apply.addActionListener(new applyListener());
 		fave.addActionListener(new FaveListener());
+		follow.addActionListener(new followListener());
+	}
+	
+	class followListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			if(follow.getText().equals(PLACEHOLDER.FOLLOW.toString()))
+				controller.follow();
+			else
+				controller.unfollow();
+			
+		}
+		
 	}
 	
 	class FaveListener implements ActionListener{
