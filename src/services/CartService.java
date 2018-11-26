@@ -11,6 +11,26 @@ import model.CartContent;
 import model.Product;
 
 public class CartService {
+	
+	public void delete(int id)
+	{
+		String query = "DELETE FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_ID + " = ? ";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			
+			ps.executeUpdate();
+			
+
+			ps.close();
+			System.out.println("[CART] DELETE DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] DELETEFAILED");
+			e.printStackTrace();
+		}
+	}
 	public ArrayList<Cart> getCartOfUser(int userID)
 	{
 		ArrayList<Cart> cart = new ArrayList<Cart>();

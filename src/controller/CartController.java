@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import driver.StopNShop;
 import model.Cart;
 import model.CartTableModel;
-import model.Product;
-import model.SellerProductsTableModel;
 import model.User;
 import view.CartView;
 
@@ -25,6 +23,15 @@ public class CartController {
 		this.mainMenu = mainMenu;
 		modelCartTable = null;
 		view.addController(this);
+		
+		update();
+	}
+	
+	public void delete()
+	{
+		Cart c = modelCartTable.getCartAt(view.getCartTable().getSelectedRow());
+		
+		c.delete();
 		
 		update();
 	}

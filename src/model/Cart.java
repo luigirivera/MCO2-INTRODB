@@ -73,4 +73,9 @@ public class Cart {
 	{
 		return cartservice.getCartOfUser(userID);
 	}
+	
+	public void delete()
+	{
+		cartservice.delete(id);
+	}
 }

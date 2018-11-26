@@ -2,7 +2,6 @@ package controller;
 
 import java.util.ArrayList;
 
-import model.ConsumerProductTableModel;
 import model.CorporateProductsTableModel;
 import model.Product;
 import view.CorporateProductsView;
