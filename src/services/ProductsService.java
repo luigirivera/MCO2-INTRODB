@@ -7,11 +7,32 @@ import java.sql.Types;
 import java.util.ArrayList;
 
 import database.DatabaseConnection;
+import model.CartContent;
 import model.Favorite;
 import model.Product;
 import model.User;
 
 public class ProductsService {
+	public void addToCart(int id, int product, int quantity) {
+		String query = "INSERT INTO " + CartContent.TABLE + " (" + CartContent.COL_USER + ", "
+				 												 + CartContent.COL_PRODUCT + ", "
+				 												 + CartContent.COL_QUANTITY + ") VALUES(?,?,?)";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			ps.setInt(2, product);
+			ps.setInt(3, quantity);
+			ps.executeUpdate();
+			
+			ps.close();
+			System.out.println("[PRODUCT] ADD TO CART DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] ADD TO CART FAILED");
+			e.printStackTrace();
+		}
+	}
 	
 	public boolean checkfavorite(int id, int productID) {
 		boolean found = false;

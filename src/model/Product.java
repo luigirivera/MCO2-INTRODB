@@ -167,5 +167,10 @@ public class Product {
 		return productservice.checkfavorite(id, productID);
 	}
 	
+	public void addToCart(int id, int quantity)
+	{
+		productservice.addToCart(id, productID, quantity);
+	}
+	
 	
 }

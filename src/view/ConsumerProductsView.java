@@ -12,6 +12,8 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -88,6 +90,61 @@ public class ConsumerProductsView extends ProductsView {
 		apply.addActionListener(new applyListener());
 		fave.addActionListener(new FaveListener());
 		follow.addActionListener(new followListener());
+		cart.addActionListener(new cartListener());
+	}
+	
+	class cartListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			JPanel panel = new JPanel();
+			JTextField quantity = new JTextField(PLACEHOLDER.QUANTITY.toString());
+			
+			quantity.addFocusListener(new FocusAdapter() {
+				public void focusGained(FocusEvent e) {
+					if(quantity.getText().equals(PLACEHOLDER.QUANTITY.toString()))
+					{
+						quantity.setText("");
+						quantity.setForeground(Color.BLACK);
+					}
+				}
+				
+				public void focusLost(FocusEvent e) {
+					if(quantity.getText().isEmpty())
+					{
+						quantity.setText(PLACEHOLDER.QUANTITY.toString());
+						quantity.setForeground(Color.GRAY);
+					}			
+				}
+			});
+			
+			panel.add(quantity);
+			
+			int result = JOptionPane.showConfirmDialog(null, panel, "Add to Cart", JOptionPane.OK_CANCEL_OPTION);
+			if(result == JOptionPane.OK_OPTION)
+			{
+				if(!quantity.getText().trim().isEmpty() && !quantity.getText().equals(PLACEHOLDER.QUANTITY.toString()))
+				{
+					try
+					{
+						if(Integer.parseInt(quantity.getText()) <= 0)
+							throw new NumberFormatException();
+						else
+							if(controller.checkQuantityError(Integer.parseInt(quantity.getText())).isEmpty())
+								controller.addToCart(Integer.parseInt(quantity.getText()));
+							else
+								JOptionPane.showMessageDialog(null, controller.checkQuantityError(Integer.parseInt(quantity.getText())), "Error", JOptionPane.ERROR_MESSAGE);
+					}catch(NumberFormatException e)
+					{
+						JOptionPane.showMessageDialog(null, "Please enter a quantity amount", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Please enter a quantity amount", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}
+		
 	}
 	
 	class followListener implements ActionListener{

@@ -13,6 +13,8 @@ public enum PLACEHOLDER {
 	
 	ADD, SAVE, CANCEL, DELETE, UNLOCK, RATE, CART, FAVE, UNFAVE, FOLLOW, UNFOLLOW,
 	
+	QUANTITY,
+	
 	PRICELOW, PRICEHIGH,
 	
 	PRICELTH, PRICEHTL, NAMEATZ, NAMEZTA,
@@ -65,6 +67,8 @@ public enum PLACEHOLDER {
 		case FOLLOW: return "Follow";
 		case UNFOLLOW: return "Unfollow";
 		
+		case QUANTITY: return "Quantity";
+			
 		case PRICELOW: return "Low";
 		case PRICEHIGH: return "High";
 		

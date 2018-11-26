@@ -30,6 +30,39 @@ public class ConsumerProductsController {
 		update();
 	}
 	
+	public String checkCartError(int account, int seller)
+	{
+		String error = "";
+		
+		if(account == seller)
+		{
+			error += "You cannot add your own item to your cart";
+			System.out.println("[PRODUCT] " + error);
+		}
+			
+			
+		return error;
+	}
+	
+	public String checkQuantityError(int quantity)
+	{
+		String error = "";
+		
+		if(quantity > productsTableModel.getProductAt(view.getProductsTable().getSelectedRow()).getStock())
+			error += "You have set a number higher than available. Please select a lower number";
+		
+		return error;
+	}
+	
+	public void addToCart(int quantity)
+	{
+		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
+		
+		if(checkCartError(account.getId(), product.getSellerID()).isEmpty())
+			product.addToCart(account.getId(), quantity);
+		update();
+	}
+	
 	public String checkfollowError(int account, int seller)
 	{
 		String error = "";
