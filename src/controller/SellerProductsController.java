@@ -87,7 +87,7 @@ public class SellerProductsController {
 			for(int i = 0; i < productsTableModel.getRowCount(); i++)
 			{
 				Product p = productsTableModel.getProductAt(i);
-				Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getDescription(), p.getFavorites(),
+				Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getDescription(), p.getFavorites(), p.getRating(),
 											p.getStock(), p.getSold(), p.getPrice(), p.getDiscount(), p.getShipping()};
 				
 				view.getModelProductsTable().addRow(row);

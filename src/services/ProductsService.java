@@ -10,9 +10,56 @@ import database.DatabaseConnection;
 import model.CartContent;
 import model.Favorite;
 import model.Product;
+import model.Rating;
 import model.User;
 
 public class ProductsService {
+	
+	public void unrate(int id)
+	{
+		String query = "DELETE FROM " + Rating.TABLE + " WHERE " + Rating.COL_ID + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+
+			ps.executeUpdate();
+			
+			ps.close();
+			System.out.println("[PRODUCT] UNRATE DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] UNRATE FAILED");
+			e.printStackTrace();
+		}
+	}
+	
+	public void rate(int rating, String comment, int id, int product)
+	{
+		String query = "INSERT INTO " + Rating.TABLE + " (" + Rating.COL_USER + ", "
+															+ Rating.COL_PRODUCT + ", "
+															+ Rating.COL_RATING + ", "
+															+ Rating.COL_COMMENT + ", "
+															+ Rating.COL_DATE + ") VALUES(?,?,?,?,NOW())";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			ps.setInt(2, product);
+			ps.setInt(3, rating);
+			ps.setString(4, comment);
+
+			ps.executeUpdate();
+			
+			ps.close();
+			System.out.println("[PRODUCT] RATE DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] RATE FAILED");
+			e.printStackTrace();
+		}
+	}
+	
 	public void addToCart(int id, int product, int quantity) {
 		String query = "INSERT INTO " + CartContent.TABLE + " (" + CartContent.COL_USER + ", "
 				 												 + CartContent.COL_PRODUCT + ", "
@@ -115,11 +162,17 @@ public class ProductsService {
 								 + Product.COL_PRICE + ", P."
 								 + Product.COL_DISC + ", P."
 								 + Product.COL_SHIP + ", "
-								 + "F.Favorites FROM " + Product.TABLE + " AS P LEFT JOIN " + User.TABLE + " AS U ON U." + User.COL_ID + " = P." + Product.COL_SELLERID 
-								 											   + " LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", " + "COUNT(F." + Favorite.COL_PRODUCT + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
-								 											   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT
+								 + "F.Favorites, R.rate FROM " + Product.TABLE + " AS P LEFT JOIN " + User.TABLE + " AS U ON U." + User.COL_ID + " = P." + Product.COL_SELLERID 
+																						+ " LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
+																						   + "COUNT(F." + Favorite.COL_PRODUCT
+																						   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
+																						   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT + 
+																	" LEFT JOIN (SELECT R." + Rating.COL_PRODUCT + 
+																				", AVG(R." + Rating.COL_RATING + 
+																				") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
+																				+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT
 								 											   + whereClause;
-		
+		System.out.println(query);
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 		
@@ -155,14 +208,18 @@ public class ProductsService {
 				 + Product.COL_PRICE + ", P."
 				 + Product.COL_DISC + ", P."
 				 + Product.COL_SHIP + ", "
-				 + "F.Favorites FROM " + Product.TABLE + " AS P LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
+				 + "F.Favorites, R.rate FROM " + Product.TABLE + " AS P LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
 				 																	   + "COUNT(F." + Favorite.COL_PRODUCT
 				 																	   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
-				 					   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT;
-		
+				 																	   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT + 
+				 												" LEFT JOIN (SELECT R." + Rating.COL_PRODUCT + 
+				 															", AVG(R." + Rating.COL_RATING + 
+				 															") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
+				 															+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT;
+		System.out.println(query);
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
-		
+			
 			
 			ResultSet rs = ps.executeQuery();
 			
@@ -196,6 +253,7 @@ public class ProductsService {
 		product.setDiscount(rs.getDouble(Product.COL_DISC));
 		product.setShipping(rs.getDouble(Product.COL_SHIP));
 		product.setFavorites(rs.getLong("Favorites"));
+		product.setRating(rs.getDouble("rate"));
 		
 		return product;
 	}
@@ -214,11 +272,15 @@ public class ProductsService {
 								 + Product.COL_PRICE + ", P."
 								 + Product.COL_DISC + ", P."
 								 + Product.COL_SHIP + ", "
-								 + "F.Favorites FROM " + Product.TABLE + " AS P LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
-								 																	   + "COUNT(F." + Favorite.COL_PRODUCT
-								 																	   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
-								 					   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT + " WHERE P." + Product.COL_SELLERID + " = ? ";
-		
+								 + "F.Favorites, R.rate FROM " + Product.TABLE + " AS P LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
+																								   + "COUNT(F." + Favorite.COL_PRODUCT
+																								   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
+																								   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT + 
+																				" LEFT JOIN (SELECT R." + Rating.COL_PRODUCT + 
+																							", AVG(R." + Rating.COL_RATING + 
+																							") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
+																							+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT + " WHERE P." + Product.COL_SELLERID + " = ? ";
+		System.out.println(query);
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			
@@ -253,6 +315,7 @@ public class ProductsService {
 		product.setDiscount(rs.getDouble(Product.COL_DISC));
 		product.setShipping(rs.getDouble(Product.COL_SHIP));
 		product.setFavorites(rs.getLong("Favorites"));
+		product.setRating(rs.getDouble("rate"));
 		
 		return product;
 	}
@@ -326,11 +389,7 @@ public class ProductsService {
 			ps.setString(4, description);
 			ps.setLong(5, stock);
 			ps.setDouble(6, price);
-			if(discount == 0)
-				ps.setNull(7, Types.DECIMAL);
-			else
-				ps.setDouble(7, discount);
-			
+			ps.setDouble(7, discount);
 			ps.setDouble(8, shipping);
 			ps.setInt(9, sellerID);
 			ps.executeUpdate();
@@ -393,18 +452,23 @@ public class ProductsService {
 			ps.executeUpdate();
 			System.out.println("[PRODUCT] FAVORITE DELETE SUCCESS");
 			
-			query = "DELETE FROM " + Product.TABLE + " WHERE " + Product.COL_ID + " = ?";
-			ps = DatabaseConnection.getConnection().prepareStatement(query);
-			ps.setInt(1, productID);
-			ps.executeUpdate();
-			
 			query = "DELETE FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_PRODUCT + " = ?";
 			ps = DatabaseConnection.getConnection().prepareStatement(query);
 			ps.setInt(1, productID);
 			ps.executeUpdate();
+			System.out.println("[PRODUCT] CART CONTENT DELETE SUCCESS");
 			
-			gg;
+			query = "DELETE FROM " + Rating.TABLE + " WHERE " + Rating.COL_PRODUCT + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, productID);
+			ps.executeUpdate();
+			System.out.println("[PRODUCT] RATING DELETE SUCCESS");
 			
+			query = "DELETE FROM " + Product.TABLE + " WHERE " + Product.COL_ID + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, productID);
+			ps.executeUpdate();
+
 			ps.close();
 			System.out.println("[PRODUCT] DELETE SUCCESS");
 		} catch (SQLException e) {

@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
@@ -10,12 +11,14 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JComboBox;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.ConsumerProductsController;
@@ -61,6 +64,7 @@ public class ConsumerProductsView extends ProductsView {
 		modelProductsTable.addColumn(PLACEHOLDER.SELLER.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DESCRIPTION.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.FAVORITES.toString());
+		modelProductsTable.addColumn(PLACEHOLDER.RATING.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.STOCK.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.PRICE.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DISCOUNT.toString());
@@ -91,6 +95,47 @@ public class ConsumerProductsView extends ProductsView {
 		fave.addActionListener(new FaveListener());
 		follow.addActionListener(new followListener());
 		cart.addActionListener(new cartListener());
+		rate.addActionListener(new rateListener());
+	}
+	
+	class rateListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			JPanel panel = new JPanel();
+			JComboBox<Integer> rating = new JComboBox<Integer>();
+			JTextField rateD = new JTextField(PLACEHOLDER.RATE.toString());
+			
+			for(int i = 1; i<=5; i++) rating.addItem(i);
+			rateD.setForeground(Color.GRAY);
+			panel.add(rating);
+			panel.add(rateD);
+			panel.setPreferredSize(new Dimension(300, 30));
+			rateD.setPreferredSize(new Dimension(250,30));
+			rateD.addFocusListener(new FocusAdapter() {
+				public void focusGained(FocusEvent e) {
+					if(rateD.getText().equals(PLACEHOLDER.RATE.toString()))
+					{
+						rateD.setText("");
+						rateD.setForeground(Color.BLACK);
+					}
+				}
+				
+				public void focusLost(FocusEvent e) {
+					if(rateD.getText().isEmpty())
+					{
+						rateD.setText(PLACEHOLDER.RATE.toString());
+						rateD.setForeground(Color.GRAY);
+					}			
+				}
+			});
+			
+			int result = JOptionPane.showConfirmDialog(null, panel, "Rate Product", JOptionPane.OK_CANCEL_OPTION);
+			if(result == JOptionPane.OK_OPTION)
+				controller.rate((Integer)rating.getSelectedItem(), rateD.getText());
+			
+		}
+		
 	}
 	
 	class cartListener implements ActionListener{
@@ -99,7 +144,7 @@ public class ConsumerProductsView extends ProductsView {
 		public void actionPerformed(ActionEvent arg0) {
 			JPanel panel = new JPanel();
 			JTextField quantity = new JTextField(PLACEHOLDER.QUANTITY.toString());
-			
+			quantity.setForeground(Color.GRAY);
 			quantity.addFocusListener(new FocusAdapter() {
 				public void focusGained(FocusEvent e) {
 					if(quantity.getText().equals(PLACEHOLDER.QUANTITY.toString()))
@@ -119,7 +164,8 @@ public class ConsumerProductsView extends ProductsView {
 			});
 			
 			panel.add(quantity);
-			
+			panel.setPreferredSize(new Dimension(300, 30));
+			quantity.setPreferredSize(new Dimension(300,30));
 			int result = JOptionPane.showConfirmDialog(null, panel, "Add to Cart", JOptionPane.OK_CANCEL_OPTION);
 			if(result == JOptionPane.OK_OPTION)
 			{
@@ -260,6 +306,13 @@ public class ConsumerProductsView extends ProductsView {
 	
 	class rightClickListener extends MouseAdapter{
 		@Override
+		public void mouseClicked(MouseEvent e)
+		{
+			if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2 && !productsTable.getSelectionModel().isSelectionEmpty())
+				controller.showRatings();
+		}
+		
+		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(SwingUtilities.isRightMouseButton(e) && !productsTable.getSelectionModel().isSelectionEmpty())
 			{
@@ -269,7 +322,6 @@ public class ConsumerProductsView extends ProductsView {
 				controller.checkItems();
 				rightClick.show(productsTable, x, y);
 			}
-			
 		}
 	}
 	

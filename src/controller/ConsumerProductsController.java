@@ -30,6 +30,25 @@ public class ConsumerProductsController {
 		update();
 	}
 	
+	public void showRatings()
+	{
+		try {
+			return null;
+		}catch(Exception e) {}
+	}
+	
+	public void rate(int rating, String desc)
+	{
+		Product p = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
+		
+		if(desc.equals(PLACEHOLDER.RATE.toString()) || desc.trim().isEmpty())
+			desc = null;
+		
+		if(p.getSellerID() != account.getId())
+			p.rate(rating, desc, account.getId());
+		update();
+	}
+	
 	public String checkCartError(int account, int seller)
 	{
 		String error = "";
@@ -209,7 +228,7 @@ public class ConsumerProductsController {
 			for(int i = 0; i < productsTableModel.getRowCount(); i++)
 			{
 				Product p = productsTableModel.getProductAt(i);
-				Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getSeller(),  p.getDescription(), p.getFavorites(),
+				Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getSeller(),  p.getDescription(), p.getFavorites(), p.getRating(),
 											p.getStock(), p.getPrice(), p.getDiscount(), p.getShipping()};
 				
 				view.getModelProductsTable().addRow(row);

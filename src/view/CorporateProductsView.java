@@ -53,6 +53,7 @@ public class CorporateProductsView extends ProductsView {
 		modelProductsTable.addColumn(PLACEHOLDER.SELLER.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DESCRIPTION.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.FAVORITES.toString());
+		modelProductsTable.addColumn(PLACEHOLDER.RATING.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.STOCK.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.SOLD.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.PRICE.toString());
@@ -171,6 +172,13 @@ public class CorporateProductsView extends ProductsView {
 	
 	class rightClickListener extends MouseAdapter{
 		@Override
+		public void mouseClicked(MouseEvent e)
+		{
+			if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2 && !productsTable.getSelectionModel().isSelectionEmpty())
+				controller.showRatings();
+		}
+		
+		@Override
 		public void mouseReleased(MouseEvent e) {
 			if(SwingUtilities.isRightMouseButton(e) && !productsTable.getSelectionModel().isSelectionEmpty())
 			{
@@ -179,7 +187,6 @@ public class CorporateProductsView extends ProductsView {
 			
 				rightClick.show(productsTable, x, y);
 			}
-			
 		}
 	}
 	

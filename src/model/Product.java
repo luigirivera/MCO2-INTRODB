@@ -19,6 +19,7 @@ public class Product {
 	private double price;
 	private double discount;
 	private double shipping;
+	private double rating;
 	
 	private ProductsService productservice;
 	
@@ -106,6 +107,15 @@ public class Product {
 	public void setShipping(double shipping) {
 		this.shipping = shipping;
 	}
+	
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
+	}
+
 	public String getSeller() {
 		return seller;
 	}
@@ -172,5 +182,8 @@ public class Product {
 		productservice.addToCart(id, productID, quantity);
 	}
 	
-	
+	public void rate(int rate, String comment, int userID)
+	{
+		productservice.rate(rate, comment, userID, productID);
+	}
 }

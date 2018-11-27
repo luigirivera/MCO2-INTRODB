@@ -270,7 +270,7 @@ CREATE TABLE `rating` (
   `user` int(11) NOT NULL,
   `product` int(11) NOT NULL,
   `rating` int(1) NOT NULL,
-  `comment` varchar(45) DEFAULT NULL,
+  `comment` varchar(200) DEFAULT NULL,
   `ratingdate` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_idx` (`user`),
