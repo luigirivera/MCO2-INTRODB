@@ -5,6 +5,7 @@ import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -17,6 +18,7 @@ public class ProductsView extends JFrame {
 	protected JComboBox<String> order;
 	protected JButton apply;
 	protected JPopupMenu rightClick;
+	protected JMenuItem expand;
 	protected JTable productsTable;
 	protected DefaultTableModel modelProductsTable;
 	protected JScrollPane scrollProductsTable;
@@ -54,7 +56,7 @@ public class ProductsView extends JFrame {
 		};
 		
 		productsTable = new JTable(modelProductsTable);
-		
+		expand = new JMenuItem("Expand");
 		scrollProductsTable = new JScrollPane(productsTable);
 	}
 	
@@ -69,6 +71,7 @@ public class ProductsView extends JFrame {
 		
 		add(scrollProductsTable);
 		
+		rightClick.add(expand);
 		Color fg = Color.GRAY;
 		
 		category.setForeground(fg);

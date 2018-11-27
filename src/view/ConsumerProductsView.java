@@ -305,12 +305,6 @@ public class ConsumerProductsView extends ProductsView {
 	}
 	
 	class rightClickListener extends MouseAdapter{
-		@Override
-		public void mouseClicked(MouseEvent e)
-		{
-			if(SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2 && !productsTable.getSelectionModel().isSelectionEmpty())
-				controller.showRatings();
-		}
 		
 		@Override
 		public void mouseReleased(MouseEvent e) {
