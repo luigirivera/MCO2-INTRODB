@@ -18,7 +18,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controller.RatingsController;
-import view.ConsumerProductsView.disposeListener;
 
 public class RatingView extends JFrame {
 	private static final long serialVersionUID = 1L;

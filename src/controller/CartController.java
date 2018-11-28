@@ -27,6 +27,37 @@ public class CartController {
 		update();
 	}
 	
+	public void checkout(int yes, int no)
+	{
+		slectaddress;
+		selectpayment;
+		Cart c = new Cart();
+		c.setUserID(account.getId());
+		ArrayList<Cart> cart = c.getCartOfUser();
+
+		for(Cart cc : cart)
+			if(cc.getQuantity() > cc.getProductStock(cc.getProductID()))
+			{
+				int result = view.toggleStockError(cc.getQuantity(), cc.getProductStock(cc.getProductID()), cc.getName());
+				if(result == yes)
+				{
+					cc.updateQuantity(cc.getProductStock(cc.getProductID()));
+					update();
+					addtoorder;
+					deletefromcart;
+					update();
+				}
+					
+			}
+			else
+			{
+				update();
+				addtoorder;
+				deletefromcart;
+				update();
+			}
+	}
+	
 	public void delete()
 	{
 		Cart c = modelCartTable.getCartAt(view.getCartTable().getSelectedRow());

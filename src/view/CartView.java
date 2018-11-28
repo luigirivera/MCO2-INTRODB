@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -112,6 +113,21 @@ public class CartView extends JFrame {
 		delete.addActionListener(new deleteListener());
 		cartTable.addMouseListener(new rightClickListener());
 		checkout.addActionListener(new checkoutListener());
+	}
+	
+	public int toggleStockError(int quantity, int stock, String name)
+	{
+		return JOptionPane.showConfirmDialog(null, "You have " + name + " with " + quantity + " quantity in your cart but only " + stock + " are available.\nSelect yes if you want to adjust your cart quantity to the maximum available\nSelect no to skip the item.", "Cart Error", JOptionPane.YES_NO_OPTION);
+	}
+	
+	class checkoutListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+				controller.checkout(JOptionPane.YES_OPTION, JOptionPane.NO_OPTION);
+			
+		}
+		
 	}
 	
 	class rightClickListener extends MouseAdapter{

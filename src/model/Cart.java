@@ -6,6 +6,7 @@ import services.CartService;
 
 public class Cart {
 	private int id;
+	private int productID;
 	private int userID;
 	private String name;
 	private int quantity;
@@ -32,6 +33,15 @@ public class Cart {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public int getProductID() {
+		return productID;
+	}
+
+	public void setProductID(int productID) {
+		this.productID = productID;
+	}
+
 	public int getQuantity() {
 		return quantity;
 	}
@@ -77,5 +87,15 @@ public class Cart {
 	public void delete()
 	{
 		cartservice.delete(id);
+	}
+	
+	public int getProductStock(int id)
+	{
+		return cartservice.getProductStock(id);
+	}
+
+	public void updateQuantity(int newquantity) {
+		cartservice.updateQuantity(newquantity, id);
+		
 	}
 }

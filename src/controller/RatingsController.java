@@ -45,6 +45,7 @@ public class RatingsController {
 		Rating r = modelRatingTable.getRatingAt(view.getRatingsTable().getSelectedRow());
 		r.delete();
 		update();
+		products.update();
 	}
 	
 	public void checkItems()
