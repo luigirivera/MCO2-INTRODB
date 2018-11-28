@@ -96,6 +96,17 @@ public class ConsumerProductsView extends ProductsView {
 		follow.addActionListener(new followListener());
 		cart.addActionListener(new cartListener());
 		rate.addActionListener(new rateListener());
+		expand.addActionListener(new expandListener());
+	}
+	
+	class expandListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			controller.showRatings();
+			
+		}
+		
 	}
 	
 	class rateListener implements ActionListener{

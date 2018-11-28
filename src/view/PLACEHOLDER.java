@@ -15,6 +15,8 @@ public enum PLACEHOLDER {
 	
 	QUANTITY,
 	
+	BUYER, COMMENT, DATERATING,
+	
 	PRICELOW, PRICEHIGH,
 	
 	PRICELTH, PRICEHTL, NAMEATZ, NAMEZTA,
@@ -69,6 +71,10 @@ public enum PLACEHOLDER {
 		case UNFOLLOW: return "Unfollow";
 		
 		case QUANTITY: return "Quantity";
+		
+		case BUYER: return "Buyer";
+		case COMMENT: return "Comment";
+		case DATERATING: return "Date";
 			
 		case PRICELOW: return "Low";
 		case PRICEHIGH: return "High";

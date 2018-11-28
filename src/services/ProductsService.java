@@ -469,6 +469,7 @@ public class ProductsService {
 			ps.setInt(1, productID);
 			ps.executeUpdate();
 
+			kk;
 			ps.close();
 			System.out.println("[PRODUCT] DELETE SUCCESS");
 		} catch (SQLException e) {
@@ -476,6 +477,48 @@ public class ProductsService {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public ArrayList<Rating> getRatings(int productID) {
+		ArrayList<Rating> ratings = new ArrayList<Rating>();
+		
+		String query = "SELECT R." + Rating.COL_ID + ", U."
+								 + User.COL_USERNAME + ", U."
+								 + User.COL_ID + ", R."
+								 + Rating.COL_RATING + ", R."
+								 + Rating.COL_COMMENT + ", R."
+								 + Rating.COL_DATE + " FROM " + Rating.TABLE + " AS R, " + User.TABLE + " AS U WHERE R." + Rating.COL_USER + " = " + User.COL_ID + " AND R." + Rating.COL_PRODUCT + " = ?";
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, productID);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next())
+				ratings.add(toRating(rs));
+			
+			ps.close();
+			rs.close();
+			System.out.println("[PRODUCT] GET PRODUCTS DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] GET PRODUCTS FAILED");
+			e.printStackTrace();
+		}
+		
+		return ratings;
+	}
+	
+	private Rating toRating(ResultSet rs) throws SQLException{
+		Rating r = new Rating();
+		
+		r.setId(rs.getInt(Rating.COL_ID));
+		r.setBuyer(rs.getString(User.COL_USERNAME));
+		r.setUser(rs.getInt(User.COL_ID));
+		r.setRating(rs.getInt(Rating.COL_RATING));
+		r.setComment(rs.getString(Rating.COL_COMMENT));
+		r.setRatingdate(rs.getDate(Rating.COL_DATE));
+		
+		return r;
 	}
 
 

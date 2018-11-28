@@ -186,4 +186,9 @@ public class Product {
 	{
 		productservice.rate(rate, comment, userID, productID);
 	}
+	
+	public ArrayList<Rating> getRatings(int id)
+	{
+		return productservice.getRatings(id);
+	}
 }

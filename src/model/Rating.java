@@ -6,6 +6,7 @@ import services.ProductsService;
 
 public class Rating {
 	private int id;
+	private String buyer;
 	private int user;
 	private int product;
 	private int rating;
@@ -26,6 +27,18 @@ public class Rating {
 	{
 		productservice = new ProductsService();
 	}
+	
+	
+	public String getBuyer() {
+		return buyer;
+	}
+
+
+	public void setBuyer(String buyer) {
+		this.buyer = buyer;
+	}
+
+
 	public int getId() {
 		return id;
 	}
@@ -63,5 +76,8 @@ public class Rating {
 		this.ratingdate = ratingdate;
 	}
 	
-	
+	public void delete()
+	{
+		productservice.unrate(id);
+	}
 }

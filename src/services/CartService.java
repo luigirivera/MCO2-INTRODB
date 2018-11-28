@@ -27,7 +27,7 @@ public class CartService {
 			ps.close();
 			System.out.println("[CART] DELETE DONE");
 		}catch(SQLException e) {
-			System.out.println("[USER] DELETEFAILED");
+			System.out.println("[USER] DELETE FAILED");
 			e.printStackTrace();
 		}
 	}

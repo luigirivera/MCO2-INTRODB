@@ -13,6 +13,7 @@ import model.CartContent;
 import model.Favorite;
 import model.Following;
 import model.Product;
+import model.Rating;
 import model.User;
 
 public class AccountsService {
@@ -155,12 +156,19 @@ public class AccountsService {
 			ps.executeUpdate();
 			System.out.println("[ACCOUNTS] FAVORITE DELETE SUCCESS");
 			
-			query = "DELETE FROM " + User.TABLE + " WHERE " + User.COL_ID + " = ?";			
+			query = "DELETE FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_USER + " = ?";			
 			ps = DatabaseConnection.getConnection().prepareStatement(query);			
 			ps.setInt(1, userID);			
 			ps.executeUpdate();
+			System.out.println("[ACCOUNTS] CART CONTENT DELETE SUCCESS");
 			
-			query = "DELETE FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_USER + " = ?";			
+			query = "DELETE FROM " + Rating.TABLE + " WHERE " + Rating.COL_USER + " = ?";			
+			ps = DatabaseConnection.getConnection().prepareStatement(query);			
+			ps.setInt(1, userID);			
+			ps.executeUpdate();
+			System.out.println("[ACCOUNTS] RATING DELETE SUCCESS");
+			
+			query = "DELETE FROM " + User.TABLE + " WHERE " + User.COL_ID + " = ?";			
 			ps = DatabaseConnection.getConnection().prepareStatement(query);			
 			ps.setInt(1, userID);			
 			ps.executeUpdate();

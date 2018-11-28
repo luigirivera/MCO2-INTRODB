@@ -8,6 +8,7 @@ import model.Product;
 import model.User;
 import view.ConsumerProductsView;
 import view.PLACEHOLDER;
+import view.RatingView;
 
 public class ConsumerProductsController {
 	
@@ -15,6 +16,8 @@ public class ConsumerProductsController {
 	private StopNShop program;
 	private User account;
 	private CustomerMainMenuController mainMenu;
+	private ArrayList<RatingView> ratings;
+	private ArrayList<String> productRatingName;
 	private String whereClause;
 	private ConsumerProductTableModel productsTableModel;
 
@@ -26,15 +29,20 @@ public class ConsumerProductsController {
 		this.account = account;
 		whereClause = "";
 		productsTableModel = null;
+		ratings = new ArrayList<RatingView>();
+		productRatingName = new ArrayList<String>();
 		view.addController(this);
 		update();
 	}
 	
 	public void showRatings()
 	{
-		try {
-			return null;
-		}catch(Exception e) {}
+		Product p = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
+		productRatingName.add(p.getName());
+		RatingView ratingV = new RatingView(p.getName());
+		ratings.add(ratingV);
+		
+		new RatingsController(ratingV, program,account, this, p);
 	}
 	
 	public void rate(int rating, String desc)
@@ -158,6 +166,8 @@ public class ConsumerProductsController {
 	{
 		view.dispose();
 		mainMenu.setProducts(null);
+		
+		for(RatingView r : ratings) r.dispose();
 	}
 	
 	public void update()
@@ -269,5 +279,23 @@ public class ConsumerProductsController {
 		
 		return error;
 	}
+
+	public ArrayList<RatingView> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(ArrayList<RatingView> ratings) {
+		this.ratings = ratings;
+	}
+
+	public ArrayList<String> getProductRatingName() {
+		return productRatingName;
+	}
+
+	public void setProductRatingName(ArrayList<String> productRatingName) {
+		this.productRatingName = productRatingName;
+	}
+	
+	
 
 }

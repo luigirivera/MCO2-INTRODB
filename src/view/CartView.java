@@ -111,6 +111,7 @@ public class CartView extends JFrame {
 		addWindowListener(new disposeListener());
 		delete.addActionListener(new deleteListener());
 		cartTable.addMouseListener(new rightClickListener());
+		checkout.addActionListener(new checkoutListener());
 	}
 	
 	class rightClickListener extends MouseAdapter{
