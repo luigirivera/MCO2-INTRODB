@@ -68,6 +68,7 @@ public class ConsumerProductsView extends ProductsView {
 		modelProductsTable.addColumn(PLACEHOLDER.PRICE.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DISCOUNT.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.SHIPPING.toString());
+		modelProductsTable.addColumn(PLACEHOLDER.SHIPPINGDUR.toString());
 		
 		productsTable.getTableHeader().setResizingAllowed(false);
 		productsTable.getTableHeader().setReorderingAllowed(false);

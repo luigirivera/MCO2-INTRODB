@@ -120,6 +120,15 @@ public class Accounts extends JFrame {
 		filter.addActionListener(new filterListener());
 		unlock.addActionListener(new unlockListener());
 		delete.addActionListener(new deleteListener());
+		add.addActionListener(new addListener());
+	}
+	
+	class addListener implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			controller.addCorporate();
+			
+		}
 	}
 	
 	class deleteListener implements ActionListener{

@@ -170,6 +170,22 @@ public class ProductsView extends JFrame {
 	public void setScrollProductsTable(JScrollPane scrollProductsTable) {
 		this.scrollProductsTable = scrollProductsTable;
 	}
+
+	public JPopupMenu getRightClick() {
+		return rightClick;
+	}
+
+	public void setRightClick(JPopupMenu rightClick) {
+		this.rightClick = rightClick;
+	}
+
+	public JMenuItem getExpand() {
+		return expand;
+	}
+
+	public void setExpand(JMenuItem expand) {
+		this.expand = expand;
+	}
 	
 	
 }

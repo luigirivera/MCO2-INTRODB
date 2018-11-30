@@ -1,10 +1,12 @@
 package services;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import database.DatabaseConnection;
 import model.CartContent;
@@ -161,7 +163,8 @@ public class ProductsService {
 								 + Product.COL_SOLD + ", P."
 								 + Product.COL_PRICE + ", P."
 								 + Product.COL_DISC + ", P."
-								 + Product.COL_SHIP + ", "
+								 + Product.COL_SHIP + ", P."
+								 + Product.COL_SHIPDUR + ", "
 								 + "F.Favorites, R.rate FROM " + Product.TABLE + " AS P LEFT JOIN " + User.TABLE + " AS U ON U." + User.COL_ID + " = P." + Product.COL_SELLERID 
 																						+ " LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
 																						   + "COUNT(F." + Favorite.COL_PRODUCT
@@ -207,7 +210,8 @@ public class ProductsService {
 				 + Product.COL_SOLD + ", P."
 				 + Product.COL_PRICE + ", P."
 				 + Product.COL_DISC + ", P."
-				 + Product.COL_SHIP + ", "
+				 + Product.COL_SHIP + ", P."
+				 + Product.COL_SHIPDUR + ", "
 				 + "F.Favorites, R.rate FROM " + Product.TABLE + " AS P LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
 				 																	   + "COUNT(F." + Favorite.COL_PRODUCT
 				 																	   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
@@ -252,6 +256,7 @@ public class ProductsService {
 		product.setPrice(rs.getDouble(Product.COL_PRICE));
 		product.setDiscount(rs.getDouble(Product.COL_DISC));
 		product.setShipping(rs.getDouble(Product.COL_SHIP));
+		product.setShippingduration(rs.getInt(Product.COL_SHIPDUR));
 		product.setFavorites(rs.getLong("Favorites"));
 		product.setRating(rs.getDouble("rate"));
 		
@@ -271,7 +276,8 @@ public class ProductsService {
 								 + Product.COL_SOLD + ", P."
 								 + Product.COL_PRICE + ", P."
 								 + Product.COL_DISC + ", P."
-								 + Product.COL_SHIP + ", "
+								 + Product.COL_SHIP + ", P."
+								 + Product.COL_SHIPDUR + ", "
 								 + "F.Favorites, R.rate FROM " + Product.TABLE + " AS P LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
 																								   + "COUNT(F." + Favorite.COL_PRODUCT
 																								   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
@@ -314,6 +320,7 @@ public class ProductsService {
 		product.setPrice(rs.getDouble(Product.COL_PRICE));
 		product.setDiscount(rs.getDouble(Product.COL_DISC));
 		product.setShipping(rs.getDouble(Product.COL_SHIP));
+		product.setShippingduration(rs.getInt(Product.COL_SHIPDUR));
 		product.setFavorites(rs.getLong("Favorites"));
 		product.setRating(rs.getDouble("rate"));
 		
@@ -343,11 +350,7 @@ public class ProductsService {
 			ps.setString(4, description);
 			ps.setLong(5, stock);
 			ps.setDouble(6, price);
-			if(discount == 0)
-				ps.setNull(7, Types.DECIMAL);
-			else
-				ps.setDouble(7, discount);
-			
+			ps.setDouble(7, discount);
 			ps.setDouble(8, shipping);
 			ps.setInt(9, sellerID);
 			
@@ -368,7 +371,7 @@ public class ProductsService {
 	}
 
 	public void addProduct(String name, String category, String brand, String description, long stock, double price,
-			double discount, double shipping, int sellerID) {
+			double discount, double shipping, int sellerID, int shippdur) {
 		String query = "INSERT INTO " + Product.TABLE + " (" + Product.COL_NAME + ", "
 															 + Product.COL_CATEGORY + ", "
 															 + Product.COL_BRAND + ", "
@@ -377,8 +380,9 @@ public class ProductsService {
 															 + Product.COL_PRICE + ", "
 															 + Product.COL_DISC + ", "
 															 + Product.COL_SHIP + ", "
-															 + Product.COL_SELLERID
-															 + ") VALUES(?,?,?,?,?,?,?,?,?)";
+															 + Product.COL_SELLERID + ", "
+															 + Product.COL_SHIPDUR
+															 + ") VALUES(?,?,?,?,?,?,?,?,?,?)";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
@@ -392,6 +396,7 @@ public class ProductsService {
 			ps.setDouble(7, discount);
 			ps.setDouble(8, shipping);
 			ps.setInt(9, sellerID);
+			ps.setInt(10, shippdur);
 			ps.executeUpdate();
 			
 			ps.close();
@@ -404,7 +409,7 @@ public class ProductsService {
 	}
 
 	public void updateProduct(String name, String category, String brand, String description, long stock, double price,
-			double discount, double shipping, int productID) {
+			double discount, double shipping, int productID, int shippdur) {
 		String query = "UPDATE " + Product.TABLE + " SET " + Product.COL_NAME + " = ?, "
 															 + Product.COL_CATEGORY + " = ?, "
 															 + Product.COL_BRAND + " = ?, "
@@ -413,6 +418,7 @@ public class ProductsService {
 															 + Product.COL_PRICE + " = ?, "
 															 + Product.COL_DISC + " = ?, "
 															 + Product.COL_SHIP + " = ? "
+															 + Product.COL_SHIPDUR + " = ?"
 															 + " WHERE " + Product.COL_ID + " = ? ";
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
@@ -423,13 +429,10 @@ public class ProductsService {
 			ps.setString(4, description);
 			ps.setLong(5, stock);
 			ps.setDouble(6, price);
-			if(discount == 0)
-				ps.setNull(7, Types.DECIMAL);
-			else
-				ps.setDouble(7, discount);
-			
+			ps.setDouble(7, discount);
 			ps.setDouble(8, shipping);
-			ps.setInt(9, productID);
+			ps.setInt(9, shippdur);
+			ps.setInt(10, productID);
 			ps.executeUpdate();
 			
 			ps.close();

@@ -1,105 +1,25 @@
 package controller;
 
-import driver.StopNShop;
 import model.User;
-import view.Login;
+import view.NewCorporateAccount;
 import view.PLACEHOLDER;
 
-public class LoginController {
-	private Login view;
-	private User account;
-	private StopNShop program;
+public class NewCorpController {
+
+	private NewCorporateAccount view;
+	private AccountsController accounts;
 	
-	public LoginController(Login view, StopNShop program)
-	{
+	public NewCorpController(NewCorporateAccount view, AccountsController accounts) {
 		this.view = view;
-		this.program = program;
+		this.accounts = accounts;
+		
 		view.addController(this);
 	}
 
-	public void loginAccount()
+	public void dispose()
 	{
-		account.setLogin();
-		User user = account.getDetails();
-		if(user.checkCorporate())
-			user.setCorporate(true);
-		else
-			user.setCorporate(false);
-		program.setAccount(user);
-		account = account.getDetails();
-		program.login();
-	}
-	
-	public void clearTries()
-	{
-		account.setTries(0);
-	}
-	
-	public void updateAccountLock()
-	{
-		account.updateAccountLock();
-	}
-	
-	public boolean verifyPassword()
-	{
-		return account.getPassword().equals(String.valueOf(view.getPassword().getPassword()));
-	}
-	public boolean isLocked()
-	{
-		return account.isLocked();
-	}
-	
-	public void lockAccount()
-	{
-		account.setLocked(true);
-	}
-	
-	public int getTries()
-	{
-		return account.getTries();
-	}
-	
-	public void addTries()
-	{
-		account.setTries(account.getTries() + 1);
-	}
-	
-	public void getAccountLogin() {
-		account = new User();
-		account.setUsername(view.getUsername().getText());
-		
-		account = account.getAccountLogin();
-	}
-	
-	public boolean isLoginValid()
-	{
-		return checkUsername().concat(checkPassword()).isEmpty();
-	}
-	
-	public String checkUsername()
-	{
-		if(view.getUsername().getText().isEmpty() ||
-				view.getUsername().getText().equals(PLACEHOLDER.USERNAME.toString()))
-			return "Please enter a username\n";
-		
-		return "";
-	}
-	
-	public String checkPassword()
-	{
-		if(String.valueOf(view.getPassword().getPassword()).isEmpty() ||
-				String.valueOf(view.getPassword().getPassword()).equals(PLACEHOLDER.PASSWORD.toString()))
-			return "Please enter a password\n";
-		
-		return "";
-	}
-	
-	public boolean doesAccountExist() {
-		User user = new User();
-
-		user.setUsername(view.getUsername().getText());
-		
-		return user.doesUsernameExist();
+		view.dispose();
+		accounts.setNewCorp(null);
 	}
 	
 	public void registerAccount() {
@@ -115,8 +35,10 @@ public class LoginController {
 		
 		user.registerAccount();
 		user.setId(user.getuserID());
-		user.setConsumer();
+		user.setCorporate();
 		user.followAccount(1);
+		
+		accounts.update();
 	}
 	
 	public boolean isAccountFree()
@@ -155,18 +77,6 @@ public class LoginController {
 		
 		
 		return "";
-	}
-	
-	public void toggleLogin(boolean enable) {
-		view.getUsername().setEnabled(enable);
-		view.getPassword().setEnabled(enable);
-		view.getLogin().setEnabled(enable);
-		view.getSignup().setEnabled(enable);
-		
-		if(!enable)
-			view.setSize(400, 580);
-		else
-			view.setSize(400,250);
 	}
 	
 	public boolean isSignupValid()

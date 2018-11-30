@@ -89,11 +89,13 @@ public class SellerProducts extends JFrame {
 		modelProductsTable.addColumn(PLACEHOLDER.BRAND.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DESCRIPTION.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.FAVORITES.toString());
+		modelProductsTable.addColumn(PLACEHOLDER.RATING.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.STOCK.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.SOLD.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.PRICE.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.DISCOUNT.toString());
 		modelProductsTable.addColumn(PLACEHOLDER.SHIPPING.toString());
+		modelProductsTable.addColumn(PLACEHOLDER.SHIPPINGDUR.toString());
 		
 		productsTable.getTableHeader().setResizingAllowed(false);
 		productsTable.getTableHeader().setReorderingAllowed(false);

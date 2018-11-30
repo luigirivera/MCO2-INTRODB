@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.AccountsTableModel;
 import model.User;
 import view.Accounts;
+import view.NewCorporateAccount;
 import view.PLACEHOLDER;
 
 public class AccountsController {
@@ -12,17 +13,34 @@ public class AccountsController {
 	private User account;
 	private CorporateMainMenuController mainMenu;
 	private AccountsTableModel accountsTableModel;
+	private NewCorporateAccount newCorp;
 	private String whereClause;
 
 	public AccountsController(Accounts view, User account, CorporateMainMenuController mainMenu) {
 		this.view = view;
 		this.account = account;
 		this.mainMenu = mainMenu;
+		newCorp = null;
 		accountsTableModel = null;
 		view.addController(this);
 		
 		whereClause = "";
 		update();
+	}
+	
+	public void addCorporate()
+	{
+		if(newCorp == null)
+		{
+			newCorp = new NewCorporateAccount();
+			new NewCorpController(newCorp, this);
+		}
+		else
+		{
+			newCorp.revalidate();
+			newCorp.toFront();
+			newCorp.repaint();
+		}
 	}
 	
 	public void setMenuItems()
@@ -92,5 +110,15 @@ public class AccountsController {
 		view.dispose();
 		mainMenu.setAccounts(null);
 	}
+
+	public NewCorporateAccount getNewCorp() {
+		return newCorp;
+	}
+
+	public void setNewCorp(NewCorporateAccount newCorp) {
+		this.newCorp = newCorp;
+	}
+	
+	
 
 }

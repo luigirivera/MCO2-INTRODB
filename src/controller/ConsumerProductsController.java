@@ -52,23 +52,9 @@ public class ConsumerProductsController {
 		if(desc.equals(PLACEHOLDER.RATE.toString()) || desc.trim().isEmpty())
 			desc = null;
 		
-		if(p.getSellerID() != account.getId())
-			p.rate(rating, desc, account.getId());
-		update();
-	}
-	
-	public String checkCartError(int account, int seller)
-	{
-		String error = "";
+		p.rate(rating, desc, account.getId());
 		
-		if(account == seller)
-		{
-			error += "You cannot add your own item to your cart";
-			System.out.println("[PRODUCT] " + error);
-		}
-			
-			
-		return error;
+		update();
 	}
 	
 	public String checkQuantityError(int quantity)
@@ -85,23 +71,8 @@ public class ConsumerProductsController {
 	{
 		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
 		
-		if(checkCartError(account.getId(), product.getSellerID()).isEmpty())
-			product.addToCart(account.getId(), quantity);
+		product.addToCart(account.getId(), quantity);
 		update();
-	}
-	
-	public String checkfollowError(int account, int seller)
-	{
-		String error = "";
-		
-		if(account == seller)
-		{
-			error += "You cannot follow yourself";
-			System.out.println("[ACCOUNT] " + error);
-		}
-			
-			
-		return error;
 	}
 	
 	public void follow()
@@ -109,8 +80,7 @@ public class ConsumerProductsController {
 		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
 		User user = new User();
 		user.setId(account.getId());
-		if(checkfollowError(user.getId(), product.getSellerID()).isEmpty())
-			user.followAccount(product.getSellerID());
+		user.followAccount(product.getSellerID());
 		
 		update();
 	}
@@ -142,6 +112,21 @@ public class ConsumerProductsController {
 			view.getFollow().setText(PLACEHOLDER.UNFOLLOW.toString());
 		else
 			view.getFollow().setText(PLACEHOLDER.FOLLOW.toString());
+		
+		if(buyer.getId() == seller.getId())
+		{
+			view.getRightClick().removeAll();
+			view.getRightClick().add(view.getExpand());
+		}
+		else
+		{
+			view.getRightClick().add(view.getExpand());
+			view.getRightClick().add(view.getRate());
+			view.getRightClick().add(view.getCart());
+			view.getRightClick().add(view.getFave());
+			view.getRightClick().add(view.getFollow());
+		}
+		
 	}
 	
 	public void unfavorite()
@@ -239,7 +224,7 @@ public class ConsumerProductsController {
 			{
 				Product p = productsTableModel.getProductAt(i);
 				Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getSeller(),  p.getDescription(), p.getFavorites(), p.getRating(),
-											p.getStock(), p.getPrice(), p.getDiscount(), p.getShipping()};
+											p.getStock(), p.getPrice(), p.getDiscount(), p.getShipping(), p.getShippingduration() + " days"};
 				
 				view.getModelProductsTable().addRow(row);
 			}

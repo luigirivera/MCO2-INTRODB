@@ -78,6 +78,7 @@ public class ProductInfoController {
 			p.setDiscount(0);
 		
 		p.setShipping(Double.parseDouble(view.getShipping().getText()));
+		p.setShippingduration(view.getDuration().getSelectedIndex());
 		
 		return p;
 	}

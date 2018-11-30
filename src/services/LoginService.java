@@ -9,6 +9,44 @@ import model.Following;
 import model.User;
 
 public class LoginService {
+	
+	public void setCorporate(int id)
+	{
+		String query = "INSERT INTO " + User.CORP_TABLE + " (" + User.COL_ID + ") VALUES (?)";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			
+			ps.executeUpdate();
+			ps.close();
+			
+			System.out.println("[USER] CORPORATE REGISTER DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] CORPORATE REGISTER FAILED");
+			e.printStackTrace();
+		}
+	}
+	
+	public void setConsumer(int id)
+	{
+		String query = "INSERT INTO " + User.CONSU_TABLE + " (" + User.COL_ID + ") VALUES (?)";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			
+			ps.executeUpdate();
+			ps.close();
+			
+			System.out.println("[USER] CONSUMER REGISTER DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] CONSUMER REGISTER FAILED");
+			e.printStackTrace();
+		}
+	}
 	public boolean checkCorporate(int id)
 	{
 		boolean found = false;

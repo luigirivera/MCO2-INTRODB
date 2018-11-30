@@ -125,7 +125,7 @@ public class CorporateProductsController {
 			{
 				Product p = productsTableModel.getProductAt(i);
 				Object[] row = new Object[] {p.getName(), p.getCategory(), p.getBrand(), p.getSeller(),  p.getDescription(), p.getFavorites(), p.getRating(),
-											p.getStock(), p.getSold(), p.getPrice(), p.getDiscount(), p.getShipping()};
+											p.getStock(), p.getSold(), p.getPrice(), p.getDiscount(), p.getShipping(), p.getShippingduration() + " days"};
 				
 				view.getModelProductsTable().addRow(row);
 			}

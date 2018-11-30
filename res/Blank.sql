@@ -18,7 +18,7 @@ USE `stopnshop`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `accounts`
+-- Table structure for table `account`
 --
 
 DROP TABLE IF EXISTS `account`;
@@ -37,16 +37,16 @@ CREATE TABLE `account` (
   `registerdate` date DEFAULT NULL,
   `lastlogindate` date DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `accounts`
+-- Dumping data for table `account`
 --
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'shopee','shopeemain',NULL,NULL,NULL,'shopee@shopee.com',0,0,'2018-11-30',NULL),(2,'luigi','aaaaaa',NULL,'MALE',9995842147,NULL,0,0,'2018-11-30',NULL),(3,'ariana','aaaaaa',NULL,'FEMALE',NULL,'ariana@grande.com',0,0,'2018-11-30',NULL),(4,'jason','aaaaaa',NULL,'MALE',1472589874,NULL,0,0,'2018-11-30',NULL),(5,'joey','aaaaaa',NULL,NULL,9051423658,'joey@yahoo.com',0,0,'2018-11-30',NULL);
+INSERT INTO `account` VALUES (1,'shopee','shopeemain',NULL,NULL,NULL,'shopee@shopee.com',0,0,'2018-11-30','2018-11-30'),(2,'luigi','aaaaaa',NULL,'MALE',9995842147,NULL,0,0,'2018-11-30','2018-11-30'),(3,'ariana','aaaaaa',NULL,'FEMALE',NULL,'ariana@grande.com',0,0,'2018-11-30','2018-11-30'),(4,'jason','aaaaaa',NULL,'MALE',1472589874,NULL,0,0,'2018-11-30',NULL),(5,'joey','aaaaaa',NULL,NULL,9051423658,'joey@yahoo.com',0,0,'2018-11-30',NULL),(6,'admin','aaaaaa',NULL,NULL,1254789856,NULL,0,0,'2018-11-30','2018-11-30');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -68,7 +68,7 @@ CREATE TABLE `address` (
   PRIMARY KEY (`addressid`),
   KEY `id_idx` (`userid`),
   CONSTRAINT `addressuser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,7 +81,7 @@ LOCK TABLES `address` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `bankaccounts`
+-- Table structure for table `bankaccount`
 --
 
 DROP TABLE IF EXISTS `bankaccount`;
@@ -95,11 +95,11 @@ CREATE TABLE `bankaccount` (
   PRIMARY KEY (`baid`),
   KEY `userid_idx` (`userid`),
   CONSTRAINT `bankuser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `bankaccounts`
+-- Dumping data for table `bankaccount`
 --
 
 LOCK TABLES `bankaccount` WRITE;
@@ -108,7 +108,7 @@ LOCK TABLES `bankaccount` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `cards`
+-- Table structure for table `card`
 --
 
 DROP TABLE IF EXISTS `card`;
@@ -123,11 +123,11 @@ CREATE TABLE `card` (
   PRIMARY KEY (`cardsid`),
   KEY `userid_idx` (`userid`),
   CONSTRAINT `carduser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cards`
+-- Dumping data for table `card`
 --
 
 LOCK TABLES `card` WRITE;
@@ -158,6 +158,11 @@ CREATE TABLE `cartcontent` (
 --
 -- Dumping data for table `cartcontent`
 --
+
+LOCK TABLES `cartcontent` WRITE;
+/*!40000 ALTER TABLE `cartcontent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cartcontent` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `consumer`
@@ -207,16 +212,12 @@ CREATE TABLE `corporate` (
 
 LOCK TABLES `corporate` WRITE;
 /*!40000 ALTER TABLE `corporate` DISABLE KEYS */;
-INSERT INTO `corporate` VALUES (1);
+INSERT INTO `corporate` VALUES (1),(6);
 /*!40000 ALTER TABLE `corporate` ENABLE KEYS */;
 UNLOCK TABLES;
 
-LOCK TABLES `cartcontent` WRITE;
-/*!40000 ALTER TABLE `cartcontent` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cartcontent` ENABLE KEYS */;
-UNLOCK TABLES;
 --
--- Table structure for table `favorites`
+-- Table structure for table `favorite`
 --
 
 DROP TABLE IF EXISTS `favorite`;
@@ -235,7 +236,7 @@ CREATE TABLE `favorite` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `favorites`
+-- Dumping data for table `favorite`
 --
 
 LOCK TABLES `favorite` WRITE;
@@ -259,7 +260,7 @@ CREATE TABLE `following` (
   KEY `followerkey` (`follower`),
   CONSTRAINT `followerkey` FOREIGN KEY (`follower`) REFERENCES `account` (`userid`),
   CONSTRAINT `followingkey` FOREIGN KEY (`user`) REFERENCES `account` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -268,11 +269,12 @@ CREATE TABLE `following` (
 
 LOCK TABLES `following` WRITE;
 /*!40000 ALTER TABLE `following` DISABLE KEYS */;
+INSERT INTO `following` VALUES (1,1,6);
 /*!40000 ALTER TABLE `following` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `products`
+-- Table structure for table `product`
 --
 
 DROP TABLE IF EXISTS `product`;
@@ -286,10 +288,11 @@ CREATE TABLE `product` (
   `brand` varchar(45) NOT NULL,
   `description` varchar(45) DEFAULT NULL,
   `stock` bigint(11) NOT NULL,
-  `sold` bigint(11) NOT NULL DEFAULT 0,
+  `sold` bigint(11) NOT NULL DEFAULT '0',
   `price` decimal(11,0) NOT NULL,
-  `discount` decimal(11,0) NOT NULL DEFAULT 0,
+  `discount` decimal(11,0) NOT NULL DEFAULT '0',
   `shipping` decimal(11,0) NOT NULL,
+  `shippingduration` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_idx` (`seller`),
   CONSTRAINT `selleruser` FOREIGN KEY (`seller`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -297,7 +300,7 @@ CREATE TABLE `product` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `products`
+-- Dumping data for table `product`
 --
 
 LOCK TABLES `product` WRITE;
@@ -345,4 +348,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-15 12:19:56
+-- Dump completed on 2018-11-30 15:29:03

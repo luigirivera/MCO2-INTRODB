@@ -8,9 +8,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -31,6 +33,7 @@ public class CartView extends JFrame {
 	private DefaultTableModel modelCartTable;
 	private JScrollPane scrollCartTable;
 	private CartController controller;
+	private JComboBox<String> addresses;
 	
 	public CartView()
 	{
@@ -119,6 +122,20 @@ public class CartView extends JFrame {
 	{
 		return JOptionPane.showConfirmDialog(null, "You have " + name + " with " + quantity + " quantity in your cart but only " + stock + " are available.\nSelect yes if you want to adjust your cart quantity to the maximum available\nSelect no to skip the item.", "Cart Error", JOptionPane.YES_NO_OPTION);
 	}
+	
+	public String selectAddress()
+	{
+		JPanel panel = new JPanel();
+		panel.add(addresses);
+		
+		int result = JOptionPane.showConfirmDialog(null, panel, "Select Address", JOptionPane.OK_OPTION);
+		
+		if(result == JOptionPane.OK_OPTION)
+			return (String)addresses.getSelectedItem();
+		
+		return null;
+	}
+	
 	
 	class checkoutListener implements ActionListener{
 
@@ -224,5 +241,15 @@ public class CartView extends JFrame {
 	public void setController(CartController controller) {
 		this.controller = controller;
 	}
+
+	public JComboBox<String> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(JComboBox<String> addresses) {
+		this.addresses = addresses;
+	}
+	
+	
 
 }

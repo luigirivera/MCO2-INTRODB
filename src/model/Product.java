@@ -20,6 +20,7 @@ public class Product {
 	private double discount;
 	private double shipping;
 	private double rating;
+	private int shippingduration;
 	
 	private ProductsService productservice;
 	
@@ -35,6 +36,7 @@ public class Product {
 	public static final String COL_PRICE = "price";
 	public static final String COL_DISC = "discount";
 	public static final String COL_SHIP = "shipping";
+	public static final String COL_SHIPDUR = "shippingduration";
 	
 	public Product()
 	{
@@ -132,17 +134,25 @@ public class Product {
 		this.favorites = favorites;
 	}
 
+	public int getShippingduration() {
+		return shippingduration;
+	}
+
+	public void setShippingduration(int shippingduration) {
+		this.shippingduration = shippingduration;
+	}
+
 	public boolean productExists() {
 		return productservice.doesProductExist(name, category, brand, description, stock, price, discount, shipping, sellerID);
 	}
 
 	public void addProduct() {
-		productservice.addProduct(name, category, brand, description, stock, price, discount, shipping, sellerID);
+		productservice.addProduct(name, category, brand, description, stock, price, discount, shipping, sellerID, shippingduration);
 		
 	}
 	
 	public void updateProduct() {
-		productservice.updateProduct(name, category, brand, description, stock, price, discount, shipping, productID);
+		productservice.updateProduct(name, category, brand, description, stock, price, discount, shipping, productID, shippingduration);
 	}
 	
 	public ArrayList<Product> getProductsOfUser()

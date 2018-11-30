@@ -182,6 +182,16 @@ public class User {
 			loginservice.registerAccount(username, password, number);
 	}
 	
+	public void setCorporate()
+	{
+		loginservice.setCorporate(userID);
+	}
+	
+	public void setConsumer()
+	{
+		loginservice.setConsumer(userID);
+	}
+	
 	public User getAccountLogin()
 	{
 		return loginservice.getAccountLogin(username);

@@ -24,7 +24,7 @@ public class SellerProductsTableModel extends DefaultTableModel {
 	
 	@Override
 	public int getColumnCount() {
-		return 11;
+		return 12;
 	}
 	
 	@Override
@@ -45,6 +45,7 @@ public class SellerProductsTableModel extends DefaultTableModel {
 		case 8: return product.getPrice();
 		case 9: return product.getDiscount();
 		case 10: return product.getShipping();
+		case 11: return product.getShippingduration();
 		default: return "??";
 		}
 		

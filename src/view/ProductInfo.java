@@ -9,6 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
@@ -22,13 +23,14 @@ public class ProductInfo extends JFrame {
 	private JTextField pName, category, brand, stock, price, discount, shipping;
 	private JTextArea description;
 	private ProductInfoController controller;
+	private JComboBox<String> duration;
 	private boolean modifyMode;
 	
 	public ProductInfo()
 	{
 		super("Product Info");
 		setLayout(null);
-		setSize(500,500);
+		setSize(500,550);
 		instantiate();
 		initialize();
 		addListeners();
@@ -52,6 +54,8 @@ public class ProductInfo extends JFrame {
 
 		description = new JTextArea(PLACEHOLDER.DESCRIPTION.toString());
 		
+		duration = new JComboBox<String>();
+		
 		modifyMode = false;
 	}
 	
@@ -64,10 +68,14 @@ public class ProductInfo extends JFrame {
 		add(category);
 		add(brand);
 		add(description);
+		add(duration);
 		add(stock);
 		add(price);
 		add(discount);
 		add(shipping);
+		
+		for(int i = 0 ; i <= 10; i++)
+			duration.addItem(i + "-day shipping");
 		
 		Color fg = Color.GRAY;
 		
@@ -93,8 +101,11 @@ public class ProductInfo extends JFrame {
 		description.setSize(pName.getWidth(), 200);
 		description.setLocation(category.getX(), category.getY() + category.getHeight() + 10);
 		
+		duration.setSize(pName.getSize());
+		duration.setLocation(description.getX(), description.getY() + description.getHeight() + 10);
+		
 		stock.setSize(brand.getSize());
-		stock.setLocation(description.getX(), description.getY() + description.getHeight() + 10);
+		stock.setLocation(duration.getX(), duration.getY() + duration.getHeight() + 10);
 		
 		price.setSize(stock.getSize());
 		price.setLocation(stock.getX() + stock.getWidth(), stock.getY());
@@ -424,6 +435,14 @@ public class ProductInfo extends JFrame {
 
 	public void setModifyMode(boolean modifyMode) {
 		this.modifyMode = modifyMode;
+	}
+
+	public JComboBox<String> getDuration() {
+		return duration;
+	}
+
+	public void setDuration(JComboBox<String> duration) {
+		this.duration = duration;
 	}
 	
 	

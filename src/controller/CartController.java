@@ -36,13 +36,41 @@ public class CartController {
 		
 		Address a = new Address();
 		a.setUserID(account.getId());
-		order.setAddressID(view.selectAddress(a.getAddressesOfUser()));
+		ArrayList<Address> addresses = a.getAddressesOfUser();
+		
+		for(Address address : addresses)
+			view.getAddresses().addItem(address.getLine1() + " " + address.getLine2() + " "  + address.getCity() + " "  + address.getProvince());
+		
+		String ad;
+		
+		do {
+			ad = view.selectAddress();
+		}while(ad == null);
+		
+		for(Address address : addresses)
+			if(ad.equals(address.getLine1() + " " + address.getLine2() + " "  + address.getCity() + " "  + address.getProvince()))
+				order.setAddressID(address.getAddressID());
+		
 		
 		Card card = new Card();
 		card.setUserID(account.getId());
+		ArrayList<Card> cards = card.getCardsOfUser();
+		
+		for(Card c : cards)
+			view.getCards().addItem(c.getCardNumber());
+		
 		BankAccount bA = new BankAccount();
 		bA.setUserID(account.getId());
-		view.selectPayment(card.getCardsOfUser(), bA.getAccountsOfUser());
+		ArrayList<BankAccount> accounts = bA.getAccountsOfUser();
+		
+		for(BankAccount bAcc : accounts)
+			view.getAccounts().addItem(bAcc.getBank() + " " + bAcc.getAccountNumber());
+		
+		String pay;
+		do {
+			pay = view.selectPayment();
+		}while(pay == null);
+		
 		if(ba selected)
 			order.setBankAccountID();
 		else

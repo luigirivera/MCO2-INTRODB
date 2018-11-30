@@ -9,7 +9,7 @@ public enum PLACEHOLDER {
 	
 	BANK, ACCNUM,
 	
-	NAME, CATEGORY, BRAND, SELLER, DESCRIPTION, FAVORITES, RATING, STOCK, SOLD, PRICE, DISCOUNT, SHIPPING,
+	NAME, CATEGORY, BRAND, SELLER, DESCRIPTION, FAVORITES, RATING, STOCK, SOLD, PRICE, DISCOUNT, SHIPPING, SHIPPINGDUR,
 	
 	ADD, SAVE, CANCEL, DELETE, UNLOCK, RATE, CART, FAVE, UNFAVE, FOLLOW, UNFOLLOW,
 	
@@ -57,6 +57,7 @@ public enum PLACEHOLDER {
 		case PRICE: return "Price";
 		case DISCOUNT: return "Discount Rate";
 		case SHIPPING: return "Shipping";
+		case SHIPPINGDUR: return "Shipping Duration";
 		
 		case ADD: return "+ Add";
 		case SAVE: return "Save";
