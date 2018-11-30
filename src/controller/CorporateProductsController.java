@@ -4,23 +4,42 @@ import java.util.ArrayList;
 
 import model.CorporateProductsTableModel;
 import model.Product;
+import model.User;
 import view.CorporateProductsView;
 import view.PLACEHOLDER;
+import view.RatingView;
 
 public class CorporateProductsController {
 	private CorporateProductsView view;
 	private CorporateMainMenuController mainMenu;
 	private CorporateProductsTableModel productsTableModel;
+	private ArrayList<RatingView> ratings;
+	private ArrayList<String> productRatingName;
 	private String whereClause;
+	private User account;
+	
 	public CorporateProductsController(CorporateProductsView view,
-			CorporateMainMenuController mainMenu) {
+			CorporateMainMenuController mainMenu, User account) {
 		
 		this.view = view;
 		this.mainMenu = mainMenu;
 		productsTableModel = null;
+		this.account = account;
+		ratings = new ArrayList<RatingView>();
+		productRatingName = new ArrayList<String>();
 		view.addController(this);
 		
 		update();
+	}
+	
+	public void showRatings()
+	{
+		Product p = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
+		productRatingName.add(p.getName());
+		RatingView ratingV = new RatingView(p.getName());
+		ratings.add(ratingV);
+		
+		new RatingsController(ratingV,account, null, this, p);
 	}
 	
 	public void close()
@@ -146,5 +165,31 @@ public class CorporateProductsController {
 		
 		return error;
 	}
+
+	public CorporateProductsTableModel getProductsTableModel() {
+		return productsTableModel;
+	}
+
+	public void setProductsTableModel(CorporateProductsTableModel productsTableModel) {
+		this.productsTableModel = productsTableModel;
+	}
+
+	public ArrayList<String> getProductRatingName() {
+		return productRatingName;
+	}
+
+	public void setProductRatingName(ArrayList<String> productRatingName) {
+		this.productRatingName = productRatingName;
+	}
+
+	public ArrayList<RatingView> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(ArrayList<RatingView> ratings) {
+		this.ratings = ratings;
+	}
+	
+	
 
 }

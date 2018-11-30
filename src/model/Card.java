@@ -14,7 +14,7 @@ public class Card {
 	
 	private CardsService cardservice;
 	
-	public static final String TABLE = "cards";
+	public static final String TABLE = "card";
 	public static final String COL_USERID = "userid";
 	public static final String COL_CARDSID = "cardsid";
 	public static final String COL_CARDNUMBER = "cardnumber";

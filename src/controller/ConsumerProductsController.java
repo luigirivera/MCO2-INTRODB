@@ -42,7 +42,7 @@ public class ConsumerProductsController {
 		RatingView ratingV = new RatingView(p.getName());
 		ratings.add(ratingV);
 		
-		new RatingsController(ratingV, program,account, this, p);
+		new RatingsController(ratingV,account, this, null, p);
 	}
 	
 	public void rate(int rating, String desc)

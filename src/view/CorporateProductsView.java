@@ -17,6 +17,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import controller.CorporateProductsController;
+import view.ConsumerProductsView.expandListener;
 
 public class CorporateProductsView extends ProductsView {
 	private static final long serialVersionUID = 1L;
@@ -83,6 +84,17 @@ public class CorporateProductsView extends ProductsView {
 		lowPrice.addFocusListener(new lowPriceFocus());
 		highPrice.addFocusListener(new highPriceFocus());
 		apply.addActionListener(new applyListener());
+		expand.addActionListener(new expandListener());
+	}
+	
+	class expandListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			controller.showRatings();
+			
+		}
+		
 	}
 	
 	class applyListener implements ActionListener{

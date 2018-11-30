@@ -30,7 +30,7 @@ public class User {
 	private SettingsService settingsservice;
 	private AccountsService accountservice;
 	
-	public static final String TABLE = "accounts";
+	public static final String TABLE = "account";
 	public static final String COL_ID = "userid";
 	public static final String COL_USERNAME = "username";
 	public static final String COL_PASSWORD = "password";

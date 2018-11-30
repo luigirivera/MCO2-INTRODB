@@ -23,7 +23,7 @@ public class Product {
 	
 	private ProductsService productservice;
 	
-	public static final String TABLE = "products";
+	public static final String TABLE = "product";
 	public static final String COL_ID = "id";
 	public static final String COL_SELLERID = "seller";
 	public static final String COL_NAME = "name";

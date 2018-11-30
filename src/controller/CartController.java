@@ -3,6 +3,9 @@ package controller;
 import java.util.ArrayList;
 
 import driver.StopNShop;
+import model.Address;
+import model.BankAccount;
+import model.Card;
 import model.Cart;
 import model.CartTableModel;
 import model.User;
@@ -29,8 +32,23 @@ public class CartController {
 	
 	public void checkout(int yes, int no)
 	{
-		slectaddress;
-		selectpayment;
+		Order order = new Order();
+		
+		Address a = new Address();
+		a.setUserID(account.getId());
+		order.setAddressID(view.selectAddress(a.getAddressesOfUser()));
+		
+		Card card = new Card();
+		card.setUserID(account.getId());
+		BankAccount bA = new BankAccount();
+		bA.setUserID(account.getId());
+		view.selectPayment(card.getCardsOfUser(), bA.getAccountsOfUser());
+		if(ba selected)
+			order.setBankAccountID();
+		else
+			order.setCardID();
+		
+		
 		Cart c = new Cart();
 		c.setUserID(account.getId());
 		ArrayList<Cart> cart = c.getCartOfUser();

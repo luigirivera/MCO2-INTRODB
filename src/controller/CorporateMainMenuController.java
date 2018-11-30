@@ -52,7 +52,7 @@ public class CorporateMainMenuController {
 		if(products == null)
 		{
 			products = new CorporateProductsView();
-			new CorporateProductsController(products, this);
+			new CorporateProductsController(products, this, account);
 		}
 		else
 		{

@@ -2,7 +2,6 @@ package controller;
 
 import java.util.ArrayList;
 
-import driver.StopNShop;
 import model.Product;
 import model.Rating;
 import model.RatingTableModel;
@@ -12,17 +11,17 @@ import view.RatingView;
 public class RatingsController {
 	
 	private RatingView view;
-	private StopNShop program;
 	private User account;
 	private RatingTableModel modelRatingTable;
 	private ConsumerProductsController products;
+	private CorporateProductsController corpP;
 	private Product product;
 	
-	public RatingsController(RatingView view, StopNShop program, User account,
-			ConsumerProductsController products, Product product) {
+	public RatingsController(RatingView view,  User account,
+			ConsumerProductsController products, CorporateProductsController corpP, Product product) {
 		this.view = view;
 		this.products = products;
-		this.program = program;
+		this.corpP = corpP;
 		this.account = account;
 		this.product = product;
 		modelRatingTable = null;
@@ -32,10 +31,21 @@ public class RatingsController {
 	
 	public void close()
 	{
-		int index = products.getRatings().indexOf(this);
-		
-		products.getRatings().remove(index);
-		products.getProductRatingName().remove(index);
+		if(products != null)
+		{
+			int index = products.getRatings().indexOf(this);
+			
+			products.getRatings().remove(index);
+			products.getProductRatingName().remove(index);
+		}
+		else
+		{
+			int index = corpP.getRatings().indexOf(this);
+			
+			corpP.getRatings().remove(index);
+			corpP.getProductRatingName().remove(index);
+		}
+
 		
 		view.dispose();
 	}
@@ -45,7 +55,10 @@ public class RatingsController {
 		Rating r = modelRatingTable.getRatingAt(view.getRatingsTable().getSelectedRow());
 		r.delete();
 		update();
-		products.update();
+		if(products != null)
+			products.update();
+		else
+			corpP.update();
 	}
 	
 	public void checkItems()
