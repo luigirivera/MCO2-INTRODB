@@ -131,7 +131,7 @@ public class CartController {
 										}
 										order.addtoOrder(cc.getProductID(), cc.getQuantity());
 										cc.delete();
-//										subtractfromproductstock;
+										order.subtractStock(cc.getProductStock(cc.getProductID()) - cc.getQuantity(), cc.getProductSold(cc.getProductID()) + cc.getQuantity(), cc.getProductID());
 										update();
 									}
 										
