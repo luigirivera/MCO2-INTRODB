@@ -12,6 +12,32 @@ import model.Product;
 
 public class CartService {
 	
+	public int getProductSold(int id)
+	{
+		int sold = 0;
+		
+		String query = "SELECT " + Product.COL_SOLD + " FROM " + Product.TABLE + " WHERE " + Product.COL_ID + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+				sold = rs.getInt(Product.COL_SOLD);
+
+			ps.close();
+			System.out.println("[CART] GET STOCK DONE");
+		}catch(SQLException e) {
+			System.out.println("[CART] GET STOCK FAILED");
+			e.printStackTrace();
+		}
+		
+		return sold;
+	}
+	
 	public int getProductStock(int id)
 	{
 		int stock = 0;
@@ -31,7 +57,7 @@ public class CartService {
 			ps.close();
 			System.out.println("[CART] GET STOCK DONE");
 		}catch(SQLException e) {
-			System.out.println("[USER] GET STOCK FAILED");
+			System.out.println("[CART] GET STOCK FAILED");
 			e.printStackTrace();
 		}
 		

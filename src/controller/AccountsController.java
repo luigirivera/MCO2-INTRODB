@@ -10,15 +10,13 @@ import view.PLACEHOLDER;
 
 public class AccountsController {
 	private Accounts view;
-	private User account;
 	private CorporateMainMenuController mainMenu;
 	private AccountsTableModel accountsTableModel;
 	private NewCorporateAccount newCorp;
 	private String whereClause;
 
-	public AccountsController(Accounts view, User account, CorporateMainMenuController mainMenu) {
+	public AccountsController(Accounts view, CorporateMainMenuController mainMenu) {
 		this.view = view;
-		this.account = account;
 		this.mainMenu = mainMenu;
 		newCorp = null;
 		accountsTableModel = null;

@@ -45,7 +45,10 @@ public class AddressController {
 		
 		address.setUserID(account.getId());
 		address.setLine1(view.getLine1().getText());
-		address.setLine2(view.getLine2().getText());
+		if(view.getLine2().getText().trim().isEmpty() || view.getLine2().getText().equals(PLACEHOLDER.LINE2.toString()))
+			address.setLine2(null);
+		else
+			address.setLine2(view.getLine2().getText());
 		address.setCity(view.getCity().getText());
 		address.setProvince(view.getProvince().getText());
 		address.setZip(Integer.parseInt(view.getZip().getText()));

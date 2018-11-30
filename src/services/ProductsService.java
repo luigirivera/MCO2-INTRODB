@@ -11,6 +11,8 @@ import java.util.Calendar;
 import database.DatabaseConnection;
 import model.CartContent;
 import model.Favorite;
+import model.Order;
+import model.OrderContent;
 import model.Product;
 import model.Rating;
 import model.User;
@@ -467,12 +469,24 @@ public class ProductsService {
 			ps.executeUpdate();
 			System.out.println("[PRODUCT] RATING DELETE SUCCESS");
 			
+			query = "DELETE FROM " + OrderContent.TABLE + " WHERE " + OrderContent.COL_PRODUCT + " = ?";			
+			ps = DatabaseConnection.getConnection().prepareStatement(query);			
+			ps.setInt(1, productID);			
+			ps.executeUpdate();
+			System.out.println("[PRODUCT] ORDER CONTENT DELETE SUCCESS");				
+			
+			query = "DELETE FROM " + OrderContent.TABLE + " WHERE " + OrderContent.COL_PRODUCT + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, productID);
+			ps.executeUpdate();
+			System.out.println("[PRODUCT] ORDER CONTENT DELETE SUCCESS");
+			
 			query = "DELETE FROM " + Product.TABLE + " WHERE " + Product.COL_ID + " = ?";
 			ps = DatabaseConnection.getConnection().prepareStatement(query);
 			ps.setInt(1, productID);
 			ps.executeUpdate();
 
-			kk;
+		kk;
 			ps.close();
 			System.out.println("[PRODUCT] DELETE SUCCESS");
 		} catch (SQLException e) {

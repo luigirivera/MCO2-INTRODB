@@ -2,7 +2,6 @@ package controller;
 
 import java.util.ArrayList;
 
-import driver.StopNShop;
 import model.ConsumerProductTableModel;
 import model.Product;
 import model.User;
@@ -13,7 +12,6 @@ import view.RatingView;
 public class ConsumerProductsController {
 	
 	private ConsumerProductsView view;
-	private StopNShop program;
 	private User account;
 	private CustomerMainMenuController mainMenu;
 	private ArrayList<RatingView> ratings;
@@ -21,11 +19,10 @@ public class ConsumerProductsController {
 	private String whereClause;
 	private ConsumerProductTableModel productsTableModel;
 
-	public ConsumerProductsController(ConsumerProductsView view, StopNShop program, User account,
+	public ConsumerProductsController(ConsumerProductsView view, User account,
 			CustomerMainMenuController mainMenu) {
 		this.view = view;
 		this.mainMenu = mainMenu;
-		this.program = program;
 		this.account = account;
 		whereClause = "";
 		productsTableModel = null;

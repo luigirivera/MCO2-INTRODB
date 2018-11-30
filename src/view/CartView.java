@@ -1,5 +1,7 @@
 package view;
 
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -7,13 +9,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -33,7 +38,10 @@ public class CartView extends JFrame {
 	private DefaultTableModel modelCartTable;
 	private JScrollPane scrollCartTable;
 	private CartController controller;
-	private JComboBox<String> addresses;
+	private JComboBox<String> addresses, cards, accounts;
+	private JRadioButton bank, card;
+	private ButtonGroup group;
+	private JLabel subtotal;
 	
 	public CartView()
 	{
@@ -71,15 +79,35 @@ public class CartView extends JFrame {
 		cartTable = new JTable(modelCartTable);
 		
 		scrollCartTable = new JScrollPane(cartTable);
+		
+		addresses = new JComboBox<String>();
+		cards = new JComboBox<String>();
+		accounts = new JComboBox<String>();
+		
+		bank = new JRadioButton("Bank");
+		card = new JRadioButton("Card");
+		
+		group = new ButtonGroup();
+		
+		subtotal = new JLabel();
 	}
 	
 	private void initialize()
 	{
 		add(checkout);
 		add(scrollCartTable);
+		add(subtotal);
+		
+		group.add(bank);
+		group.add(card);
 		
 		rightClick.add(delete);
 		rightClick.add(editquantity);
+		
+		subtotal.setFont(new Font("Arial", Font.BOLD, 25));
+		
+		subtotal.setSize(250, 40);
+		subtotal.setLocation(10, 0);
 		
 		checkout.setSize(100, 40);
 		checkout.setLocation(this.getWidth() - checkout.getWidth() - 10, 0);
@@ -128,12 +156,63 @@ public class CartView extends JFrame {
 		JPanel panel = new JPanel();
 		panel.add(addresses);
 		
-		int result = JOptionPane.showConfirmDialog(null, panel, "Select Address", JOptionPane.OK_OPTION);
+		int result = JOptionPane.showConfirmDialog(null, panel, "Select Address", JOptionPane.YES_NO_OPTION);
 		
-		if(result == JOptionPane.OK_OPTION)
+		if(result == JOptionPane.YES_OPTION)
 			return (String)addresses.getSelectedItem();
+		else
+			return String.valueOf(JOptionPane.NO_OPTION);
+	}
+	
+	public String selectPayment()
+	{
+		bank.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				cards.setVisible(false);
+				accounts.setVisible(true);
+				
+			}
+			
+		});
 		
-		return null;
+		card.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				cards.setVisible(true);
+				accounts.setVisible(false);
+				
+			}
+			
+		});
+		
+		JPanel panel = new JPanel();
+		
+		panel.setLayout(null);
+		panel.add(bank);
+		panel.add(card);
+		panel.add(accounts);
+		panel.add(cards);
+		bank.setSelected(true);
+		panel.setPreferredSize(new Dimension(300, 30));
+		bank.setBounds(5, 5, 70, 20);
+		card.setBounds(bank.getX() + bank.getWidth(), 5, bank.getWidth(), bank.getHeight());
+		accounts.setSize(100, card.getHeight());
+		accounts.setLocation(card.getX() + card.getWidth(), card.getY());
+		cards.setBounds(accounts.getBounds());
+		
+		int result = JOptionPane.showConfirmDialog(null, panel, "Select Payment", JOptionPane.YES_NO_OPTION);
+		
+		if(result == JOptionPane.YES_OPTION)
+			if(bank.isSelected())
+				return (String)accounts.getSelectedItem();
+			else
+				return (String)cards.getSelectedItem();
+		
+		else
+			return String.valueOf(JOptionPane.NO_OPTION);
 	}
 	
 	
@@ -249,7 +328,45 @@ public class CartView extends JFrame {
 	public void setAddresses(JComboBox<String> addresses) {
 		this.addresses = addresses;
 	}
-	
-	
 
+	public JComboBox<String> getCards() {
+		return cards;
+	}
+
+	public void setCards(JComboBox<String> cards) {
+		this.cards = cards;
+	}
+
+	public JComboBox<String> getAccounts() {
+		return accounts;
+	}
+
+	public void setAccounts(JComboBox<String> accounts) {
+		this.accounts = accounts;
+	}
+
+	public JRadioButton getBank() {
+		return bank;
+	}
+
+	public void setBank(JRadioButton bank) {
+		this.bank = bank;
+	}
+
+	public JRadioButton getCard() {
+		return card;
+	}
+
+	public void setCard(JRadioButton card) {
+		this.card = card;
+	}
+
+	public JLabel getSubtotal() {
+		return subtotal;
+	}
+
+	public void setSubtotal(JLabel subtotal) {
+		this.subtotal = subtotal;
+	}
+	
 }

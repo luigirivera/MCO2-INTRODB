@@ -2,6 +2,8 @@ package model;
 
 import java.sql.Date;
 
+import services.OrderService;
+
 public class Order {
 	private int id;
 	private int userID;
@@ -11,6 +13,21 @@ public class Order {
 	private int cardID;
 	private int bankID;
 	
+	private OrderService orderservice;
+	
+	public static final String TABLE = "consumerorder";
+	public static final String COL_ID = "orderid";
+	public static final String COL_USERID = "userID";
+	public static final String COL_QUANTITY = "quantity";
+	public static final String COL_CREATION = "creationdate";
+	public static final String COL_ADDRESS = "addressID";
+	public static final String COL_CARD = "cardID";
+	public static final String COL_BANK = "bankID";
+	
+	public Order()
+	{
+		orderservice = new OrderService();
+	}
 	
 	public int getId() {
 		return id;
@@ -55,5 +72,29 @@ public class Order {
 		this.bankID = bankID;
 	}
 	
+	public int createOrder(int userID)
+	{
+		return orderservice.createOrder(userID, addressID, cardID, bankID);
+	}
+
+	public void addtoOrder(int productID, int quantity2) {
+		orderservice.addtoOrder(id, productID, quantity2);
+	}
 	
+	public int getOrderQuantity()
+	{
+		return orderservice.getOrderQuantity(id);
+	}
+	
+	public void setOrderTotalQuantity(int total)
+	{
+		this.quantity = total;
+		
+		orderservice.setOrderTotalQuantity(total, id);
+	}
+
+	public void subtractStock(int i, int sold, int productID) {
+		orderservice.subtractStock(i, sold, productID);
+		
+	}
 }

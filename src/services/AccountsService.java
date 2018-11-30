@@ -12,6 +12,8 @@ import model.Card;
 import model.CartContent;
 import model.Favorite;
 import model.Following;
+import model.Order;
+import model.OrderContent;
 import model.Product;
 import model.Rating;
 import model.User;
@@ -166,12 +168,41 @@ public class AccountsService {
 			ps.executeUpdate();
 			System.out.println("[ACCOUNTS] RATING DELETE SUCCESS");
 			
-			query = "DELETE FROM " + User.TABLE + " WHERE " + User.COL_ID + " = ?";			
+			ArrayList<Integer> orderIDs = new ArrayList<Integer>();
+			query = "SELECT " + Order.COL_ID + " FROM " + Order.TABLE + " WHERE " + Order.COL_USERID + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);			
+			ps.setInt(1, userID);	
+			ResultSet rs = ps.executeQuery();
+			while(rs.next())
+				orderIDs.add(rs.getInt(Order.COL_ID));
+			System.out.println("[ACCOUNTS] ORDER GET SUCCESS");
+			
+			for(Integer oID : orderIDs)
+			{
+				query = "DELETE FROM " + OrderContent.TABLE + " WHERE " + OrderContent.COL_ORDER + " = ?";			
+				ps = DatabaseConnection.getConnection().prepareStatement(query);			
+				ps.setInt(1, oID);			
+				ps.executeUpdate();
+				System.out.println("[ACCOUNTS] ORDER CONTENT DELETE SUCCESS");				
+			}
+			
+			query = "DELETE FROM " + Order.TABLE + " WHERE " + Order.COL_USERID + " = ?";			
+			ps = DatabaseConnection.getConnection().prepareStatement(query);			
+			ps.setInt(1, userID);			
+			ps.executeUpdate();
+			System.out.println("[ACCOUNTS] ORDERS DELETE SUCCESS");
+			
+			query = "DELETE FROM " + User.CONSU_TABLE + " WHERE " + Order.COL_USERID + " = ?";			
 			ps = DatabaseConnection.getConnection().prepareStatement(query);			
 			ps.setInt(1, userID);			
 			ps.executeUpdate();
 			
-			ff;
+			query = "DELETE FROM " + User.TABLE + " WHERE " + User.COL_ID + " = ?";			
+			ps = DatabaseConnection.getConnection().prepareStatement(query);			
+			ps.setInt(1, userID);			
+			ps.executeUpdate();
+			kk;
+			
 			ps.close();
 			System.out.println("[ACCOUNTS] DELETE SUCCESS");
 		} catch (SQLException e) {

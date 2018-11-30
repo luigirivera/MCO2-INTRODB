@@ -94,6 +94,11 @@ public class Cart {
 		return cartservice.getProductStock(id);
 	}
 
+	public int getProductSold(int id)
+	{
+		return cartservice.getProductSold(id);
+	}
+	
 	public void updateQuantity(int newquantity) {
 		cartservice.updateQuantity(newquantity, id);
 		

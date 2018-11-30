@@ -49,7 +49,7 @@ public class CustomerMainMenuController {
 		if(products == null)
 		{
 			products = new ConsumerProductsView();
-			new ConsumerProductsController(products, program, account, this);
+			new ConsumerProductsController(products, account, this);
 		}
 		else
 		{
@@ -64,7 +64,7 @@ public class CustomerMainMenuController {
 		if(sellerPortal == null)
 		{
 			sellerPortal = new SellerPortal();
-			new SellerPortalController(sellerPortal, program, account, this);
+			new SellerPortalController(sellerPortal, account, this);
 		}
 		else
 		{

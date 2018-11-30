@@ -61,14 +61,14 @@ CREATE TABLE `address` (
   `addressid` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
   `line1` varchar(45) NOT NULL,
-  `line2` varchar(45) NOT NULL,
+  `line2` varchar(45) DEFAULT NULL,
   `city` varchar(45) NOT NULL,
   `province` varchar(45) NOT NULL,
   `zipcode` int(11) NOT NULL,
   PRIMARY KEY (`addressid`),
   KEY `id_idx` (`userid`),
   CONSTRAINT `addressuser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,6 +77,7 @@ CREATE TABLE `address` (
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
+INSERT INTO `address` VALUES (1,3,'2401 Taft Avenue',NULL,'Manila','NCR',1004);
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -95,7 +96,7 @@ CREATE TABLE `bankaccount` (
   PRIMARY KEY (`baid`),
   KEY `userid_idx` (`userid`),
   CONSTRAINT `bankuser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -104,6 +105,7 @@ CREATE TABLE `bankaccount` (
 
 LOCK TABLES `bankaccount` WRITE;
 /*!40000 ALTER TABLE `bankaccount` DISABLE KEYS */;
+INSERT INTO `bankaccount` VALUES (1,3,'BPI',2485748859);
 /*!40000 ALTER TABLE `bankaccount` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,7 +125,7 @@ CREATE TABLE `card` (
   PRIMARY KEY (`cardsid`),
   KEY `userid_idx` (`userid`),
   CONSTRAINT `carduser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -132,6 +134,7 @@ CREATE TABLE `card` (
 
 LOCK TABLES `card` WRITE;
 /*!40000 ALTER TABLE `card` DISABLE KEYS */;
+INSERT INTO `card` VALUES (1,3,5264914500145897,'2022-11-01',0);
 /*!40000 ALTER TABLE `card` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -143,16 +146,16 @@ DROP TABLE IF EXISTS `cartcontent`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cartcontent` (
-  `idcartcontent` int(11) NOT NULL AUTO_INCREMENT,
+  `cartid` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL,
   `productid` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
-  PRIMARY KEY (`idcartcontent`),
+  PRIMARY KEY (`cartid`),
   KEY `cartuser_idx` (`userid`),
   KEY `cartproduct_idx` (`productid`),
   CONSTRAINT `cartproduct` FOREIGN KEY (`productid`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `cartuser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -161,6 +164,7 @@ CREATE TABLE `cartcontent` (
 
 LOCK TABLES `cartcontent` WRITE;
 /*!40000 ALTER TABLE `cartcontent` DISABLE KEYS */;
+INSERT INTO `cartcontent` VALUES (1,3,1,3);
 /*!40000 ALTER TABLE `cartcontent` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -190,6 +194,42 @@ LOCK TABLES `consumer` WRITE;
 /*!40000 ALTER TABLE `consumer` DISABLE KEYS */;
 INSERT INTO `consumer` VALUES (2,0,0,0,0),(3,0,0,0,0),(4,0,0,0,0),(5,0,0,0,0);
 /*!40000 ALTER TABLE `consumer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `consumerorder`
+--
+
+DROP TABLE IF EXISTS `consumerorder`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `consumerorder` (
+  `orderid` int(11) NOT NULL AUTO_INCREMENT,
+  `userID` int(11) NOT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `creationdate` date NOT NULL,
+  `addressID` int(11) NOT NULL,
+  `cardID` int(11) DEFAULT NULL,
+  `bankID` int(11) DEFAULT NULL,
+  PRIMARY KEY (`orderid`),
+  KEY `orderuser_idx` (`userID`),
+  KEY `orderaddress_idx` (`addressID`),
+  KEY `ordercard_idx` (`cardID`),
+  KEY `orderbank_idx` (`bankID`),
+  CONSTRAINT `orderaddress` FOREIGN KEY (`addressID`) REFERENCES `address` (`addressid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `orderbank` FOREIGN KEY (`bankID`) REFERENCES `bankaccount` (`baid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `ordercard` FOREIGN KEY (`cardID`) REFERENCES `card` (`cardsid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `orderuser` FOREIGN KEY (`userID`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `consumerorder`
+--
+
+LOCK TABLES `consumerorder` WRITE;
+/*!40000 ALTER TABLE `consumerorder` DISABLE KEYS */;
+/*!40000 ALTER TABLE `consumerorder` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -274,6 +314,35 @@ INSERT INTO `following` VALUES (1,1,6);
 UNLOCK TABLES;
 
 --
+-- Table structure for table `ordercontent`
+--
+
+DROP TABLE IF EXISTS `ordercontent`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ordercontent` (
+  `orderid` int(11) NOT NULL,
+  `productID` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `status` varchar(45) NOT NULL,
+  `deliverydate` date NOT NULL,
+  KEY `orderproduct_idx` (`productID`),
+  KEY `contentorderid_idx` (`orderid`),
+  CONSTRAINT `contentorderid` FOREIGN KEY (`orderid`) REFERENCES `consumerorder` (`orderid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `orderproduct` FOREIGN KEY (`productID`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ordercontent`
+--
+
+LOCK TABLES `ordercontent` WRITE;
+/*!40000 ALTER TABLE `ordercontent` DISABLE KEYS */;
+/*!40000 ALTER TABLE `ordercontent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `product`
 --
 
@@ -292,11 +361,11 @@ CREATE TABLE `product` (
   `price` decimal(11,0) NOT NULL,
   `discount` decimal(11,0) NOT NULL DEFAULT '0',
   `shipping` decimal(11,0) NOT NULL,
-  `shippingduration` date NOT NULL,
+  `shippingduration` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_idx` (`seller`),
   CONSTRAINT `selleruser` FOREIGN KEY (`seller`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -305,6 +374,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
+INSERT INTO `product` VALUES (1,4,'MacBook','Laptop','Apple',NULL,100,0,5000,10,200,2);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -348,4 +418,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-30 15:29:03
+-- Dump completed on 2018-11-30 22:23:40

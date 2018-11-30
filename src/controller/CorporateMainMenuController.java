@@ -37,7 +37,7 @@ public class CorporateMainMenuController {
 		if(accounts == null)
 		{
 			accounts = new Accounts();
-			new AccountsController(accounts, account, this);
+			new AccountsController(accounts, this);
 		}
 		else
 		{
