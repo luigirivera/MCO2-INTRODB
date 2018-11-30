@@ -33,14 +33,14 @@ public class RatingsController {
 	{
 		if(products != null)
 		{
-			int index = products.getRatings().indexOf(this);
+			int index = products.getRatings().indexOf(view);
 			
 			products.getRatings().remove(index);
 			products.getProductRatingName().remove(index);
 		}
 		else
 		{
-			int index = corpP.getRatings().indexOf(this);
+			int index = corpP.getRatings().indexOf(view);
 			
 			corpP.getRatings().remove(index);
 			corpP.getProductRatingName().remove(index);
