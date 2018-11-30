@@ -69,15 +69,14 @@ public class AccountsService {
 	public ArrayList<User> getAccounts(String whereClause) {
 		ArrayList<User> accounts = new ArrayList<User>();
 		
-		String query = "SELECT " + User.COL_ID + ", "
-								 + User.COL_USERNAME + ", "
-								 + User.COL_NUMBER + ", "
-								 + User.COL_EMAIL + ", "
-								 + User.COL_REGISTER + ", "
-								 + User.COL_ISLOCKED + ", "
-								 + User.COL_FORDELETION + ", "
-								 + User.COL_ISCORPORATE + ", "
-								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + whereClause;
+		String query = "SELECT U." + User.COL_ID + ", U."
+								 + User.COL_USERNAME + ", U."
+								 + User.COL_NUMBER + ", U."
+								 + User.COL_EMAIL + ", U."
+								 + User.COL_REGISTER + ", U."
+								 + User.COL_ISLOCKED + ", C."
+								 + User.COL_FORDELETION + ", U."
+								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U LEFT JOIN " + User.CONSU_TABLE + " AS C ON U." + User.COL_ID + " = C." + User.COL_ID + whereClause;
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 		
@@ -109,7 +108,6 @@ public class AccountsService {
 		user.setLastLogin(rs.getDate(User.COL_LASTLOGIN));
 		user.setLocked(rs.getBoolean(User.COL_ISLOCKED));
 		user.setForDeletion(rs.getBoolean(User.COL_FORDELETION));
-		user.setCorporate(rs.getBoolean(User.COL_ISCORPORATE));
 		
 		return user;
 	}

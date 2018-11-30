@@ -32,17 +32,12 @@ CREATE TABLE `account` (
   `gender` varchar(45) DEFAULT NULL,
   `number` bigint(11) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
-  `walletbalance` decimal(11,0) DEFAULT '0',
-  `income` decimal(11,0) DEFAULT '0',
-  `shopeecoins` decimal(11,0) DEFAULT '0',
   `logintries` int(11) DEFAULT '0',
   `islocked` tinyint(4) DEFAULT '0',
-  `fordeletion` tinyint(4) DEFAULT '0',
-  `iscorporate` tinyint(4) DEFAULT '0',
   `registerdate` date DEFAULT NULL,
   `lastlogindate` date DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -51,7 +46,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'shopee','shopeemain',NULL,'MALE',NULL,'shopee@shopee.com',0,0,0,0,0,0,0,'2018-11-03','2018-11-04'),(2,'luigi','aaaaaa',NULL,'MALE',9994752346,NULL,0,0,0,0,0,0,0,'2018-11-03','2018-11-23'),(3,'admin','aaaaaa',NULL,NULL,NULL,'admin@shopee.com',0,0,0,0,0,0,1,'2018-11-21','2018-11-22'),(4,'ariana','aaaaaa',NULL,'FEMALE',7874587874,NULL,0,0,0,0,0,0,0,'2018-11-23','2018-11-23'),(5,'jason','aaaaaa',NULL,NULL,NULL,'jason@jason.com',0,0,0,0,0,0,0,'2018-10-23','2018-11-23');
+INSERT INTO `account` VALUES (1,'shopee','shopeemain',NULL,NULL,NULL,'shopee@shopee.com',0,0,'2018-11-30',NULL),(2,'luigi','aaaaaa',NULL,'MALE',9995842147,NULL,0,0,'2018-11-30',NULL),(3,'ariana','aaaaaa',NULL,'FEMALE',NULL,'ariana@grande.com',0,0,'2018-11-30',NULL),(4,'jason','aaaaaa',NULL,'MALE',1472589874,NULL,0,0,'2018-11-30',NULL),(5,'joey','aaaaaa',NULL,NULL,9051423658,'joey@yahoo.com',0,0,'2018-11-30',NULL);
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,6 +158,58 @@ CREATE TABLE `cartcontent` (
 --
 -- Dumping data for table `cartcontent`
 --
+
+--
+-- Table structure for table `consumer`
+--
+
+DROP TABLE IF EXISTS `consumer`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `consumer` (
+  `userid` int(11) NOT NULL,
+  `walletbalance` decimal(11,0) DEFAULT '0',
+  `income` decimal(11,0) DEFAULT '0',
+  `shopeecoins` decimal(11,0) DEFAULT '0',
+  `fordeletion` tinyint(4) DEFAULT '0',
+  PRIMARY KEY (`userid`),
+  CONSTRAINT `consumeruser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `consumer`
+--
+
+LOCK TABLES `consumer` WRITE;
+/*!40000 ALTER TABLE `consumer` DISABLE KEYS */;
+INSERT INTO `consumer` VALUES (2,0,0,0,0),(3,0,0,0,0),(4,0,0,0,0),(5,0,0,0,0);
+/*!40000 ALTER TABLE `consumer` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `corporate`
+--
+
+DROP TABLE IF EXISTS `corporate`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `corporate` (
+  `userid` int(11) NOT NULL,
+  PRIMARY KEY (`userid`),
+  CONSTRAINT `corporateuser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `corporate`
+--
+
+LOCK TABLES `corporate` WRITE;
+/*!40000 ALTER TABLE `corporate` DISABLE KEYS */;
+INSERT INTO `corporate` VALUES (1);
+/*!40000 ALTER TABLE `corporate` ENABLE KEYS */;
+UNLOCK TABLES;
 
 LOCK TABLES `cartcontent` WRITE;
 /*!40000 ALTER TABLE `cartcontent` DISABLE KEYS */;

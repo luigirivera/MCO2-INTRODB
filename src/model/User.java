@@ -31,6 +31,9 @@ public class User {
 	private AccountsService accountservice;
 	
 	public static final String TABLE = "account";
+	public static final String CORP_TABLE = "corporate";
+	public static final String CONSU_TABLE = "consumer";
+	
 	public static final String COL_ID = "userid";
 	public static final String COL_USERNAME = "username";
 	public static final String COL_PASSWORD = "password";
@@ -204,7 +207,7 @@ public class User {
 	
 	public void updateDelete()
 	{
-		settingsservice.updateDelete(username,forDeletion);
+		settingsservice.updateDelete(userID,forDeletion);
 	}
 	
 	public void setLogin()
@@ -244,5 +247,14 @@ public class User {
 	public void unfollowAccount(int account)
 	{
 		accountservice.unfollow(account, userID);
+	}
+	
+	public boolean checkCorporate()
+	{
+		return loginservice.checkCorporate(userID);
+	}
+
+	public boolean getDeletion() {
+		return settingsservice.getDeletion(userID);
 	}
 }

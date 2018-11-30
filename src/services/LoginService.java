@@ -9,7 +9,33 @@ import model.Following;
 import model.User;
 
 public class LoginService {
-	
+	public boolean checkCorporate(int id)
+	{
+		boolean found = false;
+		
+		String query = "SELECT " + User.COL_ID + " FROM " + User.CORP_TABLE + " WHERE " + User.COL_ID + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			if(rs.next())
+				found = true;
+			
+			ps.close();
+			rs.close();
+			
+			System.out.println("[USER] CORPORATE CHECK DONE");
+		}catch(SQLException e) {
+			System.out.println("[USER] CORPORATE CHECK FAILED");
+			e.printStackTrace();
+		}
+		
+		return found;
+	}
 	public boolean doesUsernameExist(String username) {
 		boolean found = false;
 		
@@ -271,11 +297,6 @@ public class LoginService {
 								 + User.COL_GENDER + ", "
 								 + User.COL_NUMBER + ", "
 								 + User.COL_EMAIL + ", "
-								 + User.COL_WALLET + ", "
-								 + User.COL_INCOME + ", "
-								 + User.COL_COINS + ", "
-								 + User.COL_ISCORPORATE + ", "
-								 + User.COL_FORDELETION + ", "
 								 + User.COL_ID
 								 + " FROM " + User.TABLE + " WHERE " + User.COL_USERNAME + " = ?";
 		
@@ -311,11 +332,6 @@ public class LoginService {
 		user.setGender(rs.getString(User.COL_GENDER));
 		user.setNumber(rs.getLong(User.COL_NUMBER));
 		user.setEmail(rs.getString(User.COL_EMAIL));
-		user.setWallet(rs.getDouble(User.COL_WALLET));
-		user.setIncome(rs.getDouble(User.COL_INCOME));
-		user.setCoins(rs.getInt(User.COL_COINS));
-		user.setCorporate(rs.getBoolean(User.COL_ISCORPORATE));
-		user.setForDeletion(rs.getBoolean(User.COL_FORDELETION));
 		
 		return user;
 	}

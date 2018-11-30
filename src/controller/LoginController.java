@@ -20,7 +20,12 @@ public class LoginController {
 	public void loginAccount()
 	{
 		account.setLogin();
-		program.setAccount(account.getDetails());
+		User user = account.getDetails();
+		if(user.checkCorporate())
+			user.setCorporate(true);
+		else
+			user.setCorporate(false);
+		program.setAccount(user);
 		account = account.getDetails();
 		program.login();
 	}
