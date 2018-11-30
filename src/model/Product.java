@@ -201,4 +201,17 @@ public class Product {
 	{
 		return productservice.getRatings(id);
 	}
+
+	public boolean checkifincart(int id) {
+		return productservice.checkifincart(id, productID);
+	}
+
+	public int getCartQuantity(int id) {
+		return productservice.getCartQuantity(id, productID);
+	}
+
+	public void updateCartQuantity(int id, int quantity) {
+		productservice.updateCartQuantity(id, productID, quantity);
+		
+	}
 }

@@ -92,7 +92,7 @@ public class CartService {
 							", P." + Product.COL_DISC +
 							", P." + Product.COL_PRICE +
 							", P." + Product.COL_SHIP +
-							", (P." + Product.COL_PRICE + " - " + "((P." + Product.COL_DISC + "/100)*P." + Product.COL_PRICE + ") + P." + Product.COL_SHIP + ") AS Total FROM " + 
+							", ((P." + Product.COL_PRICE + " - " + "((P." + Product.COL_DISC + "/100)*P." + Product.COL_PRICE + ") + P." + Product.COL_SHIP + ")*C." + CartContent.COL_QUANTITY + ") AS Total FROM " + 
 							Product.TABLE + " AS P, " + CartContent.TABLE + " AS C WHERE P." + Product.COL_ID + " = " + CartContent.COL_PRODUCT + " AND " + CartContent.COL_USER + " = ?";
 		
 		try {
@@ -127,7 +127,7 @@ public class CartService {
 		cart.setPrice(rs.getDouble(Product.COL_PRICE));
 		cart.setShipping(rs.getDouble(Product.COL_SHIP));
 		cart.setTotal(rs.getDouble("Total"));
-		
+		System.out.println(rs.getDouble("Total"));
 		return cart;
 	}
 	public void updateQuantity(int newquantity, int id) {

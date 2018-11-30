@@ -58,9 +58,16 @@ public class ConsumerProductsController {
 	{
 		String error = "";
 		
-		if(quantity > productsTableModel.getProductAt(view.getProductsTable().getSelectedRow()).getStock())
-			error += "You have set a number higher than available. Please select a lower number";
-		
+		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
+		if(!product.checkifincart(account.getId()))
+		{
+			if(quantity > product.getStock())
+				error += "You have set a number higher than available. Please select a lower number";
+		}
+		else
+			if(quantity + product.getCartQuantity(account.getId()) > product.getStock())
+				error += "Your new cart quantity is higher than available. Please select a lower number";
+			
 		return error;
 	}
 	
@@ -68,7 +75,10 @@ public class ConsumerProductsController {
 	{
 		Product product = productsTableModel.getProductAt(view.getProductsTable().getSelectedRow());
 		
-		product.addToCart(account.getId(), quantity);
+		if(!product.checkifincart(account.getId()))
+			product.addToCart(account.getId(), quantity);
+		else
+			product.updateCartQuantity(account.getId(), product.getCartQuantity(account.getId()) + quantity);
 		update();
 	}
 	
