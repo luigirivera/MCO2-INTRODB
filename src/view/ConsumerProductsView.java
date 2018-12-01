@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -97,6 +99,17 @@ public class ConsumerProductsView extends ProductsView {
 		cart.addActionListener(new cartListener());
 		rate.addActionListener(new rateListener());
 		expand.addActionListener(new expandListener());
+		order.addItemListener(new orderListener());
+	}
+	
+	class orderListener implements ItemListener{
+
+		@Override
+		public void itemStateChanged(ItemEvent arg0) {
+			controller.update();
+			
+		}
+		
 	}
 	
 	class expandListener implements ActionListener{

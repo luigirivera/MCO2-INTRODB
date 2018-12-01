@@ -170,8 +170,6 @@ public class Accounts extends JFrame {
 				int y = e.getY();
 				
 				controller.setMenuItems();
-				
-				System.out.println("Hello");
 				rightClick.show(accountsTable, x, y);
 			}
 			

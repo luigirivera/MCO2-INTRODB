@@ -1,16 +1,16 @@
 package model;
 
 public enum STATUS {
-	ONTRANSIT, DELAYED, PENDING, DELIVERED;
+	PENDING, ONTRANSIT, DELAYED, DELIVERED;
 	
-	public String toString()
-	{
+	public String toString() {
 		switch(this)
 		{
+		case PENDING: return "PENDING";
 		case ONTRANSIT: return "ON TRANSIT";
 		case DELAYED: return "DELAYED";
-		case PENDING: return "PENDING";
 		case DELIVERED: return "DELIVERED";
+			
 		default: return "Invalid";
 		}
 	}

@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `stopnshop` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `stopnshop`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: stopnshop
@@ -46,7 +44,7 @@ CREATE TABLE `account` (
 
 LOCK TABLES `account` WRITE;
 /*!40000 ALTER TABLE `account` DISABLE KEYS */;
-INSERT INTO `account` VALUES (1,'shopee','shopeemain',NULL,NULL,NULL,'shopee@shopee.com',0,0,'2018-11-30','2018-11-30'),(2,'luigi','aaaaaa',NULL,'MALE',9995842147,NULL,0,0,'2018-11-30','2018-11-30'),(3,'ariana','aaaaaa',NULL,'FEMALE',NULL,'ariana@grande.com',0,0,'2018-11-30','2018-11-30'),(4,'jason','aaaaaa',NULL,'MALE',1472589874,NULL,0,0,'2018-11-30',NULL),(5,'joey','aaaaaa',NULL,NULL,9051423658,'joey@yahoo.com',0,0,'2018-11-30',NULL),(6,'admin','aaaaaa',NULL,NULL,1254789856,NULL,0,0,'2018-11-30','2018-11-30');
+INSERT INTO `account` VALUES (1,'shopee','shopeemain',NULL,NULL,NULL,'shopee@shopee.com',0,0,'2018-11-30','2018-12-01'),(2,'luigi','aaaaaa',NULL,'MALE',9995842147,NULL,0,0,'2018-11-30','2018-12-01'),(3,'ariana','aaaaaa',NULL,'FEMALE',NULL,'ariana@grande.com',0,0,'2018-11-30','2018-12-01'),(4,'jason','aaaaaa',NULL,'MALE',1472589874,NULL,0,0,'2018-11-30',NULL),(5,'joey','aaaaaa',NULL,NULL,9051423658,'joey@yahoo.com',0,0,'2018-11-30',NULL),(6,'admin','aaaaaa',NULL,NULL,1254789856,NULL,0,0,'2018-11-30','2018-11-30');
 /*!40000 ALTER TABLE `account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -155,7 +153,7 @@ CREATE TABLE `cartcontent` (
   KEY `cartproduct_idx` (`productid`),
   CONSTRAINT `cartproduct` FOREIGN KEY (`productid`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `cartuser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,7 +162,6 @@ CREATE TABLE `cartcontent` (
 
 LOCK TABLES `cartcontent` WRITE;
 /*!40000 ALTER TABLE `cartcontent` DISABLE KEYS */;
-INSERT INTO `cartcontent` VALUES (1,3,1,3);
 /*!40000 ALTER TABLE `cartcontent` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,7 +217,7 @@ CREATE TABLE `consumerorder` (
   CONSTRAINT `orderbank` FOREIGN KEY (`bankID`) REFERENCES `bankaccount` (`baid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `ordercard` FOREIGN KEY (`cardID`) REFERENCES `card` (`cardsid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `orderuser` FOREIGN KEY (`userID`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,6 +226,7 @@ CREATE TABLE `consumerorder` (
 
 LOCK TABLES `consumerorder` WRITE;
 /*!40000 ALTER TABLE `consumerorder` DISABLE KEYS */;
+INSERT INTO `consumerorder` VALUES (1,3,7,'2018-12-01',1,NULL,1);
 /*!40000 ALTER TABLE `consumerorder` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,6 +324,7 @@ CREATE TABLE `ordercontent` (
   `quantity` int(11) NOT NULL,
   `status` varchar(45) NOT NULL,
   `deliverydate` date NOT NULL,
+  `total` decimal(10,0) NOT NULL,
   KEY `orderproduct_idx` (`productID`),
   KEY `contentorderid_idx` (`orderid`),
   CONSTRAINT `contentorderid` FOREIGN KEY (`orderid`) REFERENCES `consumerorder` (`orderid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -339,6 +338,7 @@ CREATE TABLE `ordercontent` (
 
 LOCK TABLES `ordercontent` WRITE;
 /*!40000 ALTER TABLE `ordercontent` DISABLE KEYS */;
+INSERT INTO `ordercontent` VALUES (1,1,7,'PENDING','2018-12-03',32900);
 /*!40000 ALTER TABLE `ordercontent` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -365,7 +365,7 @@ CREATE TABLE `product` (
   PRIMARY KEY (`id`),
   KEY `user_idx` (`seller`),
   CONSTRAINT `selleruser` FOREIGN KEY (`seller`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -374,7 +374,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,4,'MacBook','Laptop','Apple',NULL,100,0,5000,10,200,2);
+INSERT INTO `product` VALUES (1,4,'MacBook','Laptop','Apple',NULL,90,7,5000,10,200,2),(2,2,'Smart TV','Television','Samsung',NULL,50,0,100,0,20,0);
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -418,4 +418,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-11-30 22:23:40
+-- Dump completed on 2018-12-01 16:47:12

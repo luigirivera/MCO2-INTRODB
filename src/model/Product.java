@@ -214,4 +214,8 @@ public class Product {
 		productservice.updateCartQuantity(id, productID, quantity);
 		
 	}
+
+	public Product getProductFromID(int productID2) {
+		return productservice.getProductFromID(productID2);
+	}
 }

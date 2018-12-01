@@ -1,9 +1,12 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -21,6 +24,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -123,7 +127,7 @@ public class CartView extends JFrame {
 		modelCartTable.addColumn(PLACEHOLDER.DISCOUNT.toString());
 		modelCartTable.addColumn(PLACEHOLDER.PRICE.toString());
 		modelCartTable.addColumn(PLACEHOLDER.SHIPPING.toString());
-		modelCartTable.addColumn("Total");
+		modelCartTable.addColumn(PLACEHOLDER.TOTAL.toString());
 		
 		cartTable.getTableHeader().setResizingAllowed(false);
 		cartTable.getTableHeader().setReorderingAllowed(false);
@@ -144,11 +148,45 @@ public class CartView extends JFrame {
 		delete.addActionListener(new deleteListener());
 		cartTable.addMouseListener(new rightClickListener());
 		checkout.addActionListener(new checkoutListener());
+		editquantity.addActionListener(new editListener());
 	}
 	
 	public int toggleStockError(int quantity, int stock, String name)
 	{
 		return JOptionPane.showConfirmDialog(null, "You have " + name + " with " + quantity + " quantity in your cart but only " + stock + " are available.\nSelect yes if you want to adjust your cart quantity to the maximum available\nSelect no to skip the item.", "Cart Error", JOptionPane.YES_NO_OPTION);
+	}
+	
+	public String getCVC()
+	{
+		JPanel panel = new JPanel();
+		JTextField CVC = new JTextField(PLACEHOLDER.CVC.toString());
+		CVC.setForeground(Color.GRAY);
+		CVC.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent e) {
+				if(CVC.getText().equals(PLACEHOLDER.CVC.toString()))
+				{
+					CVC.setText("");
+					CVC.setForeground(Color.BLACK);
+				}
+			}
+			
+			public void focusLost(FocusEvent e) {
+				if(CVC.getText().isEmpty())
+				{
+					CVC.setText(PLACEHOLDER.CVC.toString());
+					CVC.setForeground(Color.GRAY);
+				}			
+			}
+		});
+		
+		panel.add(CVC);
+		panel.setPreferredSize(new Dimension(70, 30));
+		CVC.setPreferredSize(new Dimension(70,30));
+		int result = JOptionPane.showConfirmDialog(null, panel, "CVC", JOptionPane.YES_NO_OPTION);
+		if(result == JOptionPane.YES_OPTION)
+			return String.valueOf(JOptionPane.YES_OPTION);
+		else
+			return String.valueOf(JOptionPane.NO_OPTION);
 	}
 	
 	public String selectAddress()
@@ -215,6 +253,60 @@ public class CartView extends JFrame {
 			return String.valueOf(JOptionPane.NO_OPTION);
 	}
 	
+	class editListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			JPanel panel = new JPanel();
+			JTextField quantity = new JTextField(PLACEHOLDER.QUANTITY.toString());
+			quantity.setForeground(Color.GRAY);
+			quantity.addFocusListener(new FocusAdapter() {
+				public void focusGained(FocusEvent e) {
+					if(quantity.getText().equals(PLACEHOLDER.QUANTITY.toString()))
+					{
+						quantity.setText("");
+						quantity.setForeground(Color.BLACK);
+					}
+				}
+				
+				public void focusLost(FocusEvent e) {
+					if(quantity.getText().isEmpty())
+					{
+						quantity.setText(PLACEHOLDER.QUANTITY.toString());
+						quantity.setForeground(Color.GRAY);
+					}			
+				}
+			});
+			
+			panel.add(quantity);
+			panel.setPreferredSize(new Dimension(300, 30));
+			quantity.setPreferredSize(new Dimension(300,30));
+			int result = JOptionPane.showConfirmDialog(null, panel, "Edit Cart", JOptionPane.OK_CANCEL_OPTION);
+			if(result == JOptionPane.OK_OPTION)
+			{
+				if(!quantity.getText().trim().isEmpty() && !quantity.getText().equals(PLACEHOLDER.QUANTITY.toString()))
+				{
+					try
+					{
+						if(Integer.parseInt(quantity.getText()) < 0)
+							throw new NumberFormatException();
+						else
+							if(controller.checkQuantityError(Integer.parseInt(quantity.getText())).isEmpty())
+								controller.updateCart(Integer.parseInt(quantity.getText()));
+							else
+								JOptionPane.showMessageDialog(null, controller.checkQuantityError(Integer.parseInt(quantity.getText())), "Error", JOptionPane.ERROR_MESSAGE);
+					}catch(NumberFormatException e)
+					{
+						JOptionPane.showMessageDialog(null, "Please enter a quantity amount", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else
+					JOptionPane.showMessageDialog(null, "Please enter a quantity amount", "Error", JOptionPane.ERROR_MESSAGE);
+			}
+			
+		}
+		
+	}
 	
 	class checkoutListener implements ActionListener{
 

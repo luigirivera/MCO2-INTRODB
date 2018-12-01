@@ -36,7 +36,7 @@ public class SellerProducts extends JFrame {
 		super("Products");
 		
 		setLayout(null);
-		setSize(1000,450);
+		setSize(1450,450);
 		instantiate();
 		initialize();
 		generateTable();

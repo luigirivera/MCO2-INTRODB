@@ -2,33 +2,55 @@ package controller;
 
 import java.util.ArrayList;
 
-import driver.StopNShop;
 import model.Address;
 import model.BankAccount;
 import model.Card;
 import model.Cart;
 import model.CartTableModel;
 import model.Order;
+import model.Product;
 import model.User;
 import view.CartView;
 
 public class CartController {
 	private CartView view;
-	private StopNShop program;
 	private User account;
 	private CustomerMainMenuController mainMenu;
 	private CartTableModel modelCartTable;
-	public CartController(CartView view, StopNShop program, User account,
+	public CartController(CartView view, User account,
 			CustomerMainMenuController mainMenu) {
 		
 		this.view = view;
-		this.program = program;
 		this.account = account;
 		this.mainMenu = mainMenu;
 		modelCartTable = null;
 		view.addController(this);
 		
 		update();
+	}
+	
+	public void updateCart(int quantity)
+	{
+		Cart cart = modelCartTable.getCartAt(view.getCartTable().getSelectedRow());
+		
+		if(quantity == 0)
+			cart.delete();
+		else
+			cart.updateQuantity(quantity);
+		
+		update();
+	}
+	
+	public String checkQuantityError(int quantity)
+	{
+		String error = "";
+		Cart cart = modelCartTable.getCartAt(view.getCartTable().getSelectedRow());
+		Product product = new Product().getProductFromID(cart.getProductID());
+		
+		if(quantity > product.getStock())
+			error += "You have set a number higher than available. Please select a lower number";
+		
+		return error;
 	}
 	
 	public void checkout(int yes, int no)
@@ -96,6 +118,7 @@ public class CartController {
 						
 						if(!pay.equals(String.valueOf(no)) && pay != null)
 						{
+							String answer = "";
 							if(view.getBank().isSelected())
 							{
 								for(BankAccount bAcc : accounts)
@@ -106,10 +129,14 @@ public class CartController {
 							{
 								for(Card c : cards)
 									if(pay.equals(String.valueOf(c.getCardNumber())))
+									{
+										if(c.getCvc() == false)
+											answer = view.getCVC();
 										order.setCardID(c.getCardID());
+									}
+										
 							}
-							
-							System.out.println(order.getAddressID() + " " + order.getBankID() + " " + order.getCardID());	
+							if(view.getCard().isSelected() && answer.equals(String.valueOf(no))) return;
 							Cart c = new Cart();
 							c.setUserID(account.getId());
 							ArrayList<Cart> cart = c.getCartOfUser();
@@ -129,7 +156,7 @@ public class CartController {
 											createdorder = true;
 											
 										}
-										order.addtoOrder(cc.getProductID(), cc.getQuantity());
+										order.addtoOrder(cc.getProductID(), cc.getQuantity(), cc.getTotal());
 										cc.delete();
 										order.subtractStock(cc.getProductStock(cc.getProductID()) - cc.getQuantity(), cc.getProductSold(cc.getProductID()) + cc.getQuantity(), cc.getProductID());
 										update();
@@ -145,7 +172,7 @@ public class CartController {
 										createdorder = true;
 									}
 									
-									order.addtoOrder(cc.getProductID(), cc.getQuantity());
+									order.addtoOrder(cc.getProductID(), cc.getQuantity(), cc.getTotal());
 									cc.delete();
 									order.subtractStock(cc.getProductStock(cc.getProductID()) - cc.getQuantity(), cc.getProductSold(cc.getProductID()) + cc.getQuantity(), cc.getProductID());
 									update();

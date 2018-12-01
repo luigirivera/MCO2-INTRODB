@@ -110,6 +110,7 @@ public class SettingsController {
 		if(ordersview == null)
 		{
 			ordersview = new Orders();
+			new OrdersController(ordersview, account,this);
 		}
 		else
 		{

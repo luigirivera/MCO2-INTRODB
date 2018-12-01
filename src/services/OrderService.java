@@ -4,14 +4,117 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 
 import database.DatabaseConnection;
+import model.Address;
+import model.BankAccount;
+import model.Card;
 import model.Order;
 import model.OrderContent;
 import model.Product;
+import model.User;
 
 public class OrderService {
+	
+	public ArrayList<OrderContent> getOrderDetails(int orderID, String status)
+	{
+		ArrayList<OrderContent> details = new ArrayList<OrderContent>();
+		
+		String query = "SELECT P." + Product.COL_NAME + ", P."
+								   + Product.COL_CATEGORY + ", P."
+								   + Product.COL_BRAND + ", A."
+								   + User.COL_USERNAME + ", OC."
+								   + OrderContent.COL_QUANTITY + ", OC."
+								   + OrderContent.COL_STATUS + ", OC."
+								   + OrderContent.COL_DELIVERYDATE + ", OC."
+								   + OrderContent.COL_TOTAL
+						+ " FROM " + OrderContent.TABLE + " AS OC, " + Product.TABLE + " AS P, " + User.TABLE + " AS A"
+						+ " WHERE OC." + OrderContent.COL_PRODUCT + " = P." + Product.COL_ID + " AND P." + Product.COL_SELLERID + " = " + User.COL_ID + " AND " + OrderContent.COL_ORDER + " = ?"
+						+ status;  
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, orderID);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next())
+				details.add(toDetails(rs));
+			rs.close();
+			ps.close();
+			System.out.println("[ORDER CONTENT] CONTENT GET DONE");
+		}catch(SQLException e) {
+			System.out.println("[ORDER CONTENT] CONTENT GET FAILED");
+			e.printStackTrace();
+		}
+		return details;
+	}
+	
+	private OrderContent toDetails(ResultSet rs) throws SQLException{
+		OrderContent oc = new OrderContent();
+		
+		oc.setName(rs.getString(Product.COL_NAME));
+		oc.setCategory(rs.getString(Product.COL_CATEGORY));
+		oc.setBrand(rs.getString(Product.COL_BRAND));
+		oc.setSeller(rs.getString(User.COL_USERNAME));
+		oc.setQuantity(rs.getInt(OrderContent.COL_QUANTITY));
+		oc.setStatus(rs.getString(OrderContent.COL_STATUS));
+		oc.setDelivery(rs.getDate(OrderContent.COL_DELIVERYDATE));
+		oc.setTotal(rs.getDouble(OrderContent.COL_TOTAL));
+		
+		return oc;
+	}
 
+	public ArrayList<Order> getOrdersOfUser(int userID, String orderClause)
+	{
+		ArrayList<Order> orders = new ArrayList<Order>();
+	
+		String query = "SELECT " + Order.COL_ID + ", "
+								 + Order.COL_QUANTITY + ", "
+								 + Order.COL_CREATION + ", CONCAT("
+								 + Address.COL_LINE1 + ", ' ', COALESCE(CONCAT(" + Address.COL_LINE2 + ", ' '), ''), " + Address.COL_CITY + ", ' ', " + Address.COL_PROV + ") AS Address, "
+								 + "CONCAT(B." + BankAccount.COL_BANK + ", ' - ', B." + BankAccount.COL_ACCNUM + ") AS Bank, CONCAT('Card - ', Ca." + Card.COL_CARDNUMBER + ") AS Card "
+								 + "FROM " + Order.TABLE + " AS C LEFT JOIN " + BankAccount.TABLE + " AS B ON C." + Order.COL_BANK + " = B." + BankAccount.COL_BAID
+								 + " LEFT JOIN " + Card.TABLE + " AS Ca ON C." + Order.COL_CARD + " = Ca." + Card.COL_CARDSID + ", " + Address.TABLE + " AS A "
+								 + "WHERE C." + Order.COL_ADDRESS + " = A." + Address.COL_ADDRESSID + " AND C." + Order.COL_USERID + " = ?" + orderClause;
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, userID);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next())
+				orders.add(toOrder(rs));
+			
+			rs.close();
+			ps.close();
+			System.out.println("[ORDER] ORDER GET DONE");
+		}catch(SQLException e) {
+			System.out.println("[ORDER] ORDER GET FAILED");
+			e.printStackTrace();
+		}
+		return orders;
+	}
+	
+	private Order toOrder(ResultSet rs) throws SQLException
+	{
+		Order order = new Order();
+		
+		order.setId(rs.getInt(Order.COL_ID));
+		order.setQuantity(rs.getInt(Order.COL_QUANTITY));
+		order.setOrderDate(rs.getDate(Order.COL_CREATION));
+		order.setAddress(rs.getString("Address"));
+		if(rs.getString("Bank") != null)
+			order.setPayment(rs.getString("Bank"));
+		else
+			order.setPayment(rs.getString("Card"));
+		
+		return order;
+	}
+	
 	public int createOrder(int userID, int addressID, int cardID, int bankID) {
 		int orderID = 0;
 		
@@ -65,21 +168,23 @@ public class OrderService {
 		return orderID;
 	}
 
-	public void addtoOrder(int id, int productID, int quantity)
+	public void addtoOrder(int id, int productID, int quantity, double total)
 	{
 		String query = "INSERT INTO " + OrderContent.TABLE + " (" + OrderContent.COL_ORDER + ", "
 																  + OrderContent.COL_PRODUCT + ", "
 																  + OrderContent.COL_QUANTITY + ", "
+																  + OrderContent.COL_TOTAL + ", "
 																  + OrderContent.COL_STATUS + ", "
 																  + OrderContent.COL_DELIVERYDATE + ") " + 
-															"SELECT ?,?,?,'PENDING', DATE_ADD(NOW(), INTERVAL F.shippingduration DAY) FROM " + Product.TABLE + " AS F WHERE F." + Product.COL_ID + " = ? ";
+															"SELECT ?,?,?,?,'PENDING', DATE_ADD(NOW(), INTERVAL F.shippingduration DAY) FROM " + Product.TABLE + " AS F WHERE F." + Product.COL_ID + " = ? ";
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			
 			ps.setInt(1, id);
 			ps.setInt(2, productID);
 			ps.setInt(3, quantity);
-			ps.setInt(4, productID);
+			ps.setDouble(4, total);
+			ps.setInt(5, productID);
 			
 			
 			ps.executeUpdate();

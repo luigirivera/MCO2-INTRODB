@@ -34,7 +34,7 @@ public class CustomerMainMenuController {
 		if(cart == null)
 		{
 			cart = new CartView();
-			new CartController(cart, program, account, this);
+			new CartController(cart, account, this);
 		}
 		else
 		{

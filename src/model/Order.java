@@ -1,6 +1,7 @@
 package model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import services.OrderService;
 
@@ -12,6 +13,8 @@ public class Order {
 	private int addressID;
 	private int cardID;
 	private int bankID;
+	private String address;
+	private String payment;
 	
 	private OrderService orderservice;
 	
@@ -71,14 +74,29 @@ public class Order {
 	public void setBankID(int bankID) {
 		this.bankID = bankID;
 	}
-	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPayment() {
+		return payment;
+	}
+
+	public void setPayment(String payment) {
+		this.payment = payment;
+	}
+
 	public int createOrder(int userID)
 	{
 		return orderservice.createOrder(userID, addressID, cardID, bankID);
 	}
 
-	public void addtoOrder(int productID, int quantity2) {
-		orderservice.addtoOrder(id, productID, quantity2);
+	public void addtoOrder(int productID, int quantity2, double total) {
+		orderservice.addtoOrder(id, productID, quantity2, total);
 	}
 	
 	public int getOrderQuantity()
@@ -96,5 +114,10 @@ public class Order {
 	public void subtractStock(int i, int sold, int productID) {
 		orderservice.subtractStock(i, sold, productID);
 		
+	}
+	
+	public ArrayList<Order> getOrdersOfUser(String orderClause)
+	{
+		return orderservice.getOrdersOfUser(userID, orderClause);
 	}
 }

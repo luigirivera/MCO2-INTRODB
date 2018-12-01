@@ -54,8 +54,8 @@ public class CustomerMainMenu extends JFrame {
 		logout.setFont(font);
 		
 		
-		seller.setSize(100, 30);
-		seller.setLocation(this.getWidth() - seller.getWidth(), 10);
+		seller.setSize(150, 30);
+		seller.setLocation(this.getWidth() - seller.getWidth(), 0);
 		
 		products.setSize(400, 50);
 		products.setLocation(this.getWidth()/2 - products.getWidth()/2 + 10, seller.getY() + seller.getHeight() + 30);

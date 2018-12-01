@@ -1,11 +1,13 @@
 package controller;
 
 import model.User;
+import view.SalesView;
 import view.SellerPortal;
 import view.SellerProducts;
 
 public class SellerPortalController {
 	private SellerPortal view;
+	private SalesView sales;
 	private SellerProducts products;
 	private User account;
 	private CustomerMainMenuController cmmc;
@@ -15,13 +17,33 @@ public class SellerPortalController {
 		this.account = account;
 		this.cmmc = cmmc;
 		products = null;
+		sales = null;
 		view.addController(this);
 	}
 	
 	public void close()
 	{
 		view.dispose();
+		if(products != null)
+			products.dispose();
+		if(sales != null)
+			sales.dispose();
 		cmmc.setSellerPortal(null);
+	}
+	
+	public void toggleSales()
+	{
+		if(sales == null)
+		{
+			sales = new SalesView();
+			new SalesController(sales, account, this);
+		}
+		else
+		{
+			sales.toFront();
+			sales.revalidate();
+			sales.repaint();
+		}
 	}
 	
 	public void toggleProducts()
@@ -46,5 +68,14 @@ public class SellerPortalController {
 	public void setProducts(SellerProducts products) {
 		this.products = products;
 	}
+
+	public SalesView getSales() {
+		return sales;
+	}
+
+	public void setSales(SalesView sales) {
+		this.sales = sales;
+	}
+	
 	
 }

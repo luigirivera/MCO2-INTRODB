@@ -11,6 +11,10 @@ public enum PLACEHOLDER {
 	
 	NAME, CATEGORY, BRAND, SELLER, DESCRIPTION, FAVORITES, RATING, STOCK, SOLD, PRICE, DISCOUNT, SHIPPING, SHIPPINGDUR,
 	
+	ORDERID, ORDERADDRESS, ORDERPAYMENT, ORDERDATE,
+	
+	PRODUCT, STATUS, DELIVERYDATE, TOTAL,
+	
 	ADD, SAVE, CANCEL, DELETE, UNLOCK, RATE, CART, FAVE, UNFAVE, FOLLOW, UNFOLLOW,
 	
 	QUANTITY,
@@ -21,7 +25,13 @@ public enum PLACEHOLDER {
 	
 	PRICELTH, PRICEHTL, NAMEATZ, NAMEZTA,
 	
-	LOCKED, DELETION, CONSUMER, CORPORATE;
+	LOCKED, DELETION, CONSUMER, CORPORATE,
+	
+	NTO, OTN, QHTL, QLTH,
+	
+	PENDING, ONTRANSIT, DELAYED, DELIVERED,
+	
+	THISMONTH, LASTMONTH, FIVERECENT, TENRECENT, FIVEOLDEST, TENOLDEST;
 	
 	public String toString() {
 		switch(this)
@@ -59,6 +69,16 @@ public enum PLACEHOLDER {
 		case SHIPPING: return "Shipping";
 		case SHIPPINGDUR: return "Shipping Duration";
 		
+		case ORDERID: return "Order ID";
+		case ORDERADDRESS: return "Order Address";
+		case ORDERPAYMENT: return "Order Payment";
+		case ORDERDATE: return "Order Date";
+		
+		case PRODUCT: return "Product";
+		case STATUS: return "Status";
+		case DELIVERYDATE: return "Delivery Date";
+		case TOTAL: return "Total";
+		
 		case ADD: return "+ Add";
 		case SAVE: return "Save";
 		case CANCEL: return "Cancel";
@@ -89,6 +109,24 @@ public enum PLACEHOLDER {
 		case DELETION: return "For Deletion";
 		case CONSUMER: return "Consumer";
 		case CORPORATE: return "Corporate";
+		
+		case NTO: return "Order Date: Newest to Oldest";
+		case OTN: return "Order Date: Oldest to Newest";
+		case QHTL: return "Quantity: High to Low";
+		case QLTH: return "Quantity: Low to High";
+		
+		case PENDING: return "Pending";
+		case ONTRANSIT: return "On Transit";
+		case DELAYED: return "Delayed";
+		case DELIVERED: return "Delievered";
+		
+		case THISMONTH: return "This Month";
+		case LASTMONTH: return "Last Month";
+		case FIVERECENT: return "5 Most Recent";
+		case TENRECENT: return "10 Most Recent";
+		case FIVEOLDEST: return "5 Oldest";
+		case TENOLDEST: return "10 Oldest";
+			
 		default: return "Invalid";
 		}
 	}

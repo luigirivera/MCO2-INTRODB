@@ -18,6 +18,55 @@ import model.Rating;
 import model.User;
 
 public class ProductsService {
+	
+	public Product getProductFromID(int id) {
+		Product product = null;
+		
+		String query = "SELECT P." + Product.COL_ID + ", P."
+								 + Product.COL_SELLERID + ", P."
+								 + Product.COL_NAME + ", P."
+								 + Product.COL_CATEGORY + ", P."
+								 + Product.COL_BRAND + ", U."
+								 + User.COL_USERNAME + ", P."
+								 + Product.COL_DESC + ", P."
+								 + Product.COL_STOCK + ", P."
+								 + Product.COL_SOLD + ", P."
+								 + Product.COL_PRICE + ", P."
+								 + Product.COL_DISC + ", P."
+								 + Product.COL_SHIP + ", P."
+								 + Product.COL_SHIPDUR + ", "
+								 + "F.Favorites, R.rate FROM " + Product.TABLE + " AS P LEFT JOIN " + User.TABLE + " AS U ON U." + User.COL_ID + " = P." + Product.COL_SELLERID 
+																						+ " LEFT JOIN  (SELECT F." + Favorite.COL_PRODUCT + ", "
+																						   + "COUNT(F." + Favorite.COL_PRODUCT
+																						   + ") AS Favorites FROM " + Favorite.TABLE + " AS F GROUP BY F." + Favorite.COL_PRODUCT + ") AS F"
+																						   + " ON P." + Product.COL_ID + " = F." + Favorite.COL_PRODUCT + 
+																	" LEFT JOIN (SELECT R." + Rating.COL_PRODUCT + 
+																				", AVG(R." + Rating.COL_RATING + 
+																				") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
+																				+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT
+								 											   + " WHERE " + Product.COL_ID + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+		
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next())
+				product = toProduct(rs);
+			
+			ps.close();
+			rs.close();
+			System.out.println("[PRODUCT] GET PRODUCTS DONE");
+		}catch(SQLException e) {
+			System.out.println("[PRODUCT] GET PRODUCTS FAILED");
+			e.printStackTrace();
+		}
+		
+		return product;
+	}
+	
+	
 	public void updateCartQuantity(int userid, int productID, int quantity) {
 		String query = "UPDATE " + CartContent.TABLE + " SET " + CartContent.COL_QUANTITY + " = ? WHERE " + CartContent.COL_USER + " = ? AND " + CartContent.COL_PRODUCT + " = ?";
 		
@@ -290,7 +339,7 @@ public class ProductsService {
 																				") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
 																				+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT
 								 											   + whereClause;
-		System.out.println(query);
+		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 		

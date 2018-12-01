@@ -28,7 +28,7 @@ public class ProductsView extends JFrame {
 		super("Products");
 		
 		setLayout(null);
-		setSize(1250,450);
+		setSize(1450,450);
 		setVisible(true);
 		setResizable(false);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
