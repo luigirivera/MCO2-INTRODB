@@ -1,17 +1,13 @@
 package services;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import database.DatabaseConnection;
 import model.CartContent;
 import model.Favorite;
-import model.Order;
 import model.OrderContent;
 import model.Product;
 import model.Rating;

@@ -151,9 +151,14 @@ public class CartView extends JFrame {
 		editquantity.addActionListener(new editListener());
 	}
 	
-	public int toggleStockError(int quantity, int stock, String name)
+	public String toggleStockError(int quantity, int stock, String name)
 	{
-		return JOptionPane.showConfirmDialog(null, "You have " + name + " with " + quantity + " quantity in your cart but only " + stock + " are available.\nSelect yes if you want to adjust your cart quantity to the maximum available\nSelect no to skip the item.", "Cart Error", JOptionPane.YES_NO_OPTION);
+		int result = JOptionPane.showConfirmDialog(null, "You have " + name + " with " + quantity + " quantity in your cart but only " + stock + " are available.\nSelect yes if you want to adjust your cart quantity to the maximum available\nSelect no to skip the item.", "Cart Error", JOptionPane.YES_NO_OPTION);
+	
+		if(result == JOptionPane.YES_OPTION)
+			return String.valueOf(JOptionPane.YES_OPTION);
+		else
+			return String.valueOf(JOptionPane.NO_OPTION);
 	}
 	
 	public String getCVC()

@@ -157,7 +157,7 @@ public class CartService {
 			ps.close();
 			System.out.println("[CART] GET CART DONE");
 		}catch(SQLException e) {
-			System.out.println("[USER] GET CART FAILED");
+			System.out.println("[CART] GET CART FAILED");
 			e.printStackTrace();
 		}
 		
@@ -197,5 +197,31 @@ public class CartService {
 			e.printStackTrace();
 		}
 		
+	}
+
+	public int getQuantity(int id) {
+		int quantity = 0;
+		
+		String query = "SELECT " + CartContent.COL_QUANTITY + " FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_ID + " = ?";
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setInt(1, id);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next())
+				quantity = rs.getInt(CartContent.COL_QUANTITY);
+			
+			rs.close();
+			ps.close();
+			System.out.println("[CART] QUANTITY DONE");
+		}catch(SQLException e) {
+			System.out.println("[CART] QUANTITY FAILED");
+			e.printStackTrace();
+		}
+		
+		return quantity;
 	}
 }

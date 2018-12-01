@@ -101,7 +101,7 @@ public class Cart {
 	
 	public void updateQuantity(int newquantity) {
 		cartservice.updateQuantity(newquantity, id);
-		
+		setQuantity(cartservice.getQuantity(id));
 	}
 	
 	public double getSellerIncome(int prod)

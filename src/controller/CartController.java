@@ -147,10 +147,11 @@ public class CartController {
 							{
 								if(cc.getQuantity() > cc.getProductStock(cc.getProductID()))
 								{
-									int result = view.toggleStockError(cc.getQuantity(), cc.getProductStock(cc.getProductID()), cc.getName());
-									if(result == yes)
+									String result = view.toggleStockError(cc.getQuantity(), cc.getProductStock(cc.getProductID()), cc.getName());
+									if(result.equals(String.valueOf(yes)))
 									{
 										cc.updateQuantity(cc.getProductStock(cc.getProductID()));
+										
 										update();
 										if(!createdorder)
 										{
