@@ -147,6 +147,17 @@ public class SalesView extends JFrame{
 		salesTable.addMouseListener(new rightClickListener());
 		filter.addItemListener(new orderListener());
 		updateStatus.addActionListener(new updateListener());
+		moveToBalance.addActionListener(new moveListener());
+	}
+	
+	class moveListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			controller.moveIncomeToBalance();
+			
+		}
+		
 	}
 	
 	class updateListener implements ActionListener{

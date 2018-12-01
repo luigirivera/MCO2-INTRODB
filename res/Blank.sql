@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `stopnshop` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `stopnshop`;
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: stopnshop
@@ -174,9 +176,9 @@ DROP TABLE IF EXISTS `consumer`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `consumer` (
   `userid` int(11) NOT NULL,
-  `walletbalance` decimal(11,0) DEFAULT '0',
-  `income` decimal(11,0) DEFAULT '0',
-  `shopeecoins` decimal(11,0) DEFAULT '0',
+  `walletbalance` double NOT NULL DEFAULT '0',
+  `income` double NOT NULL DEFAULT '0',
+  `shopeecoins` double NOT NULL DEFAULT '0',
   `fordeletion` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`userid`),
   CONSTRAINT `consumeruser` FOREIGN KEY (`userid`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -290,15 +292,13 @@ DROP TABLE IF EXISTS `following`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `following` (
-  `followid` int(11) NOT NULL AUTO_INCREMENT,
   `user` int(11) NOT NULL,
   `follower` int(11) NOT NULL,
-  PRIMARY KEY (`followid`),
   KEY `followingkey_idx` (`user`),
   KEY `followerkey` (`follower`),
   CONSTRAINT `followerkey` FOREIGN KEY (`follower`) REFERENCES `account` (`userid`),
   CONSTRAINT `followingkey` FOREIGN KEY (`user`) REFERENCES `account` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -307,7 +307,6 @@ CREATE TABLE `following` (
 
 LOCK TABLES `following` WRITE;
 /*!40000 ALTER TABLE `following` DISABLE KEYS */;
-INSERT INTO `following` VALUES (1,1,6);
 /*!40000 ALTER TABLE `following` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -324,7 +323,7 @@ CREATE TABLE `ordercontent` (
   `quantity` int(11) NOT NULL,
   `status` varchar(45) NOT NULL,
   `deliverydate` date NOT NULL,
-  `total` decimal(10,0) NOT NULL,
+  `total` double NOT NULL,
   KEY `orderproduct_idx` (`productID`),
   KEY `contentorderid_idx` (`orderid`),
   CONSTRAINT `contentorderid` FOREIGN KEY (`orderid`) REFERENCES `consumerorder` (`orderid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
@@ -358,9 +357,9 @@ CREATE TABLE `product` (
   `description` varchar(45) DEFAULT NULL,
   `stock` bigint(11) NOT NULL,
   `sold` bigint(11) NOT NULL DEFAULT '0',
-  `price` decimal(11,0) NOT NULL,
-  `discount` decimal(11,0) NOT NULL DEFAULT '0',
-  `shipping` decimal(11,0) NOT NULL,
+  `price` double NOT NULL,
+  `discount` double NOT NULL DEFAULT '0',
+  `shipping` double NOT NULL,
   `shippingduration` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_idx` (`seller`),
@@ -418,4 +417,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-01 16:47:12
+-- Dump completed on 2018-12-01 22:06:49

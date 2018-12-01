@@ -19,6 +19,14 @@ public class SellerPortalController {
 		products = null;
 		sales = null;
 		view.addController(this);
+		
+		update();
+	}
+	
+	private void update()
+	{
+		view.getFollowers().setText("Followers: " + account.getFollowers());
+		view.getFollowing().setText("Following: " + account.getFollowing());
 	}
 	
 	public void close()

@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -11,6 +12,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
@@ -30,6 +32,7 @@ public class Orders extends JFrame {
 	private JScrollPane scrollOrdersTable;
 	private JPopupMenu rightClick;
 	private JMenuItem expand;
+	private JLabel coins;
 	private OrdersController controller;
 	
 	public Orders()
@@ -66,12 +69,17 @@ public class Orders extends JFrame {
 		expand = new JMenuItem("Expand");
 		
 		orderFilter = new JComboBox<String>();
+		
+		coins = new JLabel();
 	}
 	
 	private void initialize()
 	{
 		add(orderFilter);
+		add(coins);
 		add(scrollOrdersTable);
+		
+		coins.setFont(new Font("Arial", Font.BOLD, 25));
 		
 		orderFilter.addItem("");
 		orderFilter.addItem(PLACEHOLDER.NTO.toString());
@@ -83,6 +91,9 @@ public class Orders extends JFrame {
 		
 		orderFilter.setSize(200, 40);
 		orderFilter.setLocation(0, 0);
+		
+		coins.setSize(250, 40);
+		coins.setLocation(orderFilter.getX() + orderFilter.getWidth() + 10, 0);
 		
 		scrollOrdersTable.setSize(this.getWidth(), this.getHeight() - orderFilter.getHeight());
 		scrollOrdersTable.setLocation(0, orderFilter.getY() + orderFilter.getHeight());
@@ -191,4 +202,13 @@ public class Orders extends JFrame {
 	public void setScrollOrdersTable(JScrollPane scrollOrdersTable) {
 		this.scrollOrdersTable = scrollOrdersTable;
 	}
+
+	public JLabel getCoins() {
+		return coins;
+	}
+
+	public void setCoins(JLabel coins) {
+		this.coins = coins;
+	}
+	
 }

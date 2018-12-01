@@ -72,19 +72,22 @@ public class AccountsController {
 	
 	public void update()
 	{
+		ArrayList<User> accounts = null;
+		
 		String filter = (String)view.getFilter().getSelectedItem();
 		if(filter.equals(PLACEHOLDER.LOCKED.toString()))
-			whereClause = " WHERE " + User.COL_ISLOCKED + " = 1";
+			whereClause = " WHERE U." + User.COL_ISLOCKED + " = 1";
 		else if(filter.equals(PLACEHOLDER.DELETION.toString()))
-			whereClause = " WHERE " + User.COL_FORDELETION + " = 1";
+			whereClause = " WHERE C." + User.COL_FORDELETION + " = 1";
 		else if(filter.equals(PLACEHOLDER.CORPORATE.toString()))
-			whereClause = " WHERE " + User.COL_ISCORPORATE + " = 1";
+			accounts = new User().getCorporateAccounts();
 		else if(filter.equals(PLACEHOLDER.CONSUMER.toString()))	
-			whereClause = " WHERE " + User.COL_ISCORPORATE + " = 0";
+			accounts = new User().getConsumerAccounts();
 		else
 			whereClause = "";
 		
-		ArrayList<User> accounts = new User().getAccounts(whereClause);
+		if(accounts == null)
+			accounts = new User().getAccounts(whereClause);
 		
 		if(accountsTableModel == null)
 			accountsTableModel = new AccountsTableModel(accounts);

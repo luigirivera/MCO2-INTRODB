@@ -8,6 +8,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import controller.SellerPortalController;
 
@@ -16,6 +17,7 @@ public class SellerPortal extends JFrame {
 	
 	private JButton products, sales;
 	private SellerPortalController controller;
+	private JLabel followers, following;
 	
 	public SellerPortal()
 	{
@@ -34,16 +36,29 @@ public class SellerPortal extends JFrame {
 	{
 		products = new JButton("Products");
 		sales = new JButton("Sales");
+		
+		followers = new JLabel();
+		following = new JLabel();
 	}
 	
 	private void initialize()
 	{
 		add(products);
 		add(sales);
+		add(followers);
+		add(following);
 		
 		Font font = new Font("Arial", Font.BOLD, 25);
 		products.setFont(font);
 		sales.setFont(font);
+		followers.setFont(font);
+		following.setFont(font);
+		
+		followers.setSize(250, 40);
+		followers.setLocation(10, 0);
+		
+		following.setSize(followers.getSize());
+		following.setLocation(10, followers.getY() + followers.getHeight());
 		
 		products.setSize(400, 50);
 		products.setLocation(this.getWidth()/2 - products.getWidth()/2 + 10, this.getHeight()/4 - products.getHeight()/2 + 10);
@@ -90,6 +105,22 @@ public class SellerPortal extends JFrame {
 			
 		}
 		
+	}
+
+	public JLabel getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(JLabel followers) {
+		this.followers = followers;
+	}
+
+	public JLabel getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(JLabel following) {
+		this.following = following;
 	}
 	
 

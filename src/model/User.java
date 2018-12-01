@@ -18,7 +18,7 @@ public class User {
 	private long number;
 	private double wallet;
 	private double income;
-	private int coins;
+	private double coins;
 	private int tries;
 	private boolean isLocked;
 	private boolean forDeletion;
@@ -99,10 +99,10 @@ public class User {
 	public void setIncome(double income) {
 		this.income = income;
 	}
-	public int getCoins() {
+	public double getCoins() {
 		return coins;
 	}
-	public void setCoins(int coins) {
+	public void setCoins(double coins) {
 		this.coins = coins;
 	}
 	public boolean isLocked() {
@@ -266,5 +266,48 @@ public class User {
 
 	public boolean getDeletion() {
 		return settingsservice.getDeletion(userID);
+	}
+
+	public double getIncomeOfUser() {
+		return accountservice.getIncomeOfUser(userID);
+	}
+
+	public void setBalance(double incomeOfUser) {
+		accountservice.setBalance(incomeOfUser, userID);
+		
+	}
+
+	public double getBalance() {
+		return accountservice.getBalance(userID);
+	}
+
+	public void setIncomeOfUser(double incomeOfUser) {
+		accountservice.setIncomeOfUser(incomeOfUser, userID);
+		
+	}
+
+	public int getFollowers() {
+		return accountservice.getFollowers(userID);
+	}
+	
+	public int getFollowing() {
+		return accountservice.getFollowing(userID);
+	}
+
+	public double getCoinsOfUser() {
+		return accountservice.getCoinsOfUser(userID);
+	}
+
+	public void setCoinsOfUser(double coins2) {
+		accountservice.setCoinsOfUser(coins2, userID);
+		
+	}
+
+	public ArrayList<User> getCorporateAccounts() {
+		return accountservice.getCorporateAccounts();
+	}
+	
+	public ArrayList<User> getConsumerAccounts() {
+		return accountservice.getConsumerAccounts();
 	}
 }

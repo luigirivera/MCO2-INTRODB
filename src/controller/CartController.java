@@ -53,6 +53,7 @@ public class CartController {
 		return error;
 	}
 	
+	@SuppressWarnings("null")
 	public void checkout(int yes, int no)
 	{
 		Cart cTemp = new Cart();
@@ -77,7 +78,7 @@ public class CartController {
 			{
 				do {
 					ad = view.selectAddress();
-				}while(ad == null || ad.equals(String.valueOf(no)));
+				}while(ad == null && !ad.equals(String.valueOf(no)));
 			
 				if(!ad.equals(String.valueOf(no)) && ad != null)
 				{
@@ -114,7 +115,7 @@ public class CartController {
 					{
 						do {
 							pay = view.selectPayment();
-						}while(pay == null || pay.equals(String.valueOf(no)));
+						}while(pay == null && !pay.equals(String.valueOf(no)));
 						
 						if(!pay.equals(String.valueOf(no)) && pay != null)
 						{
@@ -137,6 +138,7 @@ public class CartController {
 										
 							}
 							if(view.getCard().isSelected() && answer.equals(String.valueOf(no))) return;
+							double coins = account.getCoinsOfUser();
 							Cart c = new Cart();
 							c.setUserID(account.getId());
 							ArrayList<Cart> cart = c.getCartOfUser();
@@ -157,6 +159,8 @@ public class CartController {
 											
 										}
 										order.addtoOrder(cc.getProductID(), cc.getQuantity(), cc.getTotal());
+										c.addIncomeToSeller(cc.getTotal() + c.getSellerIncome(cc.getProductID()), cc.getProductID());
+										coins += (cc.getTotal()/500);
 										cc.delete();
 										order.subtractStock(cc.getProductStock(cc.getProductID()) - cc.getQuantity(), cc.getProductSold(cc.getProductID()) + cc.getQuantity(), cc.getProductID());
 										update();
@@ -173,11 +177,14 @@ public class CartController {
 									}
 									
 									order.addtoOrder(cc.getProductID(), cc.getQuantity(), cc.getTotal());
+									c.addIncomeToSeller(cc.getTotal() + c.getSellerIncome(cc.getProductID()),cc.getProductID());
+									coins += (cc.getTotal()/500);
 									cc.delete();
 									order.subtractStock(cc.getProductStock(cc.getProductID()) - cc.getQuantity(), cc.getProductSold(cc.getProductID()) + cc.getQuantity(), cc.getProductID());
 									update();
 								}
 							}
+							account.setCoinsOfUser(coins);
 							order.setOrderTotalQuantity(order.getOrderQuantity());
 						}
 					}				

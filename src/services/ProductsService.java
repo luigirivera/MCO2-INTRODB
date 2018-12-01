@@ -384,7 +384,7 @@ public class ProductsService {
 				 															", AVG(R." + Rating.COL_RATING + 
 				 															") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
 				 															+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT;
-		System.out.println(query);
+		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			
@@ -450,7 +450,7 @@ public class ProductsService {
 																							", AVG(R." + Rating.COL_RATING + 
 																							") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
 																							+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT + " WHERE P." + Product.COL_SELLERID + " = ? ";
-		System.out.println(query);
+		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 			
@@ -648,7 +648,6 @@ public class ProductsService {
 			ps.setInt(1, productID);
 			ps.executeUpdate();
 
-		kk;
 			ps.close();
 			System.out.println("[PRODUCT] DELETE SUCCESS");
 		} catch (SQLException e) {

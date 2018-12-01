@@ -199,7 +199,7 @@ public class CartView extends JFrame {
 		if(result == JOptionPane.YES_OPTION)
 			return (String)addresses.getSelectedItem();
 		else
-			return String.valueOf(JOptionPane.NO_OPTION);
+			return String.valueOf(result);
 	}
 	
 	public String selectPayment()

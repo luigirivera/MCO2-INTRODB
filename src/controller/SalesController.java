@@ -26,6 +26,13 @@ public class SalesController {
 		update();
 	}
 	
+	public void moveIncomeToBalance() {
+		account.setBalance(account.getBalance() + account.getIncomeOfUser());
+		account.setIncomeOfUser(0);
+		
+		update();
+	}
+	
 	public void updateStatus(String status)
 	{
 		OrderContent details = modelSalesTable.getSaleAt(view.getSalesTable().getSelectedRow());
@@ -76,6 +83,9 @@ public class SalesController {
 			
 			view.getModelSalesTable().addRow(row);
 		}
+		
+		view.getIncome().setText("Income: $" + account.getIncomeOfUser());
+		view.getBalance().setText("Balance: $" + account.getBalance());
 	}
 
 }

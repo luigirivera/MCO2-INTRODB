@@ -103,4 +103,14 @@ public class Cart {
 		cartservice.updateQuantity(newquantity, id);
 		
 	}
+	
+	public double getSellerIncome(int prod)
+	{
+		return cartservice.getSellerIncome(prod);
+	}
+	
+	public void addIncomeToSeller(double income, int prod)
+	{
+		cartservice.addIncomeToSeller(income, prod);
+	}
 }

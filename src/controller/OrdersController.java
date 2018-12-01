@@ -83,6 +83,8 @@ public class OrdersController {
 
 			view.getModelOrdersTable().addRow(row);
 		}
+		
+		view.getCoins().setText("Coins: " + account.getCoinsOfUser());
 	}
 
 	public ArrayList<OrderDetailView> getOrderDetailViews() {
