@@ -12,10 +12,12 @@ public class OrderContent {
 	private String category;
 	private String brand;
 	private String seller;
+	private String buyer;
 	private int productID;
 	private int quantity;
 	private String status;
 	private Date delivery;
+	private Date orderdate;
 	private double total;
 	
 	private OrderService orderservice;
@@ -101,8 +103,34 @@ public class OrderContent {
 		this.name = name;
 	}
 
+	public String getBuyer() {
+		return buyer;
+	}
+
+	public void setBuyer(String buyer) {
+		this.buyer = buyer;
+	}
+
+	public Date getOrderdate() {
+		return orderdate;
+	}
+
+	public void setOrderdate(Date orderdate) {
+		this.orderdate = orderdate;
+	}
+
 	public ArrayList<OrderContent> getOrderDetails(String status)
 	{
 		return orderservice.getOrderDetails(orderid, status);
+	}
+	
+	public ArrayList<OrderContent> getSalesOfSeller(int sellerID, String whereClause)
+	{
+		return orderservice.getSalesOfSeller(sellerID, whereClause);
+	}
+	
+	public void updateStatus(String status)
+	{
+		orderservice.updateStatus(orderid, productID, status);
 	}
 }

@@ -1,6 +1,9 @@
 package view;
 
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
@@ -13,6 +16,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -22,6 +27,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controller.SalesController;
+import model.STATUS;
 
 public class SalesView extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -140,6 +146,32 @@ public class SalesView extends JFrame{
 		addWindowListener(new disposeListener());
 		salesTable.addMouseListener(new rightClickListener());
 		filter.addItemListener(new orderListener());
+		updateStatus.addActionListener(new updateListener());
+	}
+	
+	class updateListener implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			JPanel panel = new JPanel();
+			JComboBox<String> status = new JComboBox<String>();
+			panel.setLayout(null);
+			panel.add(status);
+			
+			status.addItem(STATUS.PENDING.toString());
+			status.addItem(STATUS.ONTRANSIT.toString());
+			status.addItem(STATUS.DELAYED.toString());
+			status.addItem(STATUS.DELIVERED.toString());
+			
+			panel.setPreferredSize(new Dimension(300, 30));
+			status.setPreferredSize(new Dimension(300, 30));
+			status.setBounds(0, 0, 300, 30);
+			
+			JOptionPane.showMessageDialog(null, panel, "Update Status", JOptionPane.INFORMATION_MESSAGE);
+			
+			controller.updateStatus((String)status.getSelectedItem());
+		}
+		
 	}
 	
 	class orderListener implements ItemListener{

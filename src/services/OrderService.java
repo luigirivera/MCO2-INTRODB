@@ -16,6 +16,88 @@ import model.Product;
 import model.User;
 
 public class OrderService {
+	public void updateStatus(int order, int product, String status)
+	{
+		String query = "UPDATE " + OrderContent.TABLE + " SET " + OrderContent.COL_STATUS + " = ?"
+																+ " WHERE " + OrderContent.COL_ORDER + " = ?"
+																+ " AND " + OrderContent.COL_PRODUCT + " = ?";
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+			
+			ps.setString(1, status);
+			ps.setInt(2, order);
+			ps.setInt(3, product);
+
+			
+			ps.executeUpdate();
+			
+			ps.close();
+			System.out.println("[ORDER CONTENT] STATUS UPDATE DONE");
+		}catch(Exception e)
+		{
+			System.out.println("[ORDER CONTENT] STATUS UPDATE FAIL");
+			e.printStackTrace();
+		}
+	}
+	public ArrayList<OrderContent> getSalesOfSeller(int sellerID, String whereClause)
+	{
+		ArrayList<OrderContent> details = new ArrayList<OrderContent>();
+		
+		String query = "SELECT P." + Product.COL_NAME + ", "
+							+ "OC." + OrderContent.COL_ORDER + ", "
+							+ "OC." + OrderContent.COL_PRODUCT + ", "
+							+ "P." + Product.COL_CATEGORY + ", "
+							+ "P." + Product.COL_BRAND + ", "
+							+ "A." + User.COL_USERNAME + ", "
+							+ "OC." + OrderContent.COL_QUANTITY + ", "
+							+ "OC." + OrderContent.COL_STATUS + ", "
+							+ "O." + Order.COL_CREATION + ", "
+							+ "OC." + OrderContent.COL_TOTAL
+							+ " FROM " + OrderContent.TABLE + " AS OC, "
+									   + Product.TABLE + " AS P, "
+									   + User.TABLE + " AS A, "
+									   + Order.TABLE + " AS O"
+							+ " WHERE OC." + OrderContent.COL_ORDER + " = O." + Order.COL_ID
+							+ " AND OC." + OrderContent.COL_PRODUCT + " = P." + Product.COL_ID
+							+ " AND A." + User.COL_ID + " = O." + Order.COL_USERID
+							+ " AND P." + Product.COL_SELLERID + " = ?"
+							+ whereClause;
+		
+		try {
+			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
+
+			ps.setInt(1, sellerID);
+			
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next())
+				details.add(toSale(rs));
+			rs.close();
+			ps.close();
+			System.out.println("[ORDER CONTENT] SALES GET DONE");
+		}catch(SQLException e) {
+			System.out.println("[ORDER CONTENT] SALES GET FAILED");
+			e.printStackTrace();
+		}
+		return details;
+	}
+	
+	private OrderContent toSale(ResultSet rs) throws SQLException{
+		OrderContent oc = new OrderContent();
+		
+		oc.setOrderid(rs.getInt(OrderContent.COL_ORDER));
+		oc.setProductID(rs.getInt(OrderContent.COL_PRODUCT));
+		oc.setName(rs.getString(Product.COL_NAME));
+		oc.setCategory(rs.getString(Product.COL_CATEGORY));
+		oc.setBrand(rs.getString(Product.COL_BRAND));
+		oc.setBuyer(rs.getString(User.COL_USERNAME));
+		oc.setQuantity(rs.getInt(OrderContent.COL_QUANTITY));
+		oc.setStatus(rs.getString(OrderContent.COL_STATUS));
+		oc.setOrderdate(rs.getDate(Order.COL_CREATION));
+		oc.setTotal(rs.getDouble(OrderContent.COL_TOTAL));
+		
+		return oc;
+	}
 	
 	public ArrayList<OrderContent> getOrderDetails(int orderID, String status)
 	{

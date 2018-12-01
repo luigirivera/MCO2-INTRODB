@@ -81,7 +81,7 @@ public class Orders extends JFrame {
 		
 		rightClick.add(expand);
 		
-		orderFilter.setSize(100, 40);
+		orderFilter.setSize(200, 40);
 		orderFilter.setLocation(0, 0);
 		
 		scrollOrdersTable.setSize(this.getWidth(), this.getHeight() - orderFilter.getHeight());
