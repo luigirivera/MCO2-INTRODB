@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import model.CorporateProductsTableModel;
 import model.Product;
 import model.User;
+import view.AnalyticsView;
 import view.CorporateProductsView;
 import view.PLACEHOLDER;
 import view.RatingView;
@@ -16,20 +17,36 @@ public class CorporateProductsController {
 	private ArrayList<RatingView> ratings;
 	private ArrayList<String> productRatingName;
 	private String whereClause;
+	private AnalyticsView analytics;
 	private User account;
 	
 	public CorporateProductsController(CorporateProductsView view,
 			CorporateMainMenuController mainMenu, User account) {
-		
 		this.view = view;
 		this.mainMenu = mainMenu;
 		productsTableModel = null;
 		this.account = account;
+		analytics = null;
 		ratings = new ArrayList<RatingView>();
 		productRatingName = new ArrayList<String>();
 		view.addController(this);
 		
 		update();
+	}
+	
+	public void toggleAnalytics() {
+		if(analytics == null)
+		{
+			analytics = new AnalyticsView();
+			new AnalyticsController(analytics, this);
+		}
+		else
+		{
+			analytics.toFront();
+			analytics.revalidate();
+			analytics.repaint();
+		}
+		
 	}
 	
 	public void showRatings()
@@ -45,6 +62,8 @@ public class CorporateProductsController {
 	public void close()
 	{
 		view.dispose();
+		if(analytics != null)
+			analytics.dispose();
 		mainMenu.setProducts(null);
 	}
 	
@@ -188,6 +207,14 @@ public class CorporateProductsController {
 
 	public void setRatings(ArrayList<RatingView> ratings) {
 		this.ratings = ratings;
+	}
+
+	public AnalyticsView getAnalytics() {
+		return analytics;
+	}
+
+	public void setAnalytics(AnalyticsView analytics) {
+		this.analytics = analytics;
 	}
 	
 	

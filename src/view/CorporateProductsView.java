@@ -5,11 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.JButton;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
@@ -21,6 +24,7 @@ import controller.CorporateProductsController;
 public class CorporateProductsView extends ProductsView {
 	private static final long serialVersionUID = 1L;
 	private JMenuItem delete;
+	private JButton analytics;
 	private CorporateProductsController controller;
 
 	public CorporateProductsView()
@@ -38,11 +42,16 @@ public class CorporateProductsView extends ProductsView {
 	private void instantiate()
 	{
 		delete = new JMenuItem(PLACEHOLDER.DELETE.toString());
+		analytics = new JButton("Analytics");
 	}
 	
 	private void initialize()
 	{
+		add(analytics);
 		rightClick.add(delete);
+		
+		analytics.setSize(apply.getSize());
+		analytics.setLocation(highPrice.getX() + highPrice.getWidth() + 10, highPrice.getY());
 	}
 	
 	private void generateTable()
@@ -85,6 +94,29 @@ public class CorporateProductsView extends ProductsView {
 		highPrice.addFocusListener(new highPriceFocus());
 		apply.addActionListener(new applyListener());
 		expand.addActionListener(new expandListener());
+		analytics.addActionListener(new analyticsListener());
+		order.addItemListener(new orderListener());
+	}
+	
+	class orderListener implements ItemListener{
+
+		@Override
+		public void itemStateChanged(ItemEvent arg0) {
+			controller.update();
+			
+		}
+		
+	}
+	
+	class analyticsListener implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			controller.toggleAnalytics();
+			
+		}
+		
 	}
 	
 	class expandListener implements ActionListener{
