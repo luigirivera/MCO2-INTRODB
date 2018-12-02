@@ -167,7 +167,6 @@ public class ConsumerProductsController {
 		whereClause = " WHERE ";
 		boolean whereExists = false;
 		String order = (String) view.getOrder().getSelectedItem();
-		System.out.println(order);
 		if(!(view.getCategory().getText().isEmpty() || view.getCategory().getText().equals(PLACEHOLDER.CATEGORY.toString())) ||
 			!(view.getBrand().getText().isEmpty() || view.getBrand().getText().equals(PLACEHOLDER.BRAND.toString())) ||
 			!(view.getLowPrice().getText().isEmpty() || view.getLowPrice().getText().equals(PLACEHOLDER.PRICELOW.toString())) ||

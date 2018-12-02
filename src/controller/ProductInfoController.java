@@ -121,7 +121,7 @@ public class ProductInfoController {
 		
 		try {
 			if(!view.getDiscount().getText().trim().isEmpty() && !view.getDiscount().getText().equals(PLACEHOLDER.DISCOUNT.toString()) &&
-					Double.parseDouble(view.getDiscount().getText()) <= 0)
+					Double.parseDouble(view.getDiscount().getText()) < 0)
 				throw new NumberFormatException();
 		}catch(Exception e)
 		{
@@ -129,7 +129,7 @@ public class ProductInfoController {
 		}
 		
 		try {
-			if(Double.parseDouble(view.getShipping().getText()) <= 0) throw new NumberFormatException();
+			if(Double.parseDouble(view.getShipping().getText()) < 0) throw new NumberFormatException();
 		}catch(Exception e)
 		{
 			error += "Please enter a valid shipping cost. A valid cost is a positive number that is not zero\n";

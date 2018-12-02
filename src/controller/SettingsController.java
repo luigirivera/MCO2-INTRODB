@@ -1,6 +1,9 @@
 package controller;
 
 import java.awt.Color;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -143,7 +146,7 @@ public class SettingsController {
 	
 	public void changePassword()
 	{
-		account.setPassword(String.valueOf(view.getNewpass().getPassword()));
+		account.setPassword(hash(String.valueOf(view.getNewpass().getPassword())));
 		
 		account.changePassword();
 		
@@ -172,7 +175,7 @@ public class SettingsController {
 	public String getPasswordErrors()
 	{
 		String error = "";
-		String old = String.valueOf(view.getOldpass().getPassword());
+		String old = hash(String.valueOf(view.getOldpass().getPassword()));
 		String newP = String.valueOf(view.getNewpass().getPassword());
 		String confirm = String.valueOf(view.getConfirmpass().getPassword());
 		String current = account.getPassword();
@@ -354,6 +357,39 @@ public class SettingsController {
 		if(account.getDeletion())
 			view.getDelete().setText("Cancel Delete");
 	}
+	
+    private String hash(String pass)
+    {
+        MessageDigest md;
+        byte[] sha1hash = new byte[40];;
+        try {
+            md = MessageDigest.getInstance("SHA-1");
+            md.update(pass.getBytes("iso-8859-1"), 0, pass.length());
+            sha1hash = md.digest();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return convertToHex(sha1hash);
+    }
+
+    private String convertToHex(byte[] data) {
+        StringBuffer buf = new StringBuffer();
+        for (int i = 0; i < data.length; i++) {
+            int halfbyte = (data[i] >>> 4) & 0x0F;
+            int two_halfs = 0;
+            do {
+                if ((0 <= halfbyte) && (halfbyte <= 9))
+                    buf.append((char) ('0' + halfbyte));
+                else
+                    buf.append((char) ('a' + (halfbyte - 10)));
+                halfbyte = data[i] & 0x0F;
+            } while(two_halfs++ < 1);
+        }
+        return buf.toString();
+    }
 
 	public Addresses getAddressview() {
 		return addressview;

@@ -577,7 +577,7 @@ public class ProductsService {
 															 + Product.COL_STOCK + " = ?, "
 															 + Product.COL_PRICE + " = ?, "
 															 + Product.COL_DISC + " = ?, "
-															 + Product.COL_SHIP + " = ? "
+															 + Product.COL_SHIP + " = ?, "
 															 + Product.COL_SHIPDUR + " = ?"
 															 + " WHERE " + Product.COL_ID + " = ? ";
 		try {
