@@ -60,7 +60,7 @@ public class OrderService {
 							+ " WHERE OC." + OrderContent.COL_ORDER + " = O." + Order.COL_ID
 							+ " AND OC." + OrderContent.COL_PRODUCT + " = P." + Product.COL_ID
 							+ " AND A." + User.COL_ID + " = O." + Order.COL_USERID
-							+ " AND P." + Product.COL_SELLERID + " = ?"
+							+ " AND P." + Product.COL_SELLERID + " = ? "
 							+ whereClause;
 		
 		try {

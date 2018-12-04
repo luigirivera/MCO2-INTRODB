@@ -141,7 +141,7 @@ public class CartService {
 							", P." + Product.COL_PRICE +
 							", P." + Product.COL_SHIP +
 							", ((P." + Product.COL_PRICE + " - " + "((P." + Product.COL_DISC + "/100)*P." + Product.COL_PRICE + ") + P." + Product.COL_SHIP + ")*C." + CartContent.COL_QUANTITY + ") AS Total FROM " + 
-							Product.TABLE + " AS P, " + CartContent.TABLE + " AS C WHERE P." + Product.COL_ID + " = " + CartContent.COL_PRODUCT + " AND " + CartContent.COL_USER + " = ?";
+							Product.TABLE + " AS P, " + CartContent.TABLE + " AS C WHERE P." + Product.COL_ID + " = " + CartContent.COL_PRODUCT + " AND " + CartContent.COL_USER + " = ? ORDER BY " + CartContent.COL_ID + " ASC";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);

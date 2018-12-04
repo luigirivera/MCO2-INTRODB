@@ -252,7 +252,7 @@ public class AccountsService {
 								 + User.COL_REGISTER + ", U."
 								 + User.COL_ISLOCKED + ", C."
 								 + User.COL_FORDELETION + ", U."
-								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U LEFT JOIN " + User.CONSU_TABLE + " AS C ON U." + User.COL_ID + " = C." + User.COL_ID + whereClause;
+								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U LEFT JOIN " + User.CONSU_TABLE + " AS C ON U." + User.COL_ID + " = C." + User.COL_ID + whereClause + " ORDER BY " + User.COL_REGISTER + " ASC";
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 		
@@ -282,7 +282,7 @@ public class AccountsService {
 								 + User.COL_EMAIL + ", U."
 								 + User.COL_REGISTER + ", U."
 								 + User.COL_ISLOCKED + ", U."
-								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U HAVING " + User.COL_ID + " IN (SELECT " + User.COL_ID + " FROM " + User.CORP_TABLE + ")";
+								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U HAVING " + User.COL_ID + " IN (SELECT " + User.COL_ID + " FROM " + User.CORP_TABLE + ") ORDER BY " + User.COL_REGISTER + " ASC";
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 		
@@ -313,7 +313,7 @@ public class AccountsService {
 								 + User.COL_REGISTER + ", U."
 								 + User.COL_ISLOCKED + ", C."
 								 + User.COL_FORDELETION + ", U."
-								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U LEFT JOIN " + User.CONSU_TABLE + " AS C ON U." + User.COL_ID + " = C." + User.COL_ID + " HAVING " + User.COL_ID + " IN (SELECT " + User.COL_ID + " FROM " + User.CONSU_TABLE + ")";
+								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U LEFT JOIN " + User.CONSU_TABLE + " AS C ON U." + User.COL_ID + " = C." + User.COL_ID + " HAVING " + User.COL_ID + " IN (SELECT " + User.COL_ID + " FROM " + User.CONSU_TABLE + ") ORDER BY "  + User.COL_REGISTER + " ASC";
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 		

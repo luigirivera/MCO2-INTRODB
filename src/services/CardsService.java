@@ -39,7 +39,7 @@ public class CardsService {
 		String query = "SELECT " + Card.COL_CARDSID + ", "
 								 + Card.COL_CARDNUMBER + ", "
 								 + Card.COL_CVC + ", "
-								 + Card.COL_EXPIRY + " FROM " + Card.TABLE + " WHERE " + Card.COL_USERID + " = ?";
+								 + Card.COL_EXPIRY + " FROM " + Card.TABLE + " WHERE " + Card.COL_USERID + " = ? ORDER BY " + Card.COL_CARDSID + " ASC";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);

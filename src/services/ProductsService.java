@@ -312,6 +312,9 @@ public class ProductsService {
 	public ArrayList<Product> getProducts(String whereClause) {
 		ArrayList<Product> products = new ArrayList<Product>();
 		
+		if(whereClause.isEmpty())
+			whereClause = " ORDER BY " + Product.COL_ID + " ASC";
+		
 		String query = "SELECT P." + Product.COL_ID + ", P."
 								 + Product.COL_SELLERID + ", P."
 								 + Product.COL_NAME + ", P."
@@ -379,7 +382,7 @@ public class ProductsService {
 				 												" LEFT JOIN (SELECT R." + Rating.COL_PRODUCT + 
 				 															", AVG(R." + Rating.COL_RATING + 
 				 															") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
-				 															+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT;
+				 															+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT + " ORDER BY " + Product.COL_ID + " ASC";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
@@ -445,7 +448,7 @@ public class ProductsService {
 																				" LEFT JOIN (SELECT R." + Rating.COL_PRODUCT + 
 																							", AVG(R." + Rating.COL_RATING + 
 																							") AS rate FROM " + Rating.TABLE + " AS R GROUP BY R." + Rating.COL_PRODUCT + ") AS R "
-																							+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT + " WHERE P." + Product.COL_SELLERID + " = ? ";
+																							+ " ON P." + Product.COL_ID + " = " + "R." + Rating.COL_PRODUCT + " WHERE P." + Product.COL_SELLERID + " = ? ORDER BY " + Product.COL_ID + " ASC";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);

@@ -34,7 +34,7 @@ public class BanksService {
 		ArrayList<BankAccount> accounts = new ArrayList<BankAccount>();
 		
 		String query = "SELECT " + BankAccount.COL_BAID + ", " + BankAccount.COL_BANK + ", "
-								 + BankAccount.COL_ACCNUM + " FROM " + BankAccount.TABLE + " WHERE " + BankAccount.COL_USERID + " = ?";
+								 + BankAccount.COL_ACCNUM + " FROM " + BankAccount.TABLE + " WHERE " + BankAccount.COL_USERID + " = ? ORDER BY " + BankAccount.COL_BAID + " ASC";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);

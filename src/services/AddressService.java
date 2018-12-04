@@ -38,7 +38,7 @@ public class AddressService {
 								 + Address.COL_LINE2 + ", "
 								 + Address.COL_CITY + ", "
 								 + Address.COL_PROV + ", "
-								 + Address.COL_ZIP + " FROM " + Address.TABLE + " WHERE " + Address.COL_USERID + " = ?";
+								 + Address.COL_ZIP + " FROM " + Address.TABLE + " WHERE " + Address.COL_USERID + " = ? ORDER BY " + Address.COL_ADDRESSID + " ASC";
 		
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
