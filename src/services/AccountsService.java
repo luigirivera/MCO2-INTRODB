@@ -369,6 +369,18 @@ public class AccountsService {
 		try {
 			PreparedStatement ps;
 			
+			query = "DELETE FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_USER + " = ?";			
+			ps = DatabaseConnection.getConnection().prepareStatement(query);			
+			ps.setInt(1, userID);			
+			ps.executeUpdate();
+			System.out.println("[ACCOUNTS] CART CONTENT DELETE SUCCESS");
+			
+			query = "DELETE FROM " + Rating.TABLE + " WHERE " + Rating.COL_USER + " = ?";			
+			ps = DatabaseConnection.getConnection().prepareStatement(query);			
+			ps.setInt(1, userID);			
+			ps.executeUpdate();
+			System.out.println("[ACCOUNTS] RATING DELETE SUCCESS");
+			
 			ArrayList<Integer> orderIDs = new ArrayList<Integer>();
 			query = "SELECT " + Order.COL_ID + " FROM " + Order.TABLE + " WHERE " + Order.COL_USERID + " = ?";
 			ps = DatabaseConnection.getConnection().prepareStatement(query);			
@@ -387,6 +399,44 @@ public class AccountsService {
 				System.out.println("[ACCOUNTS] ORDER CONTENT DELETE SUCCESS");				
 			}
 			
+			ArrayList<Integer> productIDs = new ArrayList<Integer>();
+			query = "SELECT " + Product.COL_ID + " FROM " + Product.TABLE + " WHERE " + Product.COL_SELLERID + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, userID);
+			rs = ps.executeQuery();
+			while(rs.next())
+				productIDs.add(rs.getInt(Product.COL_ID));
+			System.out.println("[ACCOUNTS] PRODUCTS GET SUCCESS");
+			
+			for(Integer pID : productIDs)
+			{
+				query = "DELETE FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_PRODUCT + " = ?";			
+				ps = DatabaseConnection.getConnection().prepareStatement(query);			
+				ps.setInt(1, pID);			
+				ps.executeUpdate();
+				System.out.println("[ACCOUNTS] CART CONTENT DELETE SUCCESS");
+				
+				query = "DELETE FROM " + OrderContent.TABLE + " WHERE " + OrderContent.COL_PRODUCT + " = ?";			
+				ps = DatabaseConnection.getConnection().prepareStatement(query);			
+				ps.setInt(1, pID);			
+				ps.executeUpdate();
+				System.out.println("[ACCOUNTS] ORDER CONTENT DELETE SUCCESS");
+			
+				query = "DELETE FROM " + Favorite.TABLE + " WHERE " + Favorite.COL_PRODUCT + " = ?";			
+				ps = DatabaseConnection.getConnection().prepareStatement(query);			
+				ps.setInt(1, pID);			
+				ps.executeUpdate();
+				System.out.println("[ACCOUNTS] FAVORITE DELETE SUCCESS");
+				
+				query = "DELETE FROM " + Rating.TABLE + " WHERE " + Rating.COL_PRODUCT + " = ?";			
+				ps = DatabaseConnection.getConnection().prepareStatement(query);			
+				ps.setInt(1, pID);			
+				ps.executeUpdate();
+				System.out.println("[ACCOUNTS] RATING DELETE SUCCESS");
+				
+				
+			}
+			
 			query = "DELETE FROM " + Order.TABLE + " WHERE " + Order.COL_USERID + " = ?";			
 			ps = DatabaseConnection.getConnection().prepareStatement(query);			
 			ps.setInt(1, userID);			
@@ -394,6 +444,12 @@ public class AccountsService {
 			System.out.println("[ACCOUNTS] ORDERS DELETE SUCCESS");
 			
 			query = "DELETE FROM " + Following.TABLE + " WHERE " + Following.COL_FOLLOWER + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, userID);	
+			ps.executeUpdate();
+			System.out.println("[ACCOUNTS] FOLLOW DELETE SUCCESS");
+			
+			query = "DELETE FROM " + Following.TABLE + " WHERE " + Following.COL_USER + " = ?";
 			ps = DatabaseConnection.getConnection().prepareStatement(query);
 			ps.setInt(1, userID);	
 			ps.executeUpdate();
@@ -417,29 +473,17 @@ public class AccountsService {
 			ps.executeUpdate();
 			System.out.println("[ACCOUNTS] BANK DELETE SUCCESS");
 			
-			query = "DELETE FROM " + Product.TABLE + " WHERE " + Product.COL_SELLERID + " = ?";
-			ps = DatabaseConnection.getConnection().prepareStatement(query);
-			ps.setInt(1, userID);	
-			ps.executeUpdate();
-			System.out.println("[ACCOUNTS] PRODUCT DELETE SUCCESS");
-			
 			query = "DELETE FROM " + Favorite.TABLE + " WHERE " + Favorite.COL_USER + " = ?";
 			ps = DatabaseConnection.getConnection().prepareStatement(query);
 			ps.setInt(1, userID);	
 			ps.executeUpdate();
 			System.out.println("[ACCOUNTS] FAVORITE DELETE SUCCESS");
 			
-			query = "DELETE FROM " + CartContent.TABLE + " WHERE " + CartContent.COL_USER + " = ?";			
-			ps = DatabaseConnection.getConnection().prepareStatement(query);			
-			ps.setInt(1, userID);			
+			query = "DELETE FROM " + Product.TABLE + " WHERE " + Product.COL_SELLERID + " = ?";
+			ps = DatabaseConnection.getConnection().prepareStatement(query);
+			ps.setInt(1, userID);	
 			ps.executeUpdate();
-			System.out.println("[ACCOUNTS] CART CONTENT DELETE SUCCESS");
-			
-			query = "DELETE FROM " + Rating.TABLE + " WHERE " + Rating.COL_USER + " = ?";			
-			ps = DatabaseConnection.getConnection().prepareStatement(query);			
-			ps.setInt(1, userID);			
-			ps.executeUpdate();
-			System.out.println("[ACCOUNTS] RATING DELETE SUCCESS");
+			System.out.println("[ACCOUNTS] PRODUCT DELETE SUCCESS");
 			
 			query = "DELETE FROM " + User.CONSU_TABLE + " WHERE " + Order.COL_USERID + " = ?";			
 			ps = DatabaseConnection.getConnection().prepareStatement(query);			
@@ -451,6 +495,7 @@ public class AccountsService {
 			ps.setInt(1, userID);			
 			ps.executeUpdate();
 			
+			rs.close();
 			ps.close();
 			System.out.println("[ACCOUNTS] DELETE SUCCESS");
 		} catch (SQLException e) {

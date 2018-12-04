@@ -137,7 +137,7 @@ public class SettingsController {
 		program.setAccount(account.getDetails());
 		account = account.getDetails();
 		account.setForDeletion(account.getDeletion());
-		System.out.println(account.isForDeletion());
+		
 		if(deletion)
 			view.getDelete().setText("Cancel Deletion");
 		else
@@ -355,7 +355,7 @@ public class SettingsController {
 		}
 		
 		if(account.getDeletion())
-			view.getDelete().setText("Cancel Delete");
+			view.getDelete().setText("Cancel Deletion");
 	}
 	
     private String hash(String pass)
