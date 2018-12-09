@@ -213,12 +213,6 @@ CREATE TABLE `consumerorder` (
   `bankID` int(11) DEFAULT NULL,
   PRIMARY KEY (`orderid`),
   KEY `orderuser_idx` (`userID`),
-  KEY `orderaddress_idx` (`addressID`),
-  KEY `ordercard_idx` (`cardID`),
-  KEY `orderbank_idx` (`bankID`),
-  CONSTRAINT `orderaddress` FOREIGN KEY (`addressID`) REFERENCES `address` (`addressid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `orderbank` FOREIGN KEY (`bankID`) REFERENCES `bankaccount` (`baid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `ordercard` FOREIGN KEY (`cardID`) REFERENCES `card` (`cardsid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `orderuser` FOREIGN KEY (`userID`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -328,8 +322,6 @@ CREATE TABLE `ordercontent` (
   `deliverydate` date NOT NULL,
   `total` double NOT NULL,
   KEY `orderproduct_idx` (`productID`),
-  KEY `contentorderid_idx` (`orderid`),
-  CONSTRAINT `contentorderid` FOREIGN KEY (`orderid`) REFERENCES `consumerorder` (`orderid`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `orderproduct` FOREIGN KEY (`productID`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -395,10 +387,8 @@ CREATE TABLE `rating` (
   `comment` varchar(200) DEFAULT NULL,
   `ratingdate` date NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `user_idx` (`user`),
   KEY `ratingproduct_idx` (`product`),
-  CONSTRAINT `ratingproduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  CONSTRAINT `ratinguser` FOREIGN KEY (`user`) REFERENCES `account` (`userid`) ON DELETE NO ACTION ON UPDATE NO ACTION
+  CONSTRAINT `ratingproduct` FOREIGN KEY (`product`) REFERENCES `product` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -421,4 +411,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-02 17:43:28
+-- Dump completed on 2018-12-09 22:17:53
