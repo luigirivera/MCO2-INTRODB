@@ -13,7 +13,7 @@ public class BankAccount {
 	private BanksService banksservice;
 	
 	public static final String TABLE = "bankaccount";
-	public static final String COL_BAID = "accountid";
+	public static final String COL_BAID = "baid";
 	public static final String COL_USERID = "userid";
 	public static final String COL_BANK = "bank";
 	public static final String COL_ACCNUM = "accountnumber";
