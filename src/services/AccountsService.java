@@ -282,7 +282,7 @@ public class AccountsService {
 								 + User.COL_EMAIL + ", U."
 								 + User.COL_REGISTER + ", U."
 								 + User.COL_ISLOCKED + ", U."
-								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U HAVING " + User.COL_ID + " IN (SELECT " + User.COL_ID + " FROM " + User.CORP_TABLE + ") ORDER BY " + User.COL_REGISTER + " ASC";
+								 + User.COL_LASTLOGIN + " FROM " + User.TABLE + " AS U HAVING U." + User.COL_ID + " IN (SELECT " + User.COL_ID + " FROM " + User.CORP_TABLE + ") ORDER BY U." + User.COL_REGISTER + " ASC";
 		try {
 			PreparedStatement ps = DatabaseConnection.getConnection().prepareStatement(query);
 		

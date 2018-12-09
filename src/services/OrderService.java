@@ -152,10 +152,10 @@ public class OrderService {
 	{
 		ArrayList<Order> orders = new ArrayList<Order>();
 	
-		String query = "SELECT " + Order.COL_ID + ", "
-								 + Order.COL_QUANTITY + ", "
-								 + Order.COL_CREATION + ", CONCAT("
-								 + Address.COL_LINE1 + ", ' ', COALESCE(CONCAT(" + Address.COL_LINE2 + ", ' '), ''), " + Address.COL_CITY + ", ' ', " + Address.COL_PROV + ") AS Address, "
+		String query = "SELECT C." + Order.COL_ID + ", C."
+								 + Order.COL_QUANTITY + ", C."
+								 + Order.COL_CREATION + ", CONCAT(A."
+								 + Address.COL_LINE1 + ", ' ', COALESCE(CONCAT(A." + Address.COL_LINE2 + ", ' '), ''), A." + Address.COL_CITY + ", ' ', A." + Address.COL_PROV + ") AS Address, "
 								 + "CONCAT(B." + BankAccount.COL_BANK + ", ' - ', B." + BankAccount.COL_ACCNUM + ") AS Bank, CONCAT('Card - ', Ca." + Card.COL_CARDNUMBER + ") AS Card "
 								 + "FROM " + Order.TABLE + " AS C LEFT JOIN " + BankAccount.TABLE + " AS B ON C." + Order.COL_BANK + " = B." + BankAccount.COL_BAID
 								 + " LEFT JOIN " + Card.TABLE + " AS Ca ON C." + Order.COL_CARD + " = Ca." + Card.COL_CARDSID + ", " + Address.TABLE + " AS A "

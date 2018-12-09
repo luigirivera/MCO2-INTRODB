@@ -53,15 +53,15 @@ public class OrdersController {
 		String filter = (String)view.getOrderFilter().getSelectedItem();
 		
 		if(filter.equals(PLACEHOLDER.NTO.toString()))
-			orderClause = " ORDER BY " + Order.COL_CREATION + " DESC";
+			orderClause = " ORDER BY C." + Order.COL_CREATION + " DESC";
 		else if(filter.equals(PLACEHOLDER.OTN.toString()))
-			orderClause = " ORDER BY " + Order.COL_CREATION + " ASC";
+			orderClause = " ORDER BY C." + Order.COL_CREATION + " ASC";
 		else if(filter.equals(PLACEHOLDER.QHTL.toString()))
-			orderClause = " ORDER BY " + Order.COL_QUANTITY + " DESC";
+			orderClause = " ORDER BY C." + Order.COL_QUANTITY + " DESC";
 		else if(filter.equals(PLACEHOLDER.QLTH.toString()))
-			orderClause = " ORDER BY " + Order.COL_QUANTITY + " ASC";
+			orderClause = " ORDER BY C." + Order.COL_QUANTITY + " ASC";
 		else
-			orderClause = " ORDER BY " + Order.COL_ID + " ASC";
+			orderClause = " ORDER BY C." + Order.COL_ID + " ASC";
 		
 		Order order = new Order();
 		order.setUserID(account.getId());
