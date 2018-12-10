@@ -17,7 +17,7 @@ public class AnalyticService {
 		ArrayList<Analytic> analytics = new ArrayList<Analytic>();
 		
 		String query = "SELECT CONCAT(P." + Product.COL_NAME + ", ' - ', P." + Product.COL_CATEGORY + ") AS Name, "
-							  + "M.Total AS Month1, O.Total AS Month2, N.Total AS Month3 "
+							  + "IFNULL(M.Total,0) AS Month1, IFNULL(O.Total,0) AS Month2, IFNULL(N.Total,0) AS Month3 "
 							  + "FROM " + Product.TABLE + " AS P "
 							  + "LEFT JOIN (SELECT OC." + OrderContent.COL_PRODUCT + " AS Product, SUM(OC." + OrderContent.COL_QUANTITY + ") AS Total "
 							  				+ "FROM " + OrderContent.TABLE + " AS OC, " + Order.TABLE + " AS O "
