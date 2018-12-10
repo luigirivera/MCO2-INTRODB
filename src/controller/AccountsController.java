@@ -100,7 +100,11 @@ public class AccountsController {
 		for(int i = 0; i < accountsTableModel.getRowCount(); i++)
 		{
 			User u = accountsTableModel.getAccountAt(i);
-			Object[] row = new Object[] {u.getUsername(), u.getNumber(), u.getEmail(), u.getRegister(), u.getLastLogin()};
+			Object[] row;
+			if(u.getNumber() != 0)
+				row = new Object[] {u.getUsername(), u.getNumber(), u.getEmail(), u.getRegister(), u.getLastLogin()};
+			else
+				row = new Object[] {u.getUsername(), null, u.getEmail(), u.getRegister(), u.getLastLogin()};
 			
 			view.getModelAccountsTable().addRow(row);
 		}
