@@ -56,15 +56,15 @@ public class SalesController {
 		else if(filter.equals(PLACEHOLDER.LASTMONTH.toString()))
 			whereClause = " AND MONTH(O." + Order.COL_CREATION + ") = MONTH(DATE_SUB(NOW(), INTERVAL 1 MONTH))";
 		else if(filter.equals(PLACEHOLDER.FIVERECENT.toString()))
-			whereClause = " ORDER BY O." + Order.COL_CREATION + " DESC LIMIT 5";
+			whereClause = " ORDER BY O." + Order.COL_ID + " DESC LIMIT 5";
 		else if(filter.equals(PLACEHOLDER.TENRECENT.toString()))
-			whereClause = " ORDER BY O." + Order.COL_CREATION + " DESC LIMIT 10";
+			whereClause = " ORDER BY O." + Order.COL_ID + " DESC LIMIT 10";
 		else if(filter.equals(PLACEHOLDER.FIVEOLDEST.toString()))
-			whereClause = " ORDER BY O." + Order.COL_CREATION + " ASC LIMIT 5";
+			whereClause = " ORDER BY O." + Order.COL_ID + " ASC LIMIT 5";
 		else if(filter.equals(PLACEHOLDER.TENOLDEST.toString()))
-			whereClause = " ORDER BY O." + Order.COL_CREATION + " ASC LIMIT 10";
+			whereClause = " ORDER BY O." + Order.COL_ID + " ASC LIMIT 10";
 		else
-			whereClause = " ORDER BY O." + Order.COL_CREATION + " DESC";
+			whereClause = " ORDER BY O." + Order.COL_ID + " DESC";
 		
 		ArrayList<OrderContent> details = new OrderContent().getSalesOfSeller(account.getId(), whereClause);
 		
