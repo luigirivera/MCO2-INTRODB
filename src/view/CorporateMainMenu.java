@@ -16,7 +16,7 @@ public class CorporateMainMenu extends JFrame {
 	
 	public CorporateMainMenu()
 	{
-		super("Stop 'N Shop");
+		super("Shopee");
 		
 		setLayout(null);
 		setSize(600,450);

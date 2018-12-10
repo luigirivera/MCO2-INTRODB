@@ -27,7 +27,7 @@ public class Login extends JFrame {
 	private LoginController controller;
 	
 	public Login() {
-		super("Stop 'N Shop");
+		super("Shopee");
 		
 		instantiate();
 		initialize();
@@ -50,7 +50,7 @@ public class Login extends JFrame {
 		
 		signupPanel = new Signup();
 		
-		welcome = new JLabel("Welcome to Stop 'N Shop");
+		welcome = new JLabel("Welcome to Shopee");
 	}
 	
 	private void initialize()

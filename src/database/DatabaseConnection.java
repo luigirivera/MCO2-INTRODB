@@ -9,7 +9,7 @@ public class DatabaseConnection {
 	private static String URL = "jdbc:mysql://127.0.0.1:3306/";
 	private static String USERNAME = "root";
 	private static String PASSWORD = "green1698";
-	private static String DATABASE = "stopnshop";
+	private static String DATABASE = "shopee";
 
 	private static Connection connection = null;
 

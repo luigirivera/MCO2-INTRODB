@@ -17,7 +17,7 @@ public class CustomerMainMenu extends JFrame {
 	
 	public CustomerMainMenu()
 	{
-		super("Stop 'N Shop");
+		super("Shopee");
 		
 		setLayout(null);
 		setSize(600,450);
